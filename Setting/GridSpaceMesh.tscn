@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://4lajro57bfri"]
+
+[ext_resource type="ArrayMesh" uid="uid://bhnum0rdd6yj2" path="res://Setting/GridSpaceResource.tres" id="1_emn8c"]
+
+[node name="GridSpaceMesh" type="Node3D"]
+
+[node name="GridSpaceMesh" type="Node3D" parent="."]
+
+[node name="Cube" type="MeshInstance3D" parent="GridSpaceMesh"]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+mesh = ExtResource("1_emn8c")
+skeleton = NodePath("")

@@ -1,0 +1,38 @@
+[gd_scene load_steps=3 format=3 uid="uid://bxmyobowlg05o"]
+
+[ext_resource type="Script" path="res://Rewind/VFX/PredictVFX.cs" id="1_77ope"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u13ln"]
+particle_flag_disable_z = true
+emission_shape_scale = Vector3(29, 29, 29)
+emission_shape = 1
+emission_sphere_radius = 60.0
+direction = Vector3(0, 0, 0)
+spread = 180.0
+radial_velocity_min = 8.99998
+radial_velocity_max = 99.0
+gravity = Vector3(0, 0, 0)
+radial_accel_min = 9.0
+radial_accel_max = 999.0
+
+[node name="PredictVFX" type="Node2D"]
+script = ExtResource("1_77ope")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+modulate = Color(1, 0.301961, 1, 0.403922)
+amount = 99
+process_material = SubResource("ParticleProcessMaterial_u13ln")
+trail_enabled = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -2000.0
+offset_top = -2000.0
+offset_right = 2000.0
+offset_bottom = 2000.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.301961, 1, 0.113725)

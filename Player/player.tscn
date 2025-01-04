@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://debea5my12hmc"]
+
+[ext_resource type="Script" path="res://Player/Player.cs" id="1_83h1a"]
+[ext_resource type="PackedScene" uid="uid://bxmyobowlg05o" path="res://Rewind/VFX/PredictVFX.tscn" id="2_vpue6"]
+[ext_resource type="PackedScene" uid="uid://kg61a3u54odt" path="res://Rewind/VFX/RewindVFX.tscn" id="3_l0e06"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aa3su"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_nuwvb"]
+material = SubResource("StandardMaterial3D_aa3su")
+size = Vector3(0.7, 0.7, 0.7)
+
+[node name="Player" type="Node3D" node_paths=PackedStringArray("VisualHP") groups=["Rewindable"]]
+process_mode = 3
+script = ExtResource("1_83h1a")
+VisualHP = NodePath("ColorRect")
+Weight = 0.29
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_nuwvb")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 650.0
+offset_bottom = 40.0
+color = Color(0.835294, 0, 0, 1)
+
+[node name="RewindVFX" parent="." instance=ExtResource("3_l0e06")]
+
+[node name="PredictVFX" parent="." instance=ExtResource("2_vpue6")]
