@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 
 
@@ -53,13 +54,17 @@ public partial class RewindController : Node
             Time += delta;
 
 
-        if ((IsRewinding || !IsPredicting) && PreviousFrame != null)
+        if (IsRewinding)
             Rewind(delta);
-
+        if (PreviousFrame == null)
+            EndRewind();
         //GD.Print(Rewinding);
     }
     
-
+    public double Focus = 100.0;
+    
+    public double FocusMax = 100.0;
+    public double FocusThreshold = 50.0;
     public double RewindSpeed = 3.0;
     public double RewindSpeedBase = 3.0;
     public double RewindSpeedAcceleration = 9.0;
@@ -90,7 +95,7 @@ public partial class RewindController : Node
         }
 
         if (isSavePoint)
-            PreviousFrame = new SavedNode(frameData, Time, PreviousFrame, ImageTexture.CreateFromImage(GetViewport().GetTexture().GetImage()));
+            PreviousFrame = new SavedNode(frameData, Time, PreviousFrame, LastSavePoint, ImageTexture.CreateFromImage(GetViewport().GetTexture().GetImage()));
         else
             PreviousFrame = new RewindNode(frameData, Time, PreviousFrame);
 
@@ -122,28 +127,38 @@ public partial class RewindController : Node
         
         //RedoData.AddLast(FrameData);
         if (frame is SavedNode)
-        {
-            IsRewinding = false;
             LastSavePoint = frame as SavedNode;
-        }
 
     }
 
 
-    public void Rewind(double delta)
+    public bool Rewind(double delta)
     {
+        if (PreviousFrame == null)
+            return false;
+        
+
         RewindSpeedAcceleration += RewindSpeedAccelerationAcceleration * delta;
         RewindSpeed += RewindSpeedAcceleration * delta;
 
         Time -= delta * RewindSpeed;
+        Time = Math.Max(Time, Root.CallTime);
 
         while (PreviousFrame.Root != null && PreviousFrame.CallTime > Time && !(PreviousFrame is SavedNode))
             PreviousFrame = PreviousFrame.Root;
         
         PlayLast();
 
-        if (!IsPredicting || PreviousFrame.Root != null && !(PreviousFrame is SavedNode))
+        
+        if (!IsPredicting || PreviousFrame.Root != null){
+            if (PreviousFrame == LastSavePoint)
+                LastSavePoint = LastSavePoint.SavedRoot;
             PreviousFrame = PreviousFrame.Root;
+            return true;
+        }
+        else
+            return false;
+        
     }
 
     public void StartRewind()
@@ -160,6 +175,8 @@ public partial class RewindController : Node
 
     public void StartPredict()
     {
+        PreviousFrame = null;
+        LastSavePoint = null;
         SaveFrame();
         SavedNode SavedFrame = PreviousFrame as SavedNode;
         Root = SavedFrame;
@@ -168,6 +185,7 @@ public partial class RewindController : Node
     public void EndPredict()
     {
         pauseManual = false;
+        StartRewind();
     }
 
 
@@ -196,10 +214,12 @@ public class RewindNode
 public class SavedNode : RewindNode
 {
     public List<RewindNode> Children = new List<RewindNode>();
+    public SavedNode SavedRoot;
     public ImageTexture Preview;
-    public SavedNode(List<NodeData> frameData, double callTime, RewindNode root, ImageTexture preview) : base(frameData, callTime, root)
+    public SavedNode(List<NodeData> frameData, double callTime, RewindNode root, SavedNode savedRoot, ImageTexture preview) : base(frameData, callTime, root)
     {
         this.Preview = preview;
+        this.SavedRoot = savedRoot;
     }
 }
 

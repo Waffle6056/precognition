@@ -4,11 +4,11 @@
 [ext_resource type="PackedScene" uid="uid://bxmyobowlg05o" path="res://Rewind/VFX/PredictVFX.tscn" id="2_vpue6"]
 [ext_resource type="PackedScene" uid="uid://kg61a3u54odt" path="res://Rewind/VFX/RewindVFX.tscn" id="3_l0e06"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aa3su"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ufca"]
 albedo_color = Color(0, 0, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_nuwvb"]
-material = SubResource("StandardMaterial3D_aa3su")
+material = SubResource("StandardMaterial3D_6ufca")
 size = Vector3(0.7, 0.7, 0.7)
 
 [node name="Player" type="Node3D" node_paths=PackedStringArray("VisualHP") groups=["Rewindable"]]

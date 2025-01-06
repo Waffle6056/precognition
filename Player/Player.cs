@@ -1,7 +1,6 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-
 public partial class Player : Node3D, RewindableObject
 {
 	[Export]
@@ -14,14 +13,21 @@ public partial class Player : Node3D, RewindableObject
 	public bool LerpOn = true;
 	[Export]
 	public float Weight = .5f;
-	// Called when the node enters the scene tree for the first time.
+	[Export]
+	public float HoldMovementCD = 0.15f;
+	public bool Channelling = false;
+	public bool Attacking = false;
+
+	public static Player Instance {get; private set;}
 	public override void _Ready()
 	{
+		Instance = this;
 	}
-	Vector3 TargetPos = new Vector3(0,0,0);
-	double[] CD = new double[4];
-	bool[] Pressed = new bool[4];
-	private Vector3 checkMovement(String k, String op, int ind, Vector3 vec){
+
+	public Vector3 TargetPos = new Vector3(0,0,0);
+	protected double[] CD = new double[4];
+	protected bool[] Pressed = new bool[4];
+	protected virtual Vector3 checkMovement(String k, String op, int ind, Vector3 vec){
 		if (Input.IsActionJustPressed(k) || Input.IsActionPressed(k) && !Pressed[(ind+2)%4])
 		{
 			Pressed[ind] = true;
@@ -38,13 +44,13 @@ public partial class Player : Node3D, RewindableObject
 		if ((Input.IsActionJustPressed(k) || Pressed[ind] && CD[ind] <= 0) && !RewindController.Instance.IsPaused)
 		{
 			TargetPos += vec;
-			CD[ind] = 0.15;
+			CD[ind] = HoldMovementCD;
 			return vec;
 		}
 
 		return Vector3.Zero;
 	}
-	private void Move(double delta)
+	private void MoveTarget(double delta)
 	{
 		for (int i = 0; i < 4; i++)
 			CD[i] -= delta;
@@ -55,16 +61,17 @@ public partial class Player : Node3D, RewindableObject
 		checkMovement("Down", "Up",   2,Vector3.Back);
 		checkMovement("Right","Left", 3,Vector3.Right);
 		
-
+	}
+	
+	// Called every frame. 'delta' is the elapsed time since the previous frame.
+	public override void _Process(double delta)
+	{
+		if (!Channelling && !Attacking)
+			MoveTarget(delta);
 		if (LerpOn)
 			Position = Position.Lerp(TargetPos,Weight);
 		else
 			Position = TargetPos;
-	}
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		Move(delta);
 			
 		VisualHP.Size = new Vector2(CurrentHP,40);
 	}
@@ -77,16 +84,23 @@ public partial class Player : Node3D, RewindableObject
         {
             TargetPos,
             CurrentHP,
-            MaxHP
+            MaxHP,
+			Attacking,
+			Channelling
         };
 		return data;
     }
 
     public void SetData(List<Object> data)
     {
-		TargetPos = (Vector3) data[0];
-		CurrentHP = (float)   data[1];
-		MaxHP     = (float)   data[2];
+		TargetPos   = (Vector3) data[0];
+		CurrentHP   = (float)   data[1];
+		MaxHP       = (float)   data[2];
+		Attacking   = (bool)    data[3];
+		Channelling = (bool)    data[4];
     }
+
+	
+
 
 }

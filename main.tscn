@@ -1,11 +1,13 @@
-[gd_scene load_steps=11 format=3 uid="uid://brwh4xwo6lkki"]
+[gd_scene load_steps=13 format=3 uid="uid://brwh4xwo6lkki"]
 
 [ext_resource type="PackedScene" uid="uid://ugmjdnxajpnj" path="res://Rewind/GUI/RewindGUI.tscn" id="1_gl3eq"]
 [ext_resource type="ArrayMesh" uid="uid://bhnum0rdd6yj2" path="res://Setting/GridSpaceResource.tres" id="1_sdsix"]
 [ext_resource type="Script" path="res://Setting/multi_mesh_instance_3d.gd" id="2_uwtei"]
 [ext_resource type="PackedScene" uid="uid://debea5my12hmc" path="res://Player/player.tscn" id="3_2nrxg"]
+[ext_resource type="PackedScene" uid="uid://o44110d7ha38" path="res://Weapons/Greatsword/Greatsword.tscn" id="3_cyybm"]
 [ext_resource type="Texture2D" uid="uid://ctfbbt1g3qphb" path="res://icon.svg" id="5_unxtb"]
 [ext_resource type="Script" path="res://Player/TargetFollowCamera.cs" id="6_h61i1"]
+[ext_resource type="PackedScene" uid="uid://bojxgkcp2ymrb" path="res://Enemies/FollowEnemy.tscn" id="8_m4ba7"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_a8lcq"]
 
@@ -35,6 +37,8 @@ environment = SubResource("Environment_fcumi")
 [node name="Player" parent="." instance=ExtResource("3_2nrxg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
 
+[node name="Greatsword" parent="Player" instance=ExtResource("3_cyybm")]
+
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Target")]
 process_mode = 3
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 0)
@@ -52,3 +56,5 @@ texture = ExtResource("5_unxtb")
 [node name="MultiMeshInstance3D" type="MultiMeshInstance3D" parent="."]
 multimesh = SubResource("MultiMesh_y4i8t")
 script = ExtResource("2_uwtei")
+
+[node name="FollowEnemy" parent="." instance=ExtResource("8_m4ba7")]

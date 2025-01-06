@@ -16,11 +16,17 @@ public partial class RewindGUI : Control
     public Vector2 ButtonOffset = new Vector2(-64,-64);
     
     
-    public List<List<TimelineButton>> ButtonDepth = new List<List<TimelineButton>>();
-    public List<Line2D> Lines = new List<Line2D>();
-    int leafs = 0;
-    public void Traverse(SavedNode root, int depth)
-    {
+    private List<List<TimelineButton>> ButtonDepth = new List<List<TimelineButton>>();
+    private List<Line2D> Lines = new List<Line2D>();
+    private int leafs = 0;
+    private void Traverse(SavedNode root, int depth)
+    {   
+        foreach (SavedNode child in root.Children)
+            Traverse(child, depth+1);
+        if (root.Children.Count == 0)
+            leafs++;
+        
+        
         TimelineButton b = TimelineButtonScene.Instantiate<TimelineButton>();
         b.Timeline = root;
         b.Position = new Vector2((float)(root.CallTime - RewindController.Instance.Root.CallTime) * XScale, 0);
@@ -30,21 +36,19 @@ public partial class RewindGUI : Control
         AddChild(b);
 
 
-        foreach (SavedNode child in root.Children)
-            Traverse(child, depth+1);
+        
 
-        if (root.Children.Count == 0)
-            leafs++;
+        
     }
 
-    public void InstantiateCurrentSavedPoints()
+    private void InstantiateCurrentSavedPoints()
     {
         ButtonDepth = new List<List<TimelineButton>>();
         leafs = 0;
         Traverse(RewindController.Instance.Root, 0);
     }
 
-    public void SetPointYs(){
+    private void SetPointYs(){
         int usedLeafs = 0;
         for (int i = ButtonDepth.Count-1; i >= 0; i--){
             int childrenInd = 0;
@@ -70,7 +74,7 @@ public partial class RewindGUI : Control
         }
     }
 
-    public void DrawLines()
+    private void DrawLines()
     {
         Lines = new List<Line2D>();
         for (int i = ButtonDepth.Count-2; i >= 0; i--){
@@ -96,7 +100,7 @@ public partial class RewindGUI : Control
         }
     }
 
-    public void ApplyButtonOffset(){
+    private void ApplyButtonOffset(){
         foreach (List<TimelineButton> level in ButtonDepth)
             foreach (TimelineButton b in level)
                 b.Position += ButtonOffset;
