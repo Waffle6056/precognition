@@ -1,40 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://o44110d7ha38"]
+[gd_scene load_steps=7 format=3 uid="uid://o44110d7ha38"]
 
 [ext_resource type="Script" path="res://Weapons/Greatsword/Greatsword.cs" id="1_3044c"]
-
-[sub_resource type="Animation" id="Animation_n2fe3"]
-resource_name = "Swing"
-tracks/0/type = "scale_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 1, 1, 1)
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("MeshInstance3D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.633333, 0.7),
-"transitions": PackedFloat32Array(2, 2, 1, 1),
-"update": 0,
-"values": [Vector3(0, 1.72421, -1.0067), Vector3(0, 2.78111, 0), Vector3(0, 2.32512, 2.49463), Vector3(0, 0.0423775, 3.45915)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("MeshInstance3D:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.633333, 0.7),
-"transitions": PackedFloat32Array(2, 2, 1, 1),
-"update": 0,
-"values": [Vector3(-0.84748, 0, 0), Vector3(0, 0, 0), Vector3(0.785398, 0, 0), Vector3(1.5708, 0, 0)]
-}
 
 [sub_resource type="Animation" id="Animation_7xbki"]
 length = 0.001
@@ -70,6 +36,40 @@ tracks/2/keys = {
 "values": [Vector3(-0.84748, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_n2fe3"]
+resource_name = "Swing"
+tracks/0/type = "scale_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 1, 1, 1)
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("MeshInstance3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.633333, 0.7),
+"transitions": PackedFloat32Array(2, 2, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1.72421, -1.0067), Vector3(0, 2.78111, 0), Vector3(0, 2.32512, 2.49463), Vector3(0, 0.0423775, 3.45915)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MeshInstance3D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.633333, 0.7),
+"transitions": PackedFloat32Array(2, 2, 1, 1),
+"update": 0,
+"values": [Vector3(-0.84748, 0, 0), Vector3(0, 0, 0), Vector3(0.785398, 0, 0), Vector3(1.5708, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ecl6u"]
 _data = {
 "RESET": SubResource("Animation_7xbki"),
@@ -79,9 +79,14 @@ _data = {
 [sub_resource type="BoxMesh" id="BoxMesh_y1ggq"]
 size = Vector3(0.09, 4, 0.25)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_bc13e"]
+size = Vector3(0.5, 4.228, 0.5)
+
 [node name="Greatsword" type="Node3D" node_paths=PackedStringArray("AttackAnimator") groups=["Rewindable"]]
 script = ExtResource("1_3044c")
-CDBase = 5.0
+CDBase = 0.5
+ChannelTimeBase = 0.4
+CallKeyBind = "E"
 AttackAnimator = NodePath("AnimationPlayer")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -90,7 +95,15 @@ libraries = {
 }
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.661875, 0.749615, 0, -0.749615, 0.661875, 0, 1.72421, -1.0067)
+transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749615, 0, -0.749615, 0.661874, 0, 1.72421, -1.0067)
 mesh = SubResource("BoxMesh_y1ggq")
+
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/AnimatableBody3D"]
+shape = SubResource("BoxShape3D_bc13e")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="AnimationEnd"]

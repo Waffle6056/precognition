@@ -1,6 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bojxgkcp2ymrb"]
+[gd_scene load_steps=6 format=3 uid="uid://bojxgkcp2ymrb"]
 
-[ext_resource type="Script" path="res://FollowEnemy.cs" id="1_q4a1w"]
+[ext_resource type="Script" path="res://Enemies/FollowEnemy.cs" id="1_q4a1w"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aa3su"]
 albedo_color = Color(0, 0, 0, 1)
@@ -9,9 +9,15 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_aa3su")
 size = Vector3(0.7, 0.7, 0.7)
 
-[node name="FollowEnemy" type="Node3D" node_paths=PackedStringArray("VisualHP") groups=["Rewindable"]]
+[sub_resource type="BoxShape3D" id="BoxShape3D_3uue1"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="TorusMesh" id="TorusMesh_j0de7"]
+inner_radius = 0.436
+outer_radius = 0.311
+
+[node name="FollowEnemy" type="Node3D" groups=["Rewindable"]]
 script = ExtResource("1_q4a1w")
-VisualHP = NodePath("ColorRect")
 HoldMovementCD = 0.5
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -23,3 +29,12 @@ offset_top = 606.0
 offset_right = 1148.0
 offset_bottom = 646.0
 color = Color(0.835294, 0, 0, 1)
+
+[node name="GridSpace" type="AnimatableBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GridSpace"]
+shape = SubResource("BoxShape3D_3uue1")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GridSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
+mesh = SubResource("TorusMesh_j0de7")

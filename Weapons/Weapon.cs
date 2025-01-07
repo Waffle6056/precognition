@@ -10,21 +10,23 @@ public partial class Weapon : Node3D, RewindableObject
 	[Export]
 	public float ChannelTimeBase = 0;
 	[Export]
-	public String CallKeyBind = "E";
+	public String CallKeyBind;
 	[Export]
 	public AnimationPlayer AttackAnimator;
+	[Export]
+	public Entity Root;
 	protected double CD = 0;
 	protected double ChannelTime = 0;
 	protected bool Channelling = false;
 	protected bool Attacking = false;
-	protected bool OnCD() { return CD > 0; }
+	public bool OnCD() { return CD > 0; }
 	
 
 
 	protected virtual void StartChannel()
 	{
 		ChannelTime = ChannelTimeBase;
-		Player.Instance.Channelling = true;
+		Root.Channelling = true;
 		Channelling = true;
 		
 		GD.Print("Channel Started");
@@ -38,7 +40,7 @@ public partial class Weapon : Node3D, RewindableObject
 
 	protected virtual void EndChannel()
 	{
-		Player.Instance.Channelling = false;
+		Root.Channelling = false;
 		Channelling = false;
 
 		GD.Print("Channel Finished");
@@ -48,7 +50,7 @@ public partial class Weapon : Node3D, RewindableObject
 
 	protected virtual void StartAttack()
 	{
-		Player.Instance.Attacking = true;
+		Root.Attacking = true;
 		Attacking = true;
 
 		GD.Print("BaseAttack Called");
@@ -59,7 +61,7 @@ public partial class Weapon : Node3D, RewindableObject
 	}
 	protected virtual void EndAttack()
 	{
-		Player.Instance.Attacking = false;
+		Root.Attacking = false;
 		Attacking = false;
 	}
 
@@ -83,7 +85,7 @@ public partial class Weapon : Node3D, RewindableObject
 			Channel(delta);
 		
 		
-		if (Input.IsActionJustPressed(CallKeyBind))
+		if (CallKeyBind != null && CallKeyBind.Length > 0 &&Input.IsActionJustPressed(CallKeyBind))
 			CallAttack();
 
 		if (Attacking)
@@ -94,7 +96,7 @@ public partial class Weapon : Node3D, RewindableObject
 	}
 
 
-	protected static int DataLength = 6;
+	protected static int DataLength = 8;
 	public virtual List<Object> GetData()
     {
         List<Object> data = new List<Object>
@@ -105,7 +107,8 @@ public partial class Weapon : Node3D, RewindableObject
 			ChannelTimeBase,
             CD,
 			CDBase,
-			
+			AttackAnimator.IsPlaying() ? AttackAnimator.CurrentAnimation : "",
+            AttackAnimator.IsPlaying() ? AttackAnimator.CurrentAnimationPosition : 0.0,
         };
 		return data;
     }
@@ -118,6 +121,7 @@ public partial class Weapon : Node3D, RewindableObject
 		ChannelTimeBase = (float)  data[3];
         CD              = (double) data[4];
 		CDBase          = (float)  data[5];
-			
+		AttackAnimator.CurrentAnimation = (String)data[6];
+		AttackAnimator.Seek((double)data[7], true);
     }
 }

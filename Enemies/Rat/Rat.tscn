@@ -1,0 +1,109 @@
+[gd_scene load_steps=8 format=3 uid="uid://cy3lc06bhqvis"]
+
+[ext_resource type="Script" path="res://Enemies/Rat/Rat.cs" id="1_3eg2i"]
+[ext_resource type="Script" path="res://Enemies/Dash.cs" id="2_8fu1f"]
+[ext_resource type="Script" path="res://Enemies/Step.cs" id="3_3nrla"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_irnai"]
+albedo_color = Color(0.201815, 1.84401e-06, 1.02879e-06, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_woikq"]
+material = SubResource("StandardMaterial3D_irnai")
+size = Vector3(0.7, 0.7, 0.9)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8hug3"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="TorusMesh" id="TorusMesh_jfyjj"]
+inner_radius = 0.436
+outer_radius = 0.311
+
+[node name="Root" type="Node3D" node_paths=PackedStringArray("VisualHP", "GridSpace")]
+script = ExtResource("1_3eg2i")
+VisualHP = NodePath("ColorRect")
+GridSpace = NodePath("GridSpace")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_woikq")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = 498.0
+offset_top = 606.0
+offset_right = 1148.0
+offset_bottom = 646.0
+color = Color(0.835294, 0, 0, 1)
+
+[node name="GridSpace" type="AnimatableBody3D" parent="."]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GridSpace"]
+shape = SubResource("BoxShape3D_8hug3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GridSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
+mesh = SubResource("TorusMesh_jfyjj")
+
+[node name="DashUp" type="Node3D" parent="." node_paths=PackedStringArray("Root")]
+script = ExtResource("2_8fu1f")
+Direction = Vector3(0, 0, -1)
+Distance = 4.0
+TotalTime = 0.09
+WeightMultiplier = 50.0
+CDBase = 3.0
+ChannelTimeBase = 0.5
+Root = NodePath("..")
+
+[node name="DashLeft" type="Node3D" parent="." node_paths=PackedStringArray("Root")]
+script = ExtResource("2_8fu1f")
+Direction = Vector3(-1, 0, 0)
+Distance = 4.0
+TotalTime = 0.09
+CDBase = 3.0
+ChannelTimeBase = 0.5
+Root = NodePath("..")
+
+[node name="DashDown" type="Node3D" parent="." node_paths=PackedStringArray("Root")]
+script = ExtResource("2_8fu1f")
+Direction = Vector3(0, 0, 1)
+Distance = 4.0
+TotalTime = 0.09
+CDBase = 3.0
+ChannelTimeBase = 0.5
+Root = NodePath("..")
+
+[node name="DashRight" type="Node3D" parent="." node_paths=PackedStringArray("Root")]
+script = ExtResource("2_8fu1f")
+Direction = Vector3(1, 0, 0)
+Distance = 4.0
+TotalTime = 0.09
+CDBase = 3.0
+ChannelTimeBase = 0.5
+Root = NodePath("..")
+
+[node name="StepUp" type="Node3D" parent="." node_paths=PackedStringArray("Root")]
+script = ExtResource("3_3nrla")
+Direction = Vector3(0, 0, -1)
+WeightMultiplier = 50.0
+ChannelTimeBase = 0.25
+Root = NodePath("..")
+
+[node name="StepLeft" type="Node3D" parent="." node_paths=PackedStringArray("Root")]
+script = ExtResource("3_3nrla")
+Direction = Vector3(-1, 0, 0)
+WeightMultiplier = 50.0
+ChannelTimeBase = 0.25
+Root = NodePath("..")
+
+[node name="StepDown" type="Node3D" parent="." node_paths=PackedStringArray("Root")]
+script = ExtResource("3_3nrla")
+Direction = Vector3(0, 0, 1)
+WeightMultiplier = 50.0
+ChannelTimeBase = 0.25
+Root = NodePath("..")
+
+[node name="StepRight" type="Node3D" parent="." node_paths=PackedStringArray("Root")]
+script = ExtResource("3_3nrla")
+Direction = Vector3(1, 0, 0)
+WeightMultiplier = 50.0
+ChannelTimeBase = 0.25
+Root = NodePath("..")

@@ -15,7 +15,7 @@ public partial class FollowEnemy : Player
 		
 		}
 			
-		if (playerval > val && CD[ind] <= 0 && !RewindController.Instance.IsPaused)
+		if (playerval > val && CD[ind] <= 0 && !RewindController.Instance.IsPaused && !GridSpace.TestMove(new Transform3D(GridSpace.GlobalBasis,TargetPos),vec))
 		{
 			TargetPos += vec;
 			CD[ind] = HoldMovementCD;
