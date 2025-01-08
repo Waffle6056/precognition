@@ -49,7 +49,6 @@ collision_mask = 2
 shape = SubResource("BoxShape3D_mvk7k")
 
 [node name="GridSpace" type="AnimatableBody3D" parent="."]
-visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GridSpace"]
 shape = SubResource("BoxShape3D_vph7y")

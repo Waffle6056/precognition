@@ -5,17 +5,23 @@ using System.Collections.Generic;
 public partial class Dash : WeightedWeapon
 {
     [Export]
+    public float BaseWeight = 50f;
+    [Export]
     public Vector3 Direction;
     [Export]
-    public float Distance;
+    public int BaseDistance = 4;
     [Export]
-    public float TotalTime;
+    public int MaxDistance = 8;
+    [Export]
+    public float TotalTime = .09f;
     float Time;
     Vector3 StartPos;
+    Vector3 EndPos;
     protected override void StartAttack()
     {
         base.StartAttack();
         StartPos = Root.TargetPos;
+        EndPos = StartPos+Direction.Normalized()*calcDistance();
         Time = 0;
     }
     protected override void Attack(double delta)
@@ -27,16 +33,51 @@ public partial class Dash : WeightedWeapon
             EndAttack();
             Time = TotalTime;
         }
-        Root.TargetPos = StartPos.Lerp(StartPos+Direction.Normalized()*Distance, Time/TotalTime);
+        Root.TargetPos = StartPos.Lerp(EndPos, Time/TotalTime);
     }
+    int calcDistance(){
+        KinematicCollision3D Collider = new KinematicCollision3D();
+        Vector3 End = Root.TargetPos;
+        for (int i = 0; i < BaseDistance; i++)
+        {
+            if (Root.GridSpace.TestMove(new Transform3D(Root.GridSpace.GlobalBasis, End), Direction, Collider, default, default, 7)){
+                
+                for (int id = 0; id < Collider.GetCollisionCount(); id++){
+                    //GD.Print(Collider.GetCollider(id));
+                    if (!(Collider.GetCollider(id) is AnimatableBody3D ))
+                        return -1;
+                }
+            }
+            End += Direction.Normalized();
+        }
+        int j = 0;
+        while (Collider.GetCollisionCount() > 0 && BaseDistance+j < MaxDistance)
+        {
+            if (Root.GridSpace.TestMove(new Transform3D(Root.GridSpace.GlobalBasis, End), Direction, Collider, default, default, 7)){
+            //GD.Print(Collider.GetCollider());
+                for (int id = 0; id < Collider.GetCollisionCount(); id++){
+                    //GD.Print(Collider.GetCollider(id));
+                    if (!(Collider.GetCollider(id) is AnimatableBody3D ))
+                        return -1;
+                }
+            }
+            End += Direction.Normalized();
+            j++;
+        }
+        j = Math.Max(0,j-1);
+        //GD.Print(j);
+        return BaseDistance+j;
+    }
+
     public override double GetWeight()
     {
-        if (Root.GridSpace.TestMove(new Transform3D(Root.GridSpace.GlobalBasis, Root.TargetPos+Direction*Distance),Vector3.Zero))
+        int d = calcDistance();
+        if (d < 0)
             return -1;
         float DistanceFromStart = Root.TargetPos.DistanceTo(Player.Instance.TargetPos);
-        float DistanceFromEnd = (Root.TargetPos+Direction.Normalized()*Distance).DistanceTo(Player.Instance.TargetPos);
-        if (DistanceFromEnd-DistanceFromStart > Distance)
+        float DistanceFromEnd = (Root.TargetPos+Direction.Normalized()*d).DistanceTo(Player.Instance.TargetPos);
+        if (DistanceFromEnd-DistanceFromStart > BaseDistance)
             return -1;
-        return WeightMultiplier * (1/(DistanceFromEnd+0.09f));
+        return BaseWeight + WeightMultiplier * -DistanceFromEnd;
     }
 }

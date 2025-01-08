@@ -11,9 +11,9 @@ public partial class Enemy : Entity
         base._Process(delta);
         if (!Channelling && !Attacking)
             PickOption();
-        GD.Print(CurrentAction != null);
+        //GD.Print(CurrentAction != null);
         
-        GD.Print(Options.Count);
+        //GD.Print(Options.Count);
     }
     public void PickOption()
     {   
@@ -27,7 +27,7 @@ public partial class Enemy : Entity
                 largestWeight = actionWeight;
                 next = action;
             }
-            GD.Print(actionWeight);
+            GD.Print(action.GetType()+" "+actionWeight);
         }
         CurrentAction = next;
         if (CurrentAction != null)

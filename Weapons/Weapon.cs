@@ -29,7 +29,7 @@ public partial class Weapon : Node3D, RewindableObject
 		Root.Channelling = true;
 		Channelling = true;
 		
-		GD.Print("Channel Started");
+		//GD.Print("Channel Started");
 	}
 	protected virtual void Channel(double delta)
 	{
@@ -43,7 +43,7 @@ public partial class Weapon : Node3D, RewindableObject
 		Root.Channelling = false;
 		Channelling = false;
 
-		GD.Print("Channel Finished");
+		//GD.Print("Channel Finished");
 
 		StartAttack();
 	}
@@ -53,7 +53,7 @@ public partial class Weapon : Node3D, RewindableObject
 		Root.Attacking = true;
 		Attacking = true;
 
-		GD.Print("BaseAttack Called");
+		//GD.Print("BaseAttack Called");
 	}
 	protected virtual void Attack(double delta)
 	{
@@ -68,7 +68,7 @@ public partial class Weapon : Node3D, RewindableObject
 
 	public void CallAttack()
 	{
-		GD.Print("Attack Called");
+		//GD.Print("Attack Called");
 		if (OnCD())
 			return;
 		CD = CDBase;
@@ -107,8 +107,8 @@ public partial class Weapon : Node3D, RewindableObject
 			ChannelTimeBase,
             CD,
 			CDBase,
-			AttackAnimator.IsPlaying() ? AttackAnimator.CurrentAnimation : "",
-            AttackAnimator.IsPlaying() ? AttackAnimator.CurrentAnimationPosition : 0.0,
+			AttackAnimator != null && AttackAnimator.IsPlaying() ? AttackAnimator.CurrentAnimation : "",
+            AttackAnimator != null && AttackAnimator.IsPlaying() ? AttackAnimator.CurrentAnimationPosition : 0.0,
         };
 		return data;
     }
@@ -121,7 +121,9 @@ public partial class Weapon : Node3D, RewindableObject
 		ChannelTimeBase = (float)  data[3];
         CD              = (double) data[4];
 		CDBase          = (float)  data[5];
-		AttackAnimator.CurrentAnimation = (String)data[6];
-		AttackAnimator.Seek((double)data[7], true);
-    }
+		if (AttackAnimator != null){
+			AttackAnimator.CurrentAnimation = (String)data[6];
+			AttackAnimator.Seek((double)data[7], true);
+		}
+	}
 }

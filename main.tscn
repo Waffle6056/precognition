@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://brwh4xwo6lkki"]
+[gd_scene load_steps=17 format=3 uid="uid://brwh4xwo6lkki"]
 
 [ext_resource type="PackedScene" uid="uid://ugmjdnxajpnj" path="res://Rewind/GUI/RewindGUI.tscn" id="1_gl3eq"]
 [ext_resource type="ArrayMesh" uid="uid://bhnum0rdd6yj2" path="res://Setting/GridSpaceResource.tres" id="1_sdsix"]
@@ -30,6 +30,13 @@ buffer = PackedFloat32Array(nan, nan, 0, 0, 0, 0, -1.9668e-24, 0, -3.58871e-14, 
 [sub_resource type="BoxShape3D" id="BoxShape3D_kai55"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vcxov"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wc0fm"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="TorusMesh" id="TorusMesh_0hnvi"]
+inner_radius = 0.436
+outer_radius = 0.311
 
 [node name="Main" type="Node3D"]
 
@@ -70,6 +77,16 @@ shape = SubResource("BoxShape3D_kai55")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/CollisionShape3D"]
 mesh = SubResource("BoxMesh_vcxov")
+
+[node name="GridSpace" type="AnimatableBody3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D/GridSpace"]
+shape = SubResource("BoxShape3D_wc0fm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D/GridSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
+mesh = SubResource("TorusMesh_0hnvi")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 8)
@@ -172,3 +189,13 @@ mesh = SubResource("BoxMesh_vcxov")
 
 [node name="Root" parent="." instance=ExtResource("2_ikv24")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 6)
+
+[node name="GridSpace" type="AnimatableBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 6)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GridSpace"]
+shape = SubResource("BoxShape3D_wc0fm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GridSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
+mesh = SubResource("TorusMesh_0hnvi")
