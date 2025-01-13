@@ -2,22 +2,22 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class RatBite : WeightedWeapon
+public partial class Bite : WeightedAction
 {
     [Export]
     public float BaseWeight = 50f;
     [Export]
     public Vector3 Direction;
     String AttackName = "Bite";
-    protected override void StartAttack()
+    protected override void StartAction()
     {
-        base.StartAttack();
+        base.StartAction();
         GlobalBasis = Basis.LookingAt(-Direction);
-        AttackAnimator.Play(AttackName);
+        ActionAnimator.Play(AttackName);
     }
     public void AnimationEnd(String name)
 	{
-		EndAttack();		
+		EndAction();		
 	}
     public override double GetWeight()
     {

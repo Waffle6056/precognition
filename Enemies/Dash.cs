@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class Dash : WeightedWeapon
+public partial class Dash : WeightedAction
 {
     [Export]
     public float BaseWeight = 50f;
@@ -17,20 +17,20 @@ public partial class Dash : WeightedWeapon
     float Time;
     Vector3 StartPos;
     Vector3 EndPos;
-    protected override void StartAttack()
+    protected override void StartAction()
     {
-        base.StartAttack();
+        base.StartAction();
         StartPos = Root.TargetPos;
         EndPos = StartPos+Direction.Normalized()*calcDistance();
         Time = 0;
     }
-    protected override void Attack(double delta)
+    protected override void Act(double delta)
     {
-        base.Attack(delta);
+        base.Act(delta);
         Time += (float) delta;
         if (Time > TotalTime)
         {
-            EndAttack();
+            EndAction();
             Time = TotalTime;
         }
         Root.TargetPos = StartPos.Lerp(EndPos, Time/TotalTime);
@@ -64,6 +64,8 @@ public partial class Dash : WeightedWeapon
             End += Direction.Normalized();
             j++;
         }
+        if (Collider.GetCollisionCount() > 0)
+            return -1;
         j = Math.Max(0,j-1);
         //GD.Print(j);
         return BaseDistance+j;

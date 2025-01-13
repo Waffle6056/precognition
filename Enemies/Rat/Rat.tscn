@@ -1,9 +1,12 @@
-[gd_scene load_steps=14 format=3 uid="uid://cy3lc06bhqvis"]
+[gd_scene load_steps=23 format=3 uid="uid://cy3lc06bhqvis"]
 
 [ext_resource type="Script" path="res://Enemies/Rat/Rat.cs" id="1_3eg2i"]
 [ext_resource type="Script" path="res://Enemies/Dash.cs" id="2_8fu1f"]
 [ext_resource type="Script" path="res://Enemies/Step.cs" id="3_3nrla"]
-[ext_resource type="Script" path="res://Enemies/Rat/RatBite.cs" id="4_vp3fe"]
+[ext_resource type="Script" path="res://Weapons/CooldownManager.cs" id="3_cwkgo"]
+[ext_resource type="Script" path="res://Enemies/Rat/Bite.cs" id="4_vp3fe"]
+[ext_resource type="Script" path="res://Enemies/Rat/TailWhip.cs" id="5_fyf2g"]
+[ext_resource type="Script" path="res://Enemies/Rat/Burrow.cs" id="7_dd2g5"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_irnai"]
 albedo_color = Color(0.201815, 1.84401e-06, 1.02879e-06, 1)
@@ -21,7 +24,7 @@ outer_radius = 0.311
 
 [sub_resource type="Animation" id="Animation_sg4gg"]
 resource_name = "Bite"
-length = 0.5
+length = 0.6
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -29,7 +32,7 @@ tracks/0/path = NodePath("MeshInstance3D:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.233333, 0.5),
+"times": PackedFloat32Array(0, 0.3, 0.566667),
 "transitions": PackedFloat32Array(3.03143, 3.03143, 1),
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 0, 1), Vector3(0, 0, 0)]
@@ -62,6 +65,104 @@ size = Vector3(0.4, 0.3, 0.3)
 [sub_resource type="BoxShape3D" id="BoxShape3D_iega4"]
 size = Vector3(0.4, 0.4, 0.4)
 
+[sub_resource type="Animation" id="Animation_h0neq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D/MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8xkgg"]
+resource_name = "TailWhip"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D/MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(-2, -0.5, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 2), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node3D:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(-2, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0v7kj"]
+_data = {
+"RESET": SubResource("Animation_h0neq"),
+"TailWhip": SubResource("Animation_8xkgg")
+}
+
+[sub_resource type="Animation" id="Animation_27rx1"]
+resource_name = "Burrow"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1, 0), Vector3(0, -1, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jnbld"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4s534"]
+_data = {
+"Burrow": SubResource("Animation_27rx1"),
+"RESET": SubResource("Animation_jnbld")
+}
+
 [node name="Root" type="Node3D" node_paths=PackedStringArray("VisualHP", "GridSpace") groups=["Rewindable"]]
 script = ExtResource("1_3eg2i")
 VisualHP = NodePath("ColorRect")
@@ -87,37 +188,53 @@ shape = SubResource("BoxShape3D_8hug3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
 mesh = SubResource("TorusMesh_jfyjj")
 
-[node name="DashUp" type="Node3D" parent="." node_paths=PackedStringArray("Root") groups=["Rewindable"]]
+[node name="DashUp" type="Node3D" parent="." node_paths=PackedStringArray("Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("2_8fu1f")
 Direction = Vector3(0, 0, -1)
 WeightMultiplier = 12.5
-CDBase = 3.0
 ChannelTimeBase = 0.5
 Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
 
-[node name="DashLeft" type="Node3D" parent="." node_paths=PackedStringArray("Root") groups=["Rewindable"]]
+[node name="CooldownManager" type="Node3D" parent="DashUp"]
+script = ExtResource("3_cwkgo")
+CDBase = 3.0
+
+[node name="DashLeft" type="Node3D" parent="." node_paths=PackedStringArray("Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("2_8fu1f")
 Direction = Vector3(-1, 0, 0)
 WeightMultiplier = 12.5
-CDBase = 3.0
 ChannelTimeBase = 0.5
 Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
 
-[node name="DashDown" type="Node3D" parent="." node_paths=PackedStringArray("Root") groups=["Rewindable"]]
+[node name="CooldownManager" type="Node3D" parent="DashLeft"]
+script = ExtResource("3_cwkgo")
+CDBase = 3.0
+
+[node name="DashDown" type="Node3D" parent="." node_paths=PackedStringArray("Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("2_8fu1f")
 Direction = Vector3(0, 0, 1)
 WeightMultiplier = 12.5
-CDBase = 3.0
 ChannelTimeBase = 0.5
 Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
 
-[node name="DashRight" type="Node3D" parent="." node_paths=PackedStringArray("Root") groups=["Rewindable"]]
+[node name="CooldownManager" type="Node3D" parent="DashDown"]
+script = ExtResource("3_cwkgo")
+CDBase = 3.0
+
+[node name="DashRight" type="Node3D" parent="." node_paths=PackedStringArray("Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("2_8fu1f")
 Direction = Vector3(1, 0, 0)
 WeightMultiplier = 12.5
-CDBase = 3.0
 ChannelTimeBase = 0.5
 Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
+
+[node name="CooldownManager" type="Node3D" parent="DashRight"]
+script = ExtResource("3_cwkgo")
+CDBase = 3.0
 
 [node name="StepUp" type="Node3D" parent="." node_paths=PackedStringArray("Root") groups=["Rewindable"]]
 script = ExtResource("3_3nrla")
@@ -147,111 +264,161 @@ WeightMultiplier = 25.0
 ChannelTimeBase = 0.25
 Root = NodePath("..")
 
-[node name="RatBiteUp" type="Node3D" parent="." node_paths=PackedStringArray("AttackAnimator", "Root") groups=["Rewindable"]]
+[node name="BiteCooldownManager" type="Node3D" parent="."]
+script = ExtResource("3_cwkgo")
+CDBase = 0.25
+
+[node name="BiteUp" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_vp3fe")
 Direction = Vector3(0, 0, -1)
 WeightMultiplier = 50.0
-CDBase = 0.5
 ChannelTimeBase = 0.1
-AttackAnimator = NodePath("AnimationPlayer")
-Root = NodePath("..")
+ActionAnimator = NodePath("AnimationPlayer")
+Root = NodePath("../..")
+Cooldown = NodePath("..")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="RatBiteUp"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BiteCooldownManager/BiteUp"]
 libraries = {
 "": SubResource("AnimationLibrary_m807d")
 }
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RatBiteUp"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BiteCooldownManager/BiteUp"]
 mesh = SubResource("BoxMesh_w44o6")
 
-[node name="AnimatableBody3D" type="AnimatableBody3D" parent="RatBiteUp/MeshInstance3D"]
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="BiteCooldownManager/BiteUp/MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RatBiteUp/MeshInstance3D/AnimatableBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BiteCooldownManager/BiteUp/MeshInstance3D/AnimatableBody3D"]
 shape = SubResource("BoxShape3D_iega4")
 
-[node name="RatBiteLeft" type="Node3D" parent="." node_paths=PackedStringArray("AttackAnimator", "Root") groups=["Rewindable"]]
+[node name="BiteLeft" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_vp3fe")
 Direction = Vector3(-1, 0, 0)
 WeightMultiplier = 50.0
-CDBase = 0.5
 ChannelTimeBase = 0.1
-AttackAnimator = NodePath("AnimationPlayer")
-Root = NodePath("..")
+ActionAnimator = NodePath("AnimationPlayer")
+Root = NodePath("../..")
+Cooldown = NodePath("..")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="RatBiteLeft"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BiteCooldownManager/BiteLeft"]
 libraries = {
 "": SubResource("AnimationLibrary_m807d")
 }
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RatBiteLeft"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BiteCooldownManager/BiteLeft"]
 mesh = SubResource("BoxMesh_w44o6")
 
-[node name="AnimatableBody3D" type="AnimatableBody3D" parent="RatBiteLeft/MeshInstance3D"]
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="BiteCooldownManager/BiteLeft/MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RatBiteLeft/MeshInstance3D/AnimatableBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BiteCooldownManager/BiteLeft/MeshInstance3D/AnimatableBody3D"]
 shape = SubResource("BoxShape3D_iega4")
 
-[node name="RatBiteDown" type="Node3D" parent="." node_paths=PackedStringArray("AttackAnimator", "Root") groups=["Rewindable"]]
+[node name="BiteDown" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_vp3fe")
 Direction = Vector3(0, 0, 1)
 WeightMultiplier = 50.0
-CDBase = 0.5
 ChannelTimeBase = 0.1
-AttackAnimator = NodePath("AnimationPlayer")
-Root = NodePath("..")
+ActionAnimator = NodePath("AnimationPlayer")
+Root = NodePath("../..")
+Cooldown = NodePath("..")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="RatBiteDown"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BiteCooldownManager/BiteDown"]
 libraries = {
 "": SubResource("AnimationLibrary_m807d")
 }
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RatBiteDown"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BiteCooldownManager/BiteDown"]
 mesh = SubResource("BoxMesh_w44o6")
 
-[node name="AnimatableBody3D" type="AnimatableBody3D" parent="RatBiteDown/MeshInstance3D"]
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="BiteCooldownManager/BiteDown/MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RatBiteDown/MeshInstance3D/AnimatableBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BiteCooldownManager/BiteDown/MeshInstance3D/AnimatableBody3D"]
 shape = SubResource("BoxShape3D_iega4")
 
-[node name="RatBiteRight" type="Node3D" parent="." node_paths=PackedStringArray("AttackAnimator", "Root") groups=["Rewindable"]]
+[node name="BiteRight" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_vp3fe")
 Direction = Vector3(1, 0, 0)
 WeightMultiplier = 50.0
-CDBase = 0.5
 ChannelTimeBase = 0.1
-AttackAnimator = NodePath("AnimationPlayer")
-Root = NodePath("..")
+ActionAnimator = NodePath("AnimationPlayer")
+Root = NodePath("../..")
+Cooldown = NodePath("..")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="RatBiteRight"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="BiteCooldownManager/BiteRight"]
 libraries = {
 "": SubResource("AnimationLibrary_m807d")
 }
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="RatBiteRight"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
+[node name="MeshInstance3D" type="MeshInstance3D" parent="BiteCooldownManager/BiteRight"]
 mesh = SubResource("BoxMesh_w44o6")
 
-[node name="AnimatableBody3D" type="AnimatableBody3D" parent="RatBiteRight/MeshInstance3D"]
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="BiteCooldownManager/BiteRight/MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
 collision_layer = 2
 collision_mask = 2
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="RatBiteRight/MeshInstance3D/AnimatableBody3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BiteCooldownManager/BiteRight/MeshInstance3D/AnimatableBody3D"]
 shape = SubResource("BoxShape3D_iega4")
 
-[connection signal="animation_finished" from="RatBiteUp/AnimationPlayer" to="RatBiteUp" method="AnimationEnd"]
-[connection signal="animation_finished" from="RatBiteLeft/AnimationPlayer" to="RatBiteLeft" method="AnimationEnd"]
-[connection signal="animation_finished" from="RatBiteDown/AnimationPlayer" to="RatBiteDown" method="AnimationEnd"]
-[connection signal="animation_finished" from="RatBiteRight/AnimationPlayer" to="RatBiteRight" method="AnimationEnd"]
+[node name="TailWhip" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("5_fyf2g")
+WeightMultiplier = 5.0
+ChannelTimeBase = 0.1
+ActionAnimator = NodePath("AnimationPlayer")
+Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
+
+[node name="CooldownManager" type="Node3D" parent="TailWhip"]
+script = ExtResource("3_cwkgo")
+CDBase = 3.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TailWhip"]
+libraries = {
+"": SubResource("AnimationLibrary_0v7kj")
+}
+
+[node name="Node3D" type="Node3D" parent="TailWhip"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TailWhip/Node3D"]
+mesh = SubResource("BoxMesh_w44o6")
+skeleton = NodePath("../..")
+
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="TailWhip/Node3D/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TailWhip/Node3D/MeshInstance3D/AnimatableBody3D"]
+shape = SubResource("BoxShape3D_iega4")
+
+[node name="Burrow" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("7_dd2g5")
+WeightMultiplier = 90.0
+ChannelTimeBase = 0.5
+ActionAnimator = NodePath("AnimationPlayer")
+Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
+
+[node name="CooldownManager" type="Node3D" parent="Burrow"]
+script = ExtResource("3_cwkgo")
+CDBase = 10.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Burrow"]
+libraries = {
+"": SubResource("AnimationLibrary_4s534")
+}
+
+[connection signal="animation_finished" from="BiteCooldownManager/BiteUp/AnimationPlayer" to="BiteCooldownManager/BiteUp" method="AnimationEnd"]
+[connection signal="animation_finished" from="BiteCooldownManager/BiteLeft/AnimationPlayer" to="BiteCooldownManager/BiteLeft" method="AnimationEnd"]
+[connection signal="animation_finished" from="BiteCooldownManager/BiteDown/AnimationPlayer" to="BiteCooldownManager/BiteDown" method="AnimationEnd"]
+[connection signal="animation_finished" from="BiteCooldownManager/BiteRight/AnimationPlayer" to="BiteCooldownManager/BiteRight" method="AnimationEnd"]
+[connection signal="animation_finished" from="TailWhip/AnimationPlayer" to="TailWhip" method="AnimationEnd"]
+[connection signal="animation_finished" from="Burrow/AnimationPlayer" to="Burrow" method="AnimationEnd"]

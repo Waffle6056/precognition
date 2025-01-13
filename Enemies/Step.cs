@@ -1,15 +1,15 @@
 using Godot;
 using System;
 
-public partial class Step : WeightedWeapon
+public partial class Step : WeightedAction
 {
     [Export]
     public Vector3 Direction;
-    protected override void StartAttack()
+    protected override void StartAction()
     {
-        base.StartAttack();
+        base.StartAction();
         Root.TargetPos += Direction;
-        EndAttack();
+        EndAction();
     }
     public override double GetWeight()
     {

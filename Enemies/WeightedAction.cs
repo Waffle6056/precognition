@@ -2,7 +2,7 @@
 using Godot;
 using System;
 using System.Collections.Generic; 
-public abstract partial class WeightedWeapon : Weapon
+public abstract partial class WeightedAction : Action
 {   
     [Export]
     public float WeightMultiplier = 1;

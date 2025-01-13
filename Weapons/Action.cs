@@ -3,23 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
-public partial class Weapon : Node3D, RewindableObject
+public partial class Action : Node3D, RewindableObject
 {
-	[Export]
-	public float CDBase = 0;
 	[Export]
 	public float ChannelTimeBase = 0;
 	[Export]
 	public String CallKeyBind;
 	[Export]
-	public AnimationPlayer AttackAnimator;
+	public AnimationPlayer ActionAnimator;
 	[Export]
 	public Entity Root;
-	protected double CD = 0;
+	[Export]
+	public CooldownManager Cooldown;
 	protected double ChannelTime = 0;
 	protected bool Channelling = false;
-	protected bool Attacking = false;
-	public bool OnCD() { return CD > 0; }
+	protected bool Acting = false;
+	public bool OnCD() { return Cooldown == null ? false : Cooldown.OnCD(); }
 	
 
 
@@ -45,33 +44,33 @@ public partial class Weapon : Node3D, RewindableObject
 
 		//GD.Print("Channel Finished");
 
-		StartAttack();
+		StartAction();
 	}
 
-	protected virtual void StartAttack()
+	protected virtual void StartAction()
 	{
-		Root.Attacking = true;
-		Attacking = true;
+		Root.Acting = true;
+		Acting = true;
 
 		//GD.Print("BaseAttack Called");
 	}
-	protected virtual void Attack(double delta)
+	protected virtual void Act(double delta)
 	{
 		;
 	}
-	protected virtual void EndAttack()
+	protected virtual void EndAction()
 	{
-		Root.Attacking = false;
-		Attacking = false;
+		Root.Acting = false;
+		Acting = false;
+		Cooldown?.Start();
 	}
 
 
-	public void CallAttack()
+	public void CallAction()
 	{
 		//GD.Print("Attack Called");
-		if (OnCD())
+		if (OnCD() || Root.Channelling || Root.Acting || Channelling || Acting)
 			return;
-		CD = CDBase;
 		StartChannel();
 		
 	}
@@ -85,30 +84,25 @@ public partial class Weapon : Node3D, RewindableObject
 			Channel(delta);
 		
 		
-		if (CallKeyBind != null && CallKeyBind.Length > 0 &&Input.IsActionJustPressed(CallKeyBind))
-			CallAttack();
+		if (CallKeyBind != null && CallKeyBind.Length > 0 && Input.IsActionJustPressed(CallKeyBind))
+			CallAction();
 
-		if (Attacking)
-			Attack(delta);
+		if (Acting)
+			Act(delta);
 
-		if (!Channelling && !Attacking)
-			CD -= delta;
 	}
 
 
-	protected static int DataLength = 8;
+	protected static int DataLength = 5;
 	public virtual List<Object> GetData()
     {
         List<Object> data = new List<Object>
         {
 			Channelling,
-			Attacking,
+			Acting,
 			ChannelTime,
-			ChannelTimeBase,
-            CD,
-			CDBase,
-			AttackAnimator != null && AttackAnimator.IsPlaying() ? AttackAnimator.CurrentAnimation : "",
-            AttackAnimator != null && AttackAnimator.IsPlaying() ? AttackAnimator.CurrentAnimationPosition : 0.0,
+			ActionAnimator != null && ActionAnimator.IsPlaying() ? ActionAnimator.CurrentAnimation : "",
+            ActionAnimator != null && ActionAnimator.IsPlaying() ? ActionAnimator.CurrentAnimationPosition : 0.0,
         };
 		return data;
     }
@@ -116,14 +110,11 @@ public partial class Weapon : Node3D, RewindableObject
     public virtual void SetData(List<Object> data)
     {
 		Channelling     = (bool)   data[0];
-		Attacking       = (bool)   data[1];
+		Acting       = (bool)   data[1];
 		ChannelTime     = (double) data[2];
-		ChannelTimeBase = (float)  data[3];
-        CD              = (double) data[4];
-		CDBase          = (float)  data[5];
-		if (AttackAnimator != null){
-			AttackAnimator.CurrentAnimation = (String)data[6];
-			AttackAnimator.Seek((double)data[7], true);
+		if (ActionAnimator != null){
+			ActionAnimator.CurrentAnimation = (String)data[3];
+			ActionAnimator.Seek((double)data[4], true);
 		}
 	}
 }

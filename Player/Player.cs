@@ -56,7 +56,7 @@ public partial class Player : Entity
 	public override void _Process(double delta)
 	{
 		base._Process(delta);
-		if (!Channelling && !Attacking)
+		if (!Channelling && !Acting)
 			MoveTarget(delta);
 		if (LerpOn)
 			Position = Position.Lerp(TargetPos,Weight);

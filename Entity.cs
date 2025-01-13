@@ -17,7 +17,7 @@ public partial class Entity : Node3D, RewindableObject
     [Export]
 	public float Weight = .5f;
 	public bool Channelling = false;
-	public bool Attacking = false;
+	public bool Acting = false;
     protected static int DataLength = 5;
     public Vector3 TargetPos = new Vector3(0,0,0);
     public override void _Ready()
@@ -40,7 +40,7 @@ public partial class Entity : Node3D, RewindableObject
         {
             CurrentHP,
             MaxHP,
-			Attacking,
+			Acting,
 			Channelling,
             GlobalPosition
         };
@@ -51,7 +51,7 @@ public partial class Entity : Node3D, RewindableObject
     {
 		CurrentHP   = (float)   data[0];
 		MaxHP       = (float)   data[1];
-		Attacking   = (bool)    data[2];
+		Acting   = (bool)    data[2];
 		Channelling = (bool)    data[3];
         GlobalPosition = (Vector3) data[4];
     }

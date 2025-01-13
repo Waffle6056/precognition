@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://o44110d7ha38"]
+[gd_scene load_steps=8 format=3 uid="uid://o44110d7ha38"]
 
 [ext_resource type="Script" path="res://Weapons/Greatsword/Greatsword.cs" id="1_3044c"]
+[ext_resource type="Script" path="res://Weapons/CooldownManager.cs" id="2_04frq"]
 
 [sub_resource type="Animation" id="Animation_7xbki"]
 length = 0.001
@@ -82,12 +83,16 @@ size = Vector3(0.09, 4, 0.25)
 [sub_resource type="BoxShape3D" id="BoxShape3D_bc13e"]
 size = Vector3(0.5, 4.228, 0.5)
 
-[node name="Greatsword" type="Node3D" node_paths=PackedStringArray("AttackAnimator") groups=["Rewindable"]]
+[node name="Greatsword" type="Node3D" node_paths=PackedStringArray("ActionAnimator", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("1_3044c")
-CDBase = 0.5
 ChannelTimeBase = 0.4
 CallKeyBind = "E"
-AttackAnimator = NodePath("AnimationPlayer")
+ActionAnimator = NodePath("AnimationPlayer")
+Cooldown = NodePath("CooldownManager")
+
+[node name="CooldownManager" type="Node3D" parent="."]
+script = ExtResource("2_04frq")
+CDBase = 2.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
