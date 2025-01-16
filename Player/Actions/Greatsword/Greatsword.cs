@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class Greatsword : Action
+public partial class Greatsword : AttackAction
 {
 
 	String AttackName = "Swing";
@@ -11,11 +11,11 @@ public partial class Greatsword : Action
 	{
 		base._Process(delta);
 	}
-    protected override void StartChannel()
-    {
-        base.StartChannel();
+	protected override void StartChannel()
+	{
+		base.StartChannel();
 		ActionAnimator.Play(AttackName);
-    }
+	}
 	public void AnimationEnd(String name)
 	{
 		if (Acting)

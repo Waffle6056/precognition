@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://o44110d7ha38"]
 
-[ext_resource type="Script" path="res://Weapons/Greatsword/Greatsword.cs" id="1_3044c"]
-[ext_resource type="Script" path="res://Weapons/CooldownManager.cs" id="2_04frq"]
+[ext_resource type="Script" path="res://Player/Actions/Greatsword/Greatsword.cs" id="1_3044c"]
+[ext_resource type="Script" path="res://Player/Actions/CooldownManager.cs" id="2_04frq"]
 
 [sub_resource type="Animation" id="Animation_7xbki"]
 length = 0.001
@@ -35,6 +35,18 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(2),
 "update": 0,
 "values": [Vector3(-0.84748, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MeshInstance3D/AnimatableBody3D:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_n2fe3"]
@@ -70,6 +82,18 @@ tracks/2/keys = {
 "update": 0,
 "values": [Vector3(-0.84748, 0, 0), Vector3(0, 0, 0), Vector3(0.785398, 0, 0), Vector3(1.5708, 0, 0)]
 }
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("MeshInstance3D/AnimatableBody3D:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.633333, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ecl6u"]
 _data = {
@@ -85,6 +109,7 @@ size = Vector3(0.5, 4.228, 0.5)
 
 [node name="Greatsword" type="Node3D" node_paths=PackedStringArray("ActionAnimator", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("1_3044c")
+Damage = 50.0
 ChannelTimeBase = 0.4
 CallKeyBind = "E"
 ActionAnimator = NodePath("AnimationPlayer")
@@ -103,12 +128,14 @@ libraries = {
 transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749615, 0, -0.749615, 0.661874, 0, 1.72421, -1.0067)
 mesh = SubResource("BoxMesh_y1ggq")
 
-[node name="AnimatableBody3D" type="AnimatableBody3D" parent="MeshInstance3D"]
+[node name="AnimatableBody3D" type="Area3D" parent="MeshInstance3D"]
 transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
 collision_layer = 2
 collision_mask = 2
+monitoring = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/AnimatableBody3D"]
 shape = SubResource("BoxShape3D_bc13e")
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="AnimationEnd"]
+[connection signal="body_entered" from="MeshInstance3D/AnimatableBody3D" to="." method="DealDamage"]

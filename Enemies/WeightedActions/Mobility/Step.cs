@@ -16,7 +16,7 @@ public partial class Step : WeightedAction
         if (Root.GridSpace.TestMove(new Transform3D(Root.GridSpace.GlobalBasis,Root.TargetPos),Direction))
             return -1;
         
-        return WeightMultiplier * (Root.TargetPos.DistanceTo(Player.Instance.TargetPos) - (Root.TargetPos+Direction).DistanceTo(Player.Instance.TargetPos));
+        return WeightMultiplier * ( PlayerDistance(Root.TargetPos) - PlayerDistance(Root.TargetPos+Direction));
         
     }
 

@@ -2,10 +2,9 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class Bite : WeightedAction
+public partial class Bite : WeightedAttackAction
 {
-    [Export]
-    public float BaseWeight = 50f;
+    
     [Export]
     public Vector3 Direction;
     String AttackName = "Bite";
@@ -21,9 +20,6 @@ public partial class Bite : WeightedAction
 	}
     public override double GetWeight()
     {
-        float DistanceFromEnd = (Root.TargetPos+Direction.Normalized()).DistanceTo(Player.Instance.TargetPos);
-        if (DistanceFromEnd > 1)
-            return -1;
-        return BaseWeight + WeightMultiplier * -DistanceFromEnd;
+        return LinearFalloff(BaseWeight, WeightMultiplier, PlayerDistance(Root.TargetPos + Direction));
     }
 }

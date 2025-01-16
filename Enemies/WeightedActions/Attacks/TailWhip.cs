@@ -2,10 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class TailWhip : WeightedAction
+public partial class TailWhip : WeightedAttackAction
 {
-    [Export]
-    public float BaseWeight = 50f;
 
     String AttackName = "TailWhip";
     protected override void StartAction()
@@ -20,7 +18,6 @@ public partial class TailWhip : WeightedAction
 	}
     public override double GetWeight()
     {
-        float DistanceFromEnd = Root.TargetPos.DistanceTo(Player.Instance.TargetPos);
-        return BaseWeight + WeightMultiplier * -DistanceFromEnd * DistanceFromEnd;
+        return ExponentialFalloff(BaseWeight,WeightMultiplier,PlayerDistance(Root.TargetPos));
     }
 }

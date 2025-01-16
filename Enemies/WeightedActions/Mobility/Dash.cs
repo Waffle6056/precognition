@@ -5,8 +5,6 @@ using System.Collections.Generic;
 public partial class Dash : WeightedAction
 {
     [Export]
-    public float BaseWeight = 50f;
-    [Export]
     public Vector3 Direction;
     [Export]
     public int BaseDistance = 4;
@@ -44,7 +42,7 @@ public partial class Dash : WeightedAction
                 
                 for (int id = 0; id < Collider.GetCollisionCount(); id++){
                     //GD.Print(Collider.GetCollider(id));
-                    if (!(Collider.GetCollider(id) is AnimatableBody3D ))
+                    if (!(Collider.GetCollider(id) is Entity ))
                         return -1;
                 }
             }
@@ -57,7 +55,7 @@ public partial class Dash : WeightedAction
             //GD.Print(Collider.GetCollider());
                 for (int id = 0; id < Collider.GetCollisionCount(); id++){
                     //GD.Print(Collider.GetCollider(id));
-                    if (!(Collider.GetCollider(id) is AnimatableBody3D ))
+                    if (!(Collider.GetCollider(id) is Entity ))
                         return -1;
                 }
             }
@@ -76,10 +74,10 @@ public partial class Dash : WeightedAction
         int d = calcDistance();
         if (d < 0)
             return -1;
-        float DistanceFromStart = Root.TargetPos.DistanceTo(Player.Instance.TargetPos);
-        float DistanceFromEnd = (Root.TargetPos+Direction.Normalized()*d).DistanceTo(Player.Instance.TargetPos);
-        if (DistanceFromEnd-DistanceFromStart > BaseDistance)
+        float DistanceFromStart = PlayerDistance(Root.TargetPos);
+        float DistanceFromEnd = PlayerDistance(Root.TargetPos+Direction.Normalized()*d);
+        if (DistanceFromEnd-DistanceFromStart > BaseDistance-1)
             return -1;
-        return BaseWeight + WeightMultiplier * -DistanceFromEnd;
+        return LinearFalloff(BaseWeight,WeightMultiplier,DistanceFromEnd);
     }
 }

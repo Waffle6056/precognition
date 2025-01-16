@@ -7,7 +7,13 @@ public partial class Burrow : WeightedAction
     [Export]
     public float Radius = 4f;
     String AttackName = "Burrow";
+    static Random randomSeedGen = new Random();
     int randomSeed = 1;
+    public override void _Ready()
+	{
+        randomSeed = randomSeedGen.Next();
+    }
+    //static Random randSeed = new Random()
     protected override void StartChannel()
     {
         base.StartChannel();
@@ -26,6 +32,8 @@ public partial class Burrow : WeightedAction
         do {
             Random rand = new Random(randomSeed);
             Root.TargetPos = Player.Instance.TargetPos + new Vector3(adj(rand.NextDouble()),0,adj(rand.NextDouble()));
+            Root.GridSpace.GlobalPosition = Root.TargetPos;
+            
             count++;
             randomSeed += new Random(randomSeed).Next();
         } while (count < Radius*Radius*90 && Root.GridSpace.TestMove(new Transform3D(Root.GridSpace.GlobalBasis,Root.TargetPos+Vector3.Down),Vector3.Up));
@@ -39,7 +47,7 @@ public partial class Burrow : WeightedAction
 	}
     public override double GetWeight()
     {
-        return WeightMultiplier;
+        return BaseWeight;
     }
 
     public override List<Object> GetData()

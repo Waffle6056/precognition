@@ -63,7 +63,7 @@ public partial class Player : Entity
 		else
 			Position = TargetPos;
 		GridSpace.GlobalPosition = TargetPos;
-		VisualHP.Size = new Vector2(CurrentHP,40);
+		
 	}
 
 

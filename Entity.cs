@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class Entity : Node3D, RewindableObject
+public partial class Entity : AnimatableBody3D, RewindableObject
 {
     [Export]
 	public float MaxHP{get; set;} = 100;
@@ -32,8 +32,12 @@ public partial class Entity : Node3D, RewindableObject
 		else
 			Position = TargetPos;
 		GridSpace.GlobalPosition = TargetPos;
+        VisualHP.Size = new Vector2(CurrentHP,40);
     }
-    
+    public virtual float TakeHit(float Damage){
+        CurrentHP -= Damage;
+        return Damage;
+    }
     public virtual List<Object> GetData()
     {
         List<Object> data = new List<Object>
