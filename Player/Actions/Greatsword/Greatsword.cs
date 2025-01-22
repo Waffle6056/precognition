@@ -16,11 +16,11 @@ public partial class Greatsword : AttackAction
 		base.StartChannel();
 		ActionAnimator.Play(AttackName);
 	}
-	public void AnimationEnd(String name)
-	{
-		if (Acting)
-			ActionAnimator.PlayBackwards(AttackName);
-		EndAction();		
-	}
-	
+    protected override void EndChannel()
+    {
+        base.EndChannel();
+		EndAction();
+    }
+
+
 }

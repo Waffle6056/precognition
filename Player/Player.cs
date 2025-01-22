@@ -29,8 +29,11 @@ public partial class Player : Entity
 			Pressed[(ind+2)%4] = Input.IsActionPressed(op);
 		}
 			
-			
-		if ((Input.IsActionJustPressed(k) || Pressed[ind] && CD[ind] <= 0) && !RewindController.Instance.IsPaused && !GridSpace.TestMove(new Transform3D(GridSpace.GlobalBasis,TargetPos),vec))
+		
+		if (RewindController.Instance.IsPaused && !RewindController.Instance.IsFateing)
+			return Vector3.Zero;
+
+		if ((Input.IsActionJustPressed(k) || Pressed[ind] && CD[ind] <= 0) && !GridSpace.TestMove(new Transform3D(GridSpace.GlobalBasis,TargetPos),vec))
 		{
 			TargetPos += vec;
 			CD[ind] = HoldMovementCD;
@@ -57,34 +60,18 @@ public partial class Player : Entity
 	{
 		base._Process(delta);
 		if (!Channelling && !Acting)
-			MoveTarget(delta);
-		if (LerpOn)
-			Position = Position.Lerp(TargetPos,Weight);
-		else
-			Position = TargetPos;
-		GridSpace.GlobalPosition = TargetPos;
-		
+			MoveTarget(delta);		
 	}
 
 
-	protected static new int DataLength = Entity.DataLength + 1;
-	public override List<Object> GetData()
-    {		
-        List<Object> data = base.GetData();
-		data.AddRange(new List<Object>
-        {
-            TargetPos,
-        });
-		return data;
-    }
 
-    public override void SetData(List<Object> data)
+
+    public override void SetData(List<object> data)
     {
+		if (RewindController.Instance.IsFateing && !RewindController.Instance.IsRewinding)
+			return;
 		base.SetData(data);
-		TargetPos = (Vector3) data[Entity.DataLength+0];
     }
-
-	
 
 
 }

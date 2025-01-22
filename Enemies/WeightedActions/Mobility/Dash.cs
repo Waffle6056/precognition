@@ -38,7 +38,7 @@ public partial class Dash : WeightedAction
         Vector3 End = Root.TargetPos;
         for (int i = 0; i < BaseDistance; i++)
         {
-            if (Root.GridSpace.TestMove(new Transform3D(Root.GridSpace.GlobalBasis, End), Direction, Collider, default, default, 7)){
+            if (Root.GridSpace.TestMove(new Transform3D(Root.GridSpace.GlobalBasis, End), Direction, Collider, default, default, 19)){
                 
                 for (int id = 0; id < Collider.GetCollisionCount(); id++){
                     //GD.Print(Collider.GetCollider(id));
@@ -51,7 +51,7 @@ public partial class Dash : WeightedAction
         int j = 0;
         while (Collider.GetCollisionCount() > 0 && BaseDistance+j < MaxDistance)
         {
-            if (Root.GridSpace.TestMove(new Transform3D(Root.GridSpace.GlobalBasis, End), Direction, Collider, default, default, 7)){
+            if (Root.GridSpace.TestMove(new Transform3D(Root.GridSpace.GlobalBasis, End), Direction, Collider, default, default, 19)){
             //GD.Print(Collider.GetCollider());
                 for (int id = 0; id < Collider.GetCollisionCount(); id++){
                     //GD.Print(Collider.GetCollider(id));
@@ -79,5 +79,23 @@ public partial class Dash : WeightedAction
         if (DistanceFromEnd-DistanceFromStart > BaseDistance-1)
             return -1;
         return LinearFalloff(BaseWeight,WeightMultiplier,DistanceFromEnd);
+    }
+
+
+    public new int DataLength{get{return base.DataLength+1;}}
+    public override List<Object> GetData()
+    {		
+        List<Object> data = base.GetData();
+		data.AddRange(new List<Object>
+        {
+            Time,
+        });
+		return data;
+    }
+
+    public override void SetData(List<Object> data)
+    {
+		base.SetData(data);
+		Time = (float) data[base.DataLength+0];
     }
 }

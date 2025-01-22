@@ -27,6 +27,9 @@ public partial class CooldownManager : Node3D, RewindableObject
 	{
 		CD -= delta;
 	}
+
+
+    public int DataLength{get{return 1;}}
 	public virtual List<Object> GetData()
     {
         List<Object> data = new List<Object>

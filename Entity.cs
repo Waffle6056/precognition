@@ -18,7 +18,6 @@ public partial class Entity : AnimatableBody3D, RewindableObject
 	public float Weight = .5f;
 	public bool Channelling = false;
 	public bool Acting = false;
-    protected static int DataLength = 5;
     public Vector3 TargetPos = new Vector3(0,0,0);
     public override void _Ready()
 	{
@@ -27,17 +26,24 @@ public partial class Entity : AnimatableBody3D, RewindableObject
 	}
     public override void _Process(double delta) {
         base._Process(delta);
+
         if (LerpOn)
 			Position = Position.Lerp(TargetPos,Weight);
 		else
 			Position = TargetPos;
 		GridSpace.GlobalPosition = TargetPos;
         VisualHP.Size = new Vector2(CurrentHP,40);
+
+        if (RewindController.Instance.IsRewinding)
+			return;
     }
     public virtual float TakeHit(float Damage){
         CurrentHP -= Damage;
         return Damage;
     }
+
+
+    public int DataLength{get{return 5;}}
     public virtual List<Object> GetData()
     {
         List<Object> data = new List<Object>
@@ -46,18 +52,18 @@ public partial class Entity : AnimatableBody3D, RewindableObject
             MaxHP,
 			Acting,
 			Channelling,
-            GlobalPosition
+            TargetPos
         };
 		return data;
     }
 
     public virtual void SetData(List<Object> data)
     {
-		CurrentHP   = (float)   data[0];
-		MaxHP       = (float)   data[1];
-		Acting   = (bool)    data[2];
-		Channelling = (bool)    data[3];
-        GlobalPosition = (Vector3) data[4];
+		CurrentHP      = (float)   data[0];
+		MaxHP          = (float)   data[1];
+		Acting         = (bool)    data[2];
+		Channelling    = (bool)    data[3];
+        TargetPos      = (Vector3) data[4];
     }
 
 }

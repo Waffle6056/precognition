@@ -16,8 +16,8 @@ public partial class Action : Node3D, RewindableObject
 	[Export]
 	public CooldownManager Cooldown;
 	protected double ChannelTime = 0;
-	protected bool Channelling = false;
-	protected bool Acting = false;
+	protected bool IsChannelling = false;
+	protected bool IsActing = false;
 	public bool OnCD() { return Cooldown == null ? false : Cooldown.OnCD(); }
 	
 
@@ -26,7 +26,7 @@ public partial class Action : Node3D, RewindableObject
 	{
 		ChannelTime = ChannelTimeBase;
 		Root.Channelling = true;
-		Channelling = true;
+		IsChannelling = true;
 		
 		//GD.Print("Channel Started");
 	}
@@ -40,7 +40,7 @@ public partial class Action : Node3D, RewindableObject
 	protected virtual void EndChannel()
 	{
 		Root.Channelling = false;
-		Channelling = false;
+		IsChannelling = false;
 
 		//GD.Print("Channel Finished");
 
@@ -50,7 +50,7 @@ public partial class Action : Node3D, RewindableObject
 	protected virtual void StartAction()
 	{
 		Root.Acting = true;
-		Acting = true;
+		IsActing = true;
 
 		//GD.Print("BaseAttack Called");
 	}
@@ -61,7 +61,7 @@ public partial class Action : Node3D, RewindableObject
 	protected virtual void EndAction()
 	{
 		Root.Acting = false;
-		Acting = false;
+		IsActing = false;
 		Cooldown?.Start();
 	}
 
@@ -69,7 +69,7 @@ public partial class Action : Node3D, RewindableObject
 	public void CallAction()
 	{
 		//GD.Print("Attack Called");
-		if (OnCD() || Root.Channelling || Root.Acting || Channelling || Acting)
+		if (OnCD() || Root.Channelling || Root.Acting || IsChannelling || IsActing)
 			return;
 		StartChannel();
 		
@@ -80,26 +80,30 @@ public partial class Action : Node3D, RewindableObject
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{	
-		if (Channelling)
-			Channel(delta);
-		
-		
+		base._Process(delta);
+		if (RewindController.Instance.IsPaused)
+			return;
+
+
+
 		if (CallKeyBind != null && CallKeyBind.Length > 0 && Input.IsActionJustPressed(CallKeyBind))
 			CallAction();
 
-		if (Acting)
+		if (IsChannelling)
+			Channel(delta);
+
+		if (IsActing)
 			Act(delta);
 
 	}
 
-
-	protected static int DataLength = 5;
+    public int DataLength{get{return 5;}}
 	public virtual List<Object> GetData()
     {
         List<Object> data = new List<Object>
         {
-			Channelling,
-			Acting,
+			IsChannelling,
+			IsActing,
 			ChannelTime,
 			ActionAnimator != null && ActionAnimator.IsPlaying() ? ActionAnimator.CurrentAnimation : "",
             ActionAnimator != null && ActionAnimator.IsPlaying() ? ActionAnimator.CurrentAnimationPosition : 0.0,
@@ -109,9 +113,9 @@ public partial class Action : Node3D, RewindableObject
 
     public virtual void SetData(List<Object> data)
     {
-		Channelling     = (bool)   data[0];
-		Acting       = (bool)   data[1];
-		ChannelTime     = (double) data[2];
+		IsChannelling = (bool)   data[0];
+		IsActing      = (bool)   data[1];
+		ChannelTime   = (double) data[2];
 		if (ActionAnimator != null){
 			ActionAnimator.CurrentAnimation = (String)data[3];
 			ActionAnimator.Seek((double)data[4], true);

@@ -1,6 +1,5 @@
-[gd_scene load_steps=17 format=3 uid="uid://brwh4xwo6lkki"]
+[gd_scene load_steps=16 format=3 uid="uid://brwh4xwo6lkki"]
 
-[ext_resource type="PackedScene" uid="uid://ugmjdnxajpnj" path="res://Rewind/GUI/RewindGUI.tscn" id="1_gl3eq"]
 [ext_resource type="ArrayMesh" uid="uid://bhnum0rdd6yj2" path="res://Setting/GridSpaceResource.tres" id="1_sdsix"]
 [ext_resource type="PackedScene" uid="uid://cy3lc06bhqvis" path="res://Enemies/Rat/Rat.tscn" id="2_ikv24"]
 [ext_resource type="Script" path="res://Setting/multi_mesh_instance_3d.gd" id="2_uwtei"]
@@ -43,7 +42,8 @@ outer_radius = 0.311
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_fcumi")
 
-[node name="RewindGUI" parent="." instance=ExtResource("1_gl3eq")]
+[node name="Root2" parent="." instance=ExtResource("2_ikv24")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 8)
 
 [node name="Player" parent="." instance=ExtResource("3_2nrxg")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 4)
@@ -196,6 +196,3 @@ shape = SubResource("BoxShape3D_wc0fm")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="GridSpace"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
 mesh = SubResource("TorusMesh_0hnvi")
-
-[node name="Root2" parent="." instance=ExtResource("2_ikv24")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 12, 0, 8)

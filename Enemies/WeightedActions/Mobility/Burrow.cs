@@ -11,6 +11,7 @@ public partial class Burrow : WeightedAction
     int randomSeed = 1;
     public override void _Ready()
 	{
+        base._Ready();
         randomSeed = randomSeedGen.Next();
     }
     //static Random randSeed = new Random()
@@ -50,6 +51,8 @@ public partial class Burrow : WeightedAction
         return BaseWeight;
     }
 
+
+    public new int DataLength{get{return base.DataLength+1;}}
     public override List<Object> GetData()
     {		
         List<Object> data = base.GetData();
@@ -63,6 +66,6 @@ public partial class Burrow : WeightedAction
     public override void SetData(List<Object> data)
     {
 		base.SetData(data);
-		randomSeed = (int) data[WeightedAction.DataLength+0];
+		randomSeed = (int) data[base.DataLength+0];
     }
 }
