@@ -68,8 +68,10 @@ public partial class RewindController : Node
             EndRewind();
         //GD.Print(Rewinding);
     }
-    
-    public double PredictionTimeLimit = 1.25; // seconds
+    public LinkedListNode<StateNode> PredictionStartNode = null;
+    public LinkedList<StateNode> Past = new LinkedList<StateNode>();
+    public LinkedList<StateNode> Fated = new LinkedList<StateNode>();
+    public double PredictionTimeLimit = .9; // seconds
     
     public double PredictionCallTime = 0.0;
 
@@ -78,8 +80,8 @@ public partial class RewindController : Node
     public double RewindTimeLimit = 2.5; // TODO
     public double RewindCooldownBase = 0.0;
     public double RewindCooldownCurrent = 0.0;
-    public double RewindSpeed = 3.0;
-    public double RewindSpeedBase = 3.0;
+    public double RewindSpeed = 9.0;
+    public double RewindSpeedBase = 9.0;
     public double RewindSpeedAcceleration = 9.0;
     public double RewindSpeedAccelerationBase = 9.0;
     public double RewindSpeedAccelerationAcceleration = 9.0;
@@ -90,9 +92,7 @@ public partial class RewindController : Node
     public bool SaveFated = false;
     private bool pauseManual = false;
     public byte pauseOutside = 0;
-    public LinkedListNode<StateNode> PredictionStartNode = null;
-    public LinkedList<StateNode> Past = new LinkedList<StateNode>();
-    public LinkedList<StateNode> Fated = new LinkedList<StateNode>();
+    
     public double Time = 0.0;
     //LinkedList<List<NodeData>> RedoData = new LinkedList<List<NodeData>>();
 
@@ -100,13 +100,13 @@ public partial class RewindController : Node
     public StateNode StoreState()
     {
         Array<Node> rewindableGroup = GetTree().GetNodesInGroup("Rewindable");
-        List<NodeData> frameData = new List<NodeData>();
+        System.Collections.Generic.Dictionary<RewindableObject, NodeData> frameData = new System.Collections.Generic.Dictionary<RewindableObject, NodeData>();
 
         foreach (Node n in rewindableGroup)
         {
             RewindableObject r = n as RewindableObject;
             if (n is RewindableObject)
-                frameData.Add(new NodeData(r));
+                frameData.Add(r,new NodeData(r));
             // if (r is Enemy)
             //     GD.Print(r.GetData().Count);
         }
@@ -125,9 +125,9 @@ public partial class RewindController : Node
         if (frame == null) 
             return; 
 
-        List<NodeData> frameData = frame.StateData;
-        foreach (NodeData n in frameData)
-            n.Node.SetData(n.Data);
+        System.Collections.Generic.Dictionary<RewindableObject, NodeData> frameData = frame.StateData;
+        foreach (System.Collections.Generic.KeyValuePair<RewindableObject, NodeData> n in frameData)
+            n.Key.SetData(n.Value.Data);
         
         //RedoData.AddLast(FrameData);
 
@@ -136,6 +136,8 @@ public partial class RewindController : Node
 
     public void Rewind(double delta)
     {
+        if (Past.Count <= 0)
+            EndRewind();
 
         RewindSpeedAcceleration += RewindSpeedAccelerationAcceleration * delta;
         RewindSpeed += RewindSpeedAcceleration * delta;
@@ -227,9 +229,9 @@ public partial class RewindController : Node
 
 public class StateNode
 {
-    public List<NodeData> StateData;
+    public System.Collections.Generic.Dictionary<RewindableObject, NodeData> StateData;
     public double CallTime;
-    public StateNode(List<NodeData> frameData, double callTime)
+    public StateNode(System.Collections.Generic.Dictionary<RewindableObject, NodeData> frameData, double callTime)
     {
         this.StateData = frameData;
         this.CallTime = callTime;

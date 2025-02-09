@@ -19,7 +19,12 @@ public partial class Dash : WeightedAction
     {
         base.StartAction();
         StartPos = Root.TargetPos;
-        EndPos = StartPos+Direction.Normalized()*calcDistance();
+        int distance = calcDistance();
+        if (distance < 0){
+            EndAction();
+            return;
+        }
+        EndPos = StartPos+Direction*distance;
         Time = 0;
     }
     protected override void Act(double delta)
@@ -46,7 +51,7 @@ public partial class Dash : WeightedAction
                         return -1;
                 }
             }
-            End += Direction.Normalized();
+            End += Direction;
         }
         int j = 0;
         while (Collider.GetCollisionCount() > 0 && BaseDistance+j < MaxDistance)
@@ -59,7 +64,7 @@ public partial class Dash : WeightedAction
                         return -1;
                 }
             }
-            End += Direction.Normalized();
+            End += Direction;
             j++;
         }
         if (Collider.GetCollisionCount() > 0)
@@ -75,10 +80,10 @@ public partial class Dash : WeightedAction
         if (d < 0)
             return -1;
         float DistanceFromStart = PlayerDistance(Root.TargetPos);
-        float DistanceFromEnd = PlayerDistance(Root.TargetPos+Direction.Normalized()*d);
+        float DistanceFromEnd = PlayerDistance(Root.TargetPos+Direction*d);
         if (DistanceFromEnd-DistanceFromStart > BaseDistance-1)
             return -1;
-        return LinearFalloff(BaseWeight,WeightMultiplier,DistanceFromEnd);
+        return LinearFalloff(BaseWeight,WeightMultiplier,Math.Min(DistanceFromEnd,DistanceFromStart));
     }
 
 

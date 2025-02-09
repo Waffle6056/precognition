@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class Entity : AnimatableBody3D, RewindableObject
+public partial class Entity : AnimatableBody3D, RewindableObject, ActionState
 {
     [Export]
 	public float MaxHP{get; set;} = 100;
@@ -15,9 +15,10 @@ public partial class Entity : AnimatableBody3D, RewindableObject
     [Export]
 	public bool LerpOn = true;
     [Export]
-	public float Weight = .5f;
-	public bool Channelling = false;
-	public bool Acting = false;
+	public float Weight = .5f;public bool IsChannelling{get; set;}
+	public bool IsActing{get; set;}
+	public bool IsLagging{get; set;}
+	public bool Active {get{ return IsChannelling || IsActing || IsLagging;} }
     public Vector3 TargetPos = new Vector3(0,0,0);
     public override void _Ready()
 	{
@@ -42,16 +43,17 @@ public partial class Entity : AnimatableBody3D, RewindableObject
         return Damage;
     }
 
-
-    public int DataLength{get{return 5;}}
+    
+    public int DataLength{get{return 6;}}
     public virtual List<Object> GetData()
     {
         List<Object> data = new List<Object>
         {
             CurrentHP,
             MaxHP,
-			Acting,
-			Channelling,
+			IsActing,
+			IsChannelling,
+            IsLagging,
             TargetPos
         };
 		return data;
@@ -61,9 +63,10 @@ public partial class Entity : AnimatableBody3D, RewindableObject
     {
 		CurrentHP      = (float)   data[0];
 		MaxHP          = (float)   data[1];
-		Acting         = (bool)    data[2];
-		Channelling    = (bool)    data[3];
-        TargetPos      = (Vector3) data[4];
+		IsActing         = (bool)    data[2];
+		IsChannelling    = (bool)    data[3];
+        IsLagging    = (bool)    data[4];
+        TargetPos      = (Vector3) data[5];
     }
 
 }

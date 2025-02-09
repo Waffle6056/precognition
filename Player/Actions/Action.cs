@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
-public partial class Action : Node3D, RewindableObject
+public partial class Action : Node3D, RewindableObject, ActionState
 {
 	[Export]
 	public float ChannelTimeBase = 0;
+	[Export]
+	public float EndLagTimeBase = 0;
 	[Export]
 	public String CallKeyBind;
 	[Export]
@@ -16,16 +18,17 @@ public partial class Action : Node3D, RewindableObject
 	[Export]
 	public CooldownManager Cooldown;
 	protected double ChannelTime = 0;
-	protected bool IsChannelling = false;
-	protected bool IsActing = false;
+	protected double EndLagTime = 0;
+	public bool IsChannelling{get; set;}
+	public bool IsActing{get; set;}
+	public bool IsLagging{get; set;}
+	public bool Active {get{ return IsChannelling || IsActing || IsLagging;} }
 	public bool OnCD() { return Cooldown == null ? false : Cooldown.OnCD(); }
-	
-
 
 	protected virtual void StartChannel()
 	{
 		ChannelTime = ChannelTimeBase;
-		Root.Channelling = true;
+		Root.IsChannelling = true;
 		IsChannelling = true;
 		
 		//GD.Print("Channel Started");
@@ -39,7 +42,7 @@ public partial class Action : Node3D, RewindableObject
 
 	protected virtual void EndChannel()
 	{
-		Root.Channelling = false;
+		Root.IsChannelling = false;
 		IsChannelling = false;
 
 		//GD.Print("Channel Finished");
@@ -49,7 +52,7 @@ public partial class Action : Node3D, RewindableObject
 
 	protected virtual void StartAction()
 	{
-		Root.Acting = true;
+		Root.IsActing = true;
 		IsActing = true;
 
 		//GD.Print("BaseAttack Called");
@@ -60,8 +63,28 @@ public partial class Action : Node3D, RewindableObject
 	}
 	protected virtual void EndAction()
 	{
-		Root.Acting = false;
+		Root.IsActing = false;
 		IsActing = false;
+		StartEndLag();
+	}
+	protected virtual void StartEndLag()
+	{
+		EndLagTime = EndLagTimeBase;
+		Root.IsLagging = true;
+		IsLagging = true;
+
+		//GD.Print("BaseAttack Called");
+	}
+	protected virtual void Lag(double delta)
+	{
+		EndLagTime -= delta;
+		if (EndLagTime <= 0)
+			EndEndLag();
+	}
+	protected virtual void EndEndLag()
+	{
+		Root.IsLagging = false;
+		IsLagging = false;
 		Cooldown?.Start();
 	}
 
@@ -69,7 +92,7 @@ public partial class Action : Node3D, RewindableObject
 	public void CallAction()
 	{
 		//GD.Print("Attack Called");
-		if (OnCD() || Root.Channelling || Root.Acting || IsChannelling || IsActing)
+		if (OnCD() || Root.Active || Active)
 			return;
 		StartChannel();
 		
@@ -95,18 +118,23 @@ public partial class Action : Node3D, RewindableObject
 		if (IsActing)
 			Act(delta);
 
+		if (IsLagging)
+			Lag(delta);
+
 	}
 
-    public int DataLength{get{return 5;}}
+    public int DataLength{get{return 7;}}
 	public virtual List<Object> GetData()
     {
         List<Object> data = new List<Object>
         {
 			IsChannelling,
 			IsActing,
+			IsLagging,
 			ChannelTime,
 			ActionAnimator != null && ActionAnimator.IsPlaying() ? ActionAnimator.CurrentAnimation : "",
             ActionAnimator != null && ActionAnimator.IsPlaying() ? ActionAnimator.CurrentAnimationPosition : 0.0,
+			EndLagTime,
         };
 		return data;
     }
@@ -115,10 +143,21 @@ public partial class Action : Node3D, RewindableObject
     {
 		IsChannelling = (bool)   data[0];
 		IsActing      = (bool)   data[1];
-		ChannelTime   = (double) data[2];
+		IsLagging     = (bool)   data[2];
+		ChannelTime   = (double) data[3];
 		if (ActionAnimator != null){
-			ActionAnimator.CurrentAnimation = (String)data[3];
-			ActionAnimator.Seek((double)data[4], true);
+			ActionAnimator.CurrentAnimation = (String)data[4];
+			ActionAnimator.Seek((double)data[5], true);
 		}
+		EndLagTime   = (double) data[6];
 	}
+}
+
+interface ActionState
+{
+	public bool IsChannelling{get; set;}
+	public bool IsActing{get; set;}
+	public bool IsLagging{get; set;}
+	
+	public bool Active {get{ return IsChannelling || IsActing || IsLagging;} }
 }

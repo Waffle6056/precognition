@@ -227,10 +227,11 @@ shape = SubResource("BoxShape3D_8hug3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
 mesh = SubResource("TorusMesh_jfyjj")
 
-[node name="Burrow" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="Burrow" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_skhlo")
 Radius = 2.0
 BaseWeight = 90.0
+FollowUpOptions = []
 ChannelTimeBase = 0.5
 ActionAnimator = NodePath("AnimationPlayer")
 Root = NodePath("..")
@@ -245,10 +246,11 @@ libraries = {
 "": SubResource("AnimationLibrary_4s534")
 }
 
-[node name="TailWhip" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="TailWhip" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_a5kbv")
 Damage = 20.0
 WeightMultiplier = 25.0
+FollowUpOptions = []
 ActionAnimator = NodePath("AnimationPlayer")
 Root = NodePath("..")
 Cooldown = NodePath("CooldownManager")

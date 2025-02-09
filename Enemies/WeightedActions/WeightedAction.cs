@@ -8,11 +8,12 @@ public abstract partial class WeightedAction : Action
     public float BaseWeight = 50f;
     [Export]
     public float WeightMultiplier = 1;
+    [Export]
+    public WeightedAction[] FollowUpOptions;
     public abstract double GetWeight();
     public override void _Ready()
 	{
-        if (Root is Enemy)
-            (Root as Enemy).Options.Add(this);
+
 	}
     public static double LinearFalloff(float BaseWeight, float WeightMultiplier, float x){
         if (x < 0)
@@ -27,4 +28,5 @@ public abstract partial class WeightedAction : Action
     public static float PlayerDistance(Vector3 Pos){
         return Pos.DistanceTo(Player.Instance.Position);
     }   
+
 }

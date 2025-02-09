@@ -11,16 +11,11 @@ public partial class Greatsword : AttackAction
 	{
 		base._Process(delta);
 	}
-	protected override void StartChannel()
+	protected override void StartAction()
 	{
-		base.StartChannel();
+		base.StartAction();
 		ActionAnimator.Play(AttackName);
 	}
-    protected override void EndChannel()
-    {
-        base.EndChannel();
-		EndAction();
-    }
 
 
 }

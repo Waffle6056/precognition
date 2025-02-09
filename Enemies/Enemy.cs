@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public partial class Enemy : Entity
 { 
-    public List<WeightedAction> Options = new List<WeightedAction>();
+    [Export]
     public WeightedAction CurrentAction;
    
     public override void _Process(double delta) {
@@ -12,10 +12,9 @@ public partial class Enemy : Entity
 
         //GD.Print(TargetPos);
         if (RewindController.Instance.IsRewinding){
-            
         	return;
         }
-        if (!Channelling && !Acting)
+        if (!Active)
             PickOption();
         //GD.Print(CurrentAction != null);
         
@@ -25,7 +24,12 @@ public partial class Enemy : Entity
     {   
         double largestWeight = 0;
         WeightedAction next = null;
-        foreach (WeightedAction action in Options)
+        GD.Print(CurrentAction.GetType()+" : ");
+        if (CurrentAction.FollowUpOptions == null){
+            GD.Print(CurrentAction.GetType()+" = null ");
+            return;
+        }
+        foreach (WeightedAction action in CurrentAction.FollowUpOptions)
         {
             double actionWeight = action.GetWeight();
             if (!action.OnCD() && actionWeight > largestWeight)
@@ -35,20 +39,20 @@ public partial class Enemy : Entity
             }
             GD.Print(action.GetType()+" "+actionWeight);
         }
-        CurrentAction = next;
-        if (CurrentAction != null)
-            CurrentAction.CallAction();
+
+        
+        if (next != null)
+            (CurrentAction = next).CallAction();
     }
 
 
-    public new int DataLength{get{return base.DataLength+2;}}
+    public new int DataLength{get{return base.DataLength+1;}}
     public override List<Object> GetData()
     {
         List<Object> data = base.GetData();
 		data.AddRange(new List<Object>
         {
 			CurrentAction,
-            Options,
         });
 		return data;
     }
@@ -56,6 +60,5 @@ public partial class Enemy : Entity
     {
         base.SetData(data);
         CurrentAction = (WeightedAction) data[base.DataLength+0];
-        Options = (List<WeightedAction>) data[base.DataLength+1];
     }
 }

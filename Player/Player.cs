@@ -54,13 +54,23 @@ public partial class Player : Entity
 		checkMovement("Right","Left", 3,Vector3.Right);
 		
 	}
+	private void RewindBlink()
+	{
+		Vector3 blinkPos = (Vector3) RewindController.Instance.Past.First.Value.StateData[this].Data[5];
+		GlobalPosition = blinkPos;
+		TargetPos = blinkPos;
+	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
+		if (!Active){
+			if (Input.IsActionJustPressed("RewindBlink"))
+				RewindBlink();
+			else
+				MoveTarget(delta);		
+		}
 		base._Process(delta);
-		if (!Channelling && !Acting)
-			MoveTarget(delta);		
 	}
 
 

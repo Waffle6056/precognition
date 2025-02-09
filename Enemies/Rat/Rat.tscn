@@ -1,6 +1,7 @@
-[gd_scene load_steps=26 format=3 uid="uid://cy3lc06bhqvis"]
+[gd_scene load_steps=27 format=3 uid="uid://cy3lc06bhqvis"]
 
 [ext_resource type="Script" path="res://Enemies/Rat/Rat.cs" id="1_3eg2i"]
+[ext_resource type="Script" path="res://Enemies/Rat/Neutral.cs" id="2_fprsu"]
 [ext_resource type="Script" path="res://Enemies/WeightedActions/Attacks/AttackDash.cs" id="2_hfwma"]
 [ext_resource type="Script" path="res://Enemies/WeightedActions/Mobility/Step.cs" id="3_3nrla"]
 [ext_resource type="Script" path="res://Player/Actions/CooldownManager.cs" id="3_cwkgo"]
@@ -268,10 +269,11 @@ _data = {
 "RESET": SubResource("Animation_jnbld")
 }
 
-[node name="Root" type="AnimatableBody3D" node_paths=PackedStringArray("VisualHP", "GridSpace") groups=["Rewindable"]]
+[node name="Root" type="AnimatableBody3D" node_paths=PackedStringArray("CurrentAction", "VisualHP", "GridSpace") groups=["Rewindable"]]
 collision_layer = 2
 collision_mask = 2
 script = ExtResource("1_3eg2i")
+CurrentAction = NodePath("Neutral")
 VisualHP = NodePath("ColorRect")
 GridSpace = NodePath("GridSpace")
 
@@ -298,13 +300,28 @@ shape = SubResource("BoxShape3D_8hug3")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
 mesh = SubResource("TorusMesh_jfyjj")
 
-[node name="DashUp" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="Neutral" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "Root")]
+script = ExtResource("2_fprsu")
+BaseWeight = 1.0
+FollowUpOptions = [NodePath("../DashUp"), NodePath("../DashLeft"), NodePath("../DashDown"), NodePath("../DashRight"), NodePath("../StepUp"), NodePath("../StepLeft"), NodePath("../StepDown"), NodePath("../StepRight"), NodePath("../BiteCooldownManager/BiteUp"), NodePath("../BiteCooldownManager/BiteLeft"), NodePath("../BiteCooldownManager/BiteDown"), NodePath("../BiteCooldownManager/BiteRight"), NodePath("../TailWhip"), NodePath("../Burrow")]
+Root = NodePath("..")
+
+[node name="EndSequence" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "Root")]
+script = ExtResource("2_fprsu")
+BaseWeight = 1.0
+FollowUpOptions = [NodePath("../Neutral")]
+ChannelTimeBase = 0.3
+Root = NodePath("..")
+
+[node name="DashUp" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "FollowUpOptions", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("2_hfwma")
 Damage = 10.0
 Hitbox = NodePath("Hitbox")
 Direction = Vector3(0, 0, -1)
-WeightMultiplier = 10.0
+WeightMultiplier = 15.0
+FollowUpOptions = [NodePath("../EndSequence"), NodePath("../BiteCooldownManager/BiteUp"), NodePath("../BiteCooldownManager/BiteLeft"), NodePath("../BiteCooldownManager/BiteDown"), NodePath("../BiteCooldownManager/BiteRight"), NodePath("../DashUpRight"), NodePath("../DashUpLeft"), NodePath("../DashDownRight"), NodePath("../DashDownLeft")]
 ChannelTimeBase = 0.3
+EndLagTimeBase = 0.15
 Root = NodePath("..")
 Cooldown = NodePath("CooldownManager")
 
@@ -320,13 +337,15 @@ monitoring = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DashUp/Hitbox"]
 shape = SubResource("BoxShape3D_vxg81")
 
-[node name="DashLeft" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="DashLeft" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "FollowUpOptions", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("2_hfwma")
 Damage = 10.0
 Hitbox = NodePath("Hitbox")
 Direction = Vector3(-1, 0, 0)
-WeightMultiplier = 10.0
+WeightMultiplier = 15.0
+FollowUpOptions = [NodePath("../EndSequence"), NodePath("../BiteCooldownManager/BiteUp"), NodePath("../BiteCooldownManager/BiteLeft"), NodePath("../BiteCooldownManager/BiteDown"), NodePath("../BiteCooldownManager/BiteRight"), NodePath("../DashUpRight"), NodePath("../DashUpLeft"), NodePath("../DashDownRight"), NodePath("../DashDownLeft")]
 ChannelTimeBase = 0.3
+EndLagTimeBase = 0.15
 Root = NodePath("..")
 Cooldown = NodePath("CooldownManager")
 
@@ -342,13 +361,15 @@ monitoring = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DashLeft/Hitbox"]
 shape = SubResource("BoxShape3D_vxg81")
 
-[node name="DashDown" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="DashDown" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "FollowUpOptions", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("2_hfwma")
 Damage = 10.0
 Hitbox = NodePath("Hitbox")
 Direction = Vector3(0, 0, 1)
-WeightMultiplier = 10.0
+WeightMultiplier = 15.0
+FollowUpOptions = [NodePath("../EndSequence"), NodePath("../BiteCooldownManager/BiteUp"), NodePath("../BiteCooldownManager/BiteLeft"), NodePath("../BiteCooldownManager/BiteDown"), NodePath("../BiteCooldownManager/BiteRight"), NodePath("../DashUpRight"), NodePath("../DashUpLeft"), NodePath("../DashDownRight"), NodePath("../DashDownLeft")]
 ChannelTimeBase = 0.3
+EndLagTimeBase = 0.15
 Root = NodePath("..")
 Cooldown = NodePath("CooldownManager")
 
@@ -364,13 +385,15 @@ monitoring = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DashDown/Hitbox"]
 shape = SubResource("BoxShape3D_vxg81")
 
-[node name="DashRight" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="DashRight" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "FollowUpOptions", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("2_hfwma")
 Damage = 10.0
 Hitbox = NodePath("Hitbox")
 Direction = Vector3(1, 0, 0)
-WeightMultiplier = 10.0
+WeightMultiplier = 15.0
+FollowUpOptions = [NodePath("../EndSequence"), NodePath("../BiteCooldownManager/BiteUp"), NodePath("../BiteCooldownManager/BiteLeft"), NodePath("../BiteCooldownManager/BiteDown"), NodePath("../BiteCooldownManager/BiteRight"), NodePath("../DashUpRight"), NodePath("../DashUpLeft"), NodePath("../DashDownRight"), NodePath("../DashDownLeft")]
 ChannelTimeBase = 0.3
+EndLagTimeBase = 0.15
 Root = NodePath("..")
 Cooldown = NodePath("CooldownManager")
 
@@ -386,47 +409,152 @@ monitoring = false
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DashRight/Hitbox"]
 shape = SubResource("BoxShape3D_vxg81")
 
-[node name="StepUp" type="Node3D" parent="." node_paths=PackedStringArray("Root") groups=["Rewindable"]]
+[node name="DashUpRight" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "FollowUpOptions", "Root", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("2_hfwma")
+Damage = 10.0
+Hitbox = NodePath("Hitbox")
+Direction = Vector3(1, 0, -1)
+BaseDistance = 2
+MaxDistance = 4
+WeightMultiplier = 15.0
+FollowUpOptions = [NodePath("../EndSequence"), NodePath("../TailWhip"), NodePath("../StepUp"), NodePath("../StepLeft"), NodePath("../StepDown"), NodePath("../StepRight")]
+ChannelTimeBase = 0.3
+EndLagTimeBase = 0.15
+Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
+
+[node name="CooldownManager" type="Node3D" parent="DashUpRight" groups=["Rewindable"]]
+script = ExtResource("3_cwkgo")
+
+[node name="Hitbox" type="Area3D" parent="DashUpRight"]
+collision_layer = 2
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DashUpRight/Hitbox"]
+shape = SubResource("BoxShape3D_vxg81")
+
+[node name="DashUpLeft" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "FollowUpOptions", "Root", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("2_hfwma")
+Damage = 10.0
+Hitbox = NodePath("Hitbox")
+Direction = Vector3(-1, 0, -1)
+BaseDistance = 2
+MaxDistance = 4
+WeightMultiplier = 15.0
+FollowUpOptions = [NodePath("../EndSequence"), NodePath("../TailWhip"), NodePath("../StepUp"), NodePath("../StepLeft"), NodePath("../StepDown"), NodePath("../StepRight")]
+ChannelTimeBase = 0.3
+EndLagTimeBase = 0.15
+Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
+
+[node name="CooldownManager" type="Node3D" parent="DashUpLeft" groups=["Rewindable"]]
+script = ExtResource("3_cwkgo")
+
+[node name="Hitbox" type="Area3D" parent="DashUpLeft"]
+collision_layer = 2
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DashUpLeft/Hitbox"]
+shape = SubResource("BoxShape3D_vxg81")
+
+[node name="DashDownRight" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "FollowUpOptions", "Root", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("2_hfwma")
+Damage = 10.0
+Hitbox = NodePath("Hitbox")
+Direction = Vector3(1, 0, 1)
+BaseDistance = 2
+MaxDistance = 4
+WeightMultiplier = 15.0
+FollowUpOptions = [NodePath("../EndSequence"), NodePath("../TailWhip"), NodePath("../StepUp"), NodePath("../StepLeft"), NodePath("../StepDown"), NodePath("../StepRight")]
+ChannelTimeBase = 0.3
+EndLagTimeBase = 0.15
+Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
+
+[node name="CooldownManager" type="Node3D" parent="DashDownRight" groups=["Rewindable"]]
+script = ExtResource("3_cwkgo")
+
+[node name="Hitbox" type="Area3D" parent="DashDownRight"]
+collision_layer = 2
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DashDownRight/Hitbox"]
+shape = SubResource("BoxShape3D_vxg81")
+
+[node name="DashDownLeft" type="Node3D" parent="." node_paths=PackedStringArray("Hitbox", "FollowUpOptions", "Root", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("2_hfwma")
+Damage = 10.0
+Hitbox = NodePath("Hitbox")
+Direction = Vector3(-1, 0, 1)
+BaseDistance = 2
+MaxDistance = 4
+WeightMultiplier = 15.0
+FollowUpOptions = [NodePath("../EndSequence"), NodePath("../TailWhip"), NodePath("../StepUp"), NodePath("../StepLeft"), NodePath("../StepDown"), NodePath("../StepRight")]
+ChannelTimeBase = 0.3
+EndLagTimeBase = 0.15
+Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
+
+[node name="CooldownManager" type="Node3D" parent="DashDownLeft" groups=["Rewindable"]]
+script = ExtResource("3_cwkgo")
+
+[node name="Hitbox" type="Area3D" parent="DashDownLeft"]
+collision_layer = 2
+collision_mask = 2
+monitoring = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DashDownLeft/Hitbox"]
+shape = SubResource("BoxShape3D_vxg81")
+
+[node name="StepUp" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "Root") groups=["Rewindable"]]
 script = ExtResource("3_3nrla")
 Direction = Vector3(0, 0, -1)
 BaseWeight = 0.0
 WeightMultiplier = 25.0
+FollowUpOptions = [NodePath("../Neutral")]
 ChannelTimeBase = 0.25
 Root = NodePath("..")
 
-[node name="StepLeft" type="Node3D" parent="." node_paths=PackedStringArray("Root") groups=["Rewindable"]]
+[node name="StepLeft" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "Root") groups=["Rewindable"]]
 script = ExtResource("3_3nrla")
 Direction = Vector3(-1, 0, 0)
 BaseWeight = 0.0
 WeightMultiplier = 25.0
+FollowUpOptions = [NodePath("../Neutral")]
 ChannelTimeBase = 0.25
 Root = NodePath("..")
 
-[node name="StepDown" type="Node3D" parent="." node_paths=PackedStringArray("Root") groups=["Rewindable"]]
+[node name="StepDown" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "Root") groups=["Rewindable"]]
 script = ExtResource("3_3nrla")
 Direction = Vector3(0, 0, 1)
 BaseWeight = 0.0
 WeightMultiplier = 25.0
+FollowUpOptions = [NodePath("../Neutral")]
 ChannelTimeBase = 0.25
 Root = NodePath("..")
 
-[node name="StepRight" type="Node3D" parent="." node_paths=PackedStringArray("Root") groups=["Rewindable"]]
+[node name="StepRight" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "Root") groups=["Rewindable"]]
 script = ExtResource("3_3nrla")
 Direction = Vector3(1, 0, 0)
 BaseWeight = 0.0
 WeightMultiplier = 25.0
+FollowUpOptions = [NodePath("../Neutral")]
 ChannelTimeBase = 0.25
 Root = NodePath("..")
 
 [node name="BiteCooldownManager" type="Node3D" parent="." groups=["Rewindable"]]
 script = ExtResource("3_cwkgo")
-CDBase = 0.25
+CDBase = 1.0
 
-[node name="BiteUp" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="BiteUp" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("FollowUpOptions", "ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_vp3fe")
 Direction = Vector3(0, 0, -1)
 Damage = 30.0
 WeightMultiplier = 50.0
+FollowUpOptions = [NodePath("../../EndSequence"), NodePath("../../DashUp"), NodePath("../../DashLeft"), NodePath("../../DashDown"), NodePath("../../DashRight"), NodePath("../../TailWhip")]
 ActionAnimator = NodePath("AnimationPlayer")
 Root = NodePath("../..")
 Cooldown = NodePath("..")
@@ -449,11 +577,12 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BiteCooldownManager/BiteUp/AnimatableBody3D"]
 shape = SubResource("BoxShape3D_iega4")
 
-[node name="BiteLeft" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="BiteLeft" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("FollowUpOptions", "ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_vp3fe")
 Direction = Vector3(-1, 0, 0)
 Damage = 30.0
 WeightMultiplier = 50.0
+FollowUpOptions = [NodePath("../../EndSequence"), NodePath("../../DashUp"), NodePath("../../DashLeft"), NodePath("../../DashDown"), NodePath("../../DashRight"), NodePath("../../TailWhip")]
 ActionAnimator = NodePath("AnimationPlayer")
 Root = NodePath("../..")
 Cooldown = NodePath("..")
@@ -476,11 +605,12 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BiteCooldownManager/BiteLeft/AnimatableBody3D"]
 shape = SubResource("BoxShape3D_iega4")
 
-[node name="BiteDown" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="BiteDown" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("FollowUpOptions", "ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_vp3fe")
 Direction = Vector3(0, 0, 1)
 Damage = 30.0
 WeightMultiplier = 50.0
+FollowUpOptions = [NodePath("../../EndSequence"), NodePath("../../DashUp"), NodePath("../../DashLeft"), NodePath("../../DashDown"), NodePath("../../DashRight"), NodePath("../../TailWhip")]
 ActionAnimator = NodePath("AnimationPlayer")
 Root = NodePath("../..")
 Cooldown = NodePath("..")
@@ -503,11 +633,12 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BiteCooldownManager/BiteDown/AnimatableBody3D"]
 shape = SubResource("BoxShape3D_iega4")
 
-[node name="BiteRight" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="BiteRight" type="Node3D" parent="BiteCooldownManager" node_paths=PackedStringArray("FollowUpOptions", "ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_vp3fe")
 Direction = Vector3(1, 0, 0)
 Damage = 30.0
 WeightMultiplier = 50.0
+FollowUpOptions = [NodePath("../../EndSequence"), NodePath("../../DashUp"), NodePath("../../DashLeft"), NodePath("../../DashDown"), NodePath("../../DashRight"), NodePath("../../TailWhip")]
 ActionAnimator = NodePath("AnimationPlayer")
 Root = NodePath("../..")
 Cooldown = NodePath("..")
@@ -530,10 +661,12 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BiteCooldownManager/BiteRight/AnimatableBody3D"]
 shape = SubResource("BoxShape3D_iega4")
 
-[node name="TailWhip" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="TailWhip" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("5_fyf2g")
 Damage = 20.0
 WeightMultiplier = 25.0
+FollowUpOptions = [NodePath("../EndSequence"), NodePath("../StepUp"), NodePath("../StepLeft"), NodePath("../StepDown"), NodePath("../StepRight"), NodePath("../BiteCooldownManager/BiteUp"), NodePath("../BiteCooldownManager/BiteLeft"), NodePath("../BiteCooldownManager/BiteDown"), NodePath("../BiteCooldownManager/BiteRight")]
+EndLagTimeBase = 0.15
 ActionAnimator = NodePath("AnimationPlayer")
 Root = NodePath("..")
 Cooldown = NodePath("CooldownManager")
@@ -562,11 +695,13 @@ skeleton = NodePath("../../..")
 transform = Transform3D(1, 0, -7.00311e-11, 0, 1, 0, 7.00311e-11, 0, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_rpb0w")
 
-[node name="Burrow" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+[node name="Burrow" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("7_dd2g5")
 BaseWeight = 90.0
 WeightMultiplier = 0.0
+FollowUpOptions = [NodePath("../Neutral")]
 ChannelTimeBase = 0.5
+EndLagTimeBase = 0.3
 ActionAnimator = NodePath("AnimationPlayer")
 Root = NodePath("..")
 Cooldown = NodePath("CooldownManager")
@@ -587,6 +722,10 @@ visible = false
 [connection signal="body_entered" from="DashLeft/Hitbox" to="DashLeft" method="DealDamage"]
 [connection signal="body_entered" from="DashDown/Hitbox" to="DashDown" method="DealDamage"]
 [connection signal="body_entered" from="DashRight/Hitbox" to="DashRight" method="DealDamage"]
+[connection signal="body_entered" from="DashUpRight/Hitbox" to="DashUpRight" method="DealDamage"]
+[connection signal="body_entered" from="DashUpLeft/Hitbox" to="DashUpLeft" method="DealDamage"]
+[connection signal="body_entered" from="DashDownRight/Hitbox" to="DashDownRight" method="DealDamage"]
+[connection signal="body_entered" from="DashDownLeft/Hitbox" to="DashDownLeft" method="DealDamage"]
 [connection signal="animation_finished" from="BiteCooldownManager/BiteUp/AnimationPlayer" to="BiteCooldownManager/BiteUp" method="AnimationEnd"]
 [connection signal="body_entered" from="BiteCooldownManager/BiteUp/AnimatableBody3D" to="BiteCooldownManager/BiteUp" method="DealDamage"]
 [connection signal="animation_finished" from="BiteCooldownManager/BiteLeft/AnimationPlayer" to="BiteCooldownManager/BiteLeft" method="AnimationEnd"]
