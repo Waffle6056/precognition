@@ -7,14 +7,18 @@ public partial class AttackDash : Dash, Attack
     public float Damage{get;set;}
     [Export]
     public Area3D Hitbox;
-    protected override void StartAction()
+    protected override bool StartAction()
     {
-        base.StartAction();
+        if (!base.StartAction())
+            return false;
         Hitbox.Monitoring = true;
+        return true;
     }
-    protected override void EndAction()
+    protected override bool EndAction()
     {
-        base.EndAction();
+        if (!base.EndAction())
+            return false;
         Hitbox.Monitoring = false;
+        return true;
     }
 }

@@ -12,31 +12,35 @@ public partial class Dash : WeightedAction
     public int MaxDistance = 8;
     [Export]
     public float TotalTime = .09f;
-    float Time;
+    double CallTime = 0.0;
     Vector3 StartPos;
     Vector3 EndPos;
-    protected override void StartAction()
+    protected override bool StartAction()
     {
-        base.StartAction();
+
+        if (!base.StartAction())
+		 	return false;
         StartPos = Root.TargetPos;
         int distance = calcDistance();
         if (distance < 0){
             EndAction();
-            return;
+            return false;
         }
         EndPos = StartPos+Direction*distance;
-        Time = 0;
+        CallTime = ActionTime;
+        return true;
     }
-    protected override void Act(double delta)
+    protected override bool Act(double delta)
     {
-        base.Act(delta);
-        Time += (float) delta;
-        if (Time > TotalTime)
-        {
+        if (!base.Act(delta))
+            return false;
+        if (ActionTime-CallTime > TotalTime){
+            CallTime = ActionTime-TotalTime;
             EndAction();
-            Time = TotalTime;
         }
-        Root.TargetPos = StartPos.Lerp(EndPos, Time/TotalTime);
+        
+        Root.TargetPos = StartPos.Lerp(EndPos, (float)((ActionTime-CallTime)/TotalTime));
+        return true;
     }
     int calcDistance(){
         KinematicCollision3D Collider = new KinematicCollision3D();
@@ -47,7 +51,7 @@ public partial class Dash : WeightedAction
                 
                 for (int id = 0; id < Collider.GetCollisionCount(); id++){
                     //GD.Print(Collider.GetCollider(id));
-                    if (!(Collider.GetCollider(id) is Entity ))
+                    if (!(Collider.GetCollider(id) is AnimatableBody3D ))
                         return -1;
                 }
             }
@@ -60,7 +64,7 @@ public partial class Dash : WeightedAction
             //GD.Print(Collider.GetCollider());
                 for (int id = 0; id < Collider.GetCollisionCount(); id++){
                     //GD.Print(Collider.GetCollider(id));
-                    if (!(Collider.GetCollider(id) is Entity ))
+                    if (!(Collider.GetCollider(id) is AnimatableBody3D ))
                         return -1;
                 }
             }
@@ -84,23 +88,5 @@ public partial class Dash : WeightedAction
         if (DistanceFromEnd-DistanceFromStart > BaseDistance-1)
             return -1;
         return LinearFalloff(BaseWeight,WeightMultiplier,Math.Min(DistanceFromEnd,DistanceFromStart));
-    }
-
-
-    public new int DataLength{get{return base.DataLength+1;}}
-    public override List<Object> GetData()
-    {		
-        List<Object> data = base.GetData();
-		data.AddRange(new List<Object>
-        {
-            Time,
-        });
-		return data;
-    }
-
-    public override void SetData(List<Object> data)
-    {
-		base.SetData(data);
-		Time = (float) data[base.DataLength+0];
     }
 }

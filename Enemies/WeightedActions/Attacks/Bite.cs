@@ -8,11 +8,13 @@ public partial class Bite : WeightedAttackAction
     [Export]
     public Vector3 Direction;
     String AttackName = "Bite";
-    protected override void StartAction()
+    protected override bool StartAction()
     {
-        base.StartAction();
+        if (!base.StartAction())
+            return false;
         GlobalBasis = Basis.LookingAt(-Direction);
         ActionAnimator.Play(AttackName);
+        return true;
     }
     public void AnimationEnd(String name)
 	{

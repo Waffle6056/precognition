@@ -1,8 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://o44110d7ha38"]
+[gd_scene load_steps=11 format=3 uid="uid://o44110d7ha38"]
 
-[ext_resource type="Script" path="res://Player/Actions/Greatsword/Greatsword.cs" id="1_3044c"]
+[ext_resource type="Script" path="res://Player/Actions/Greatsword/GreatswordDownslash.cs" id="1_3044c"]
 [ext_resource type="Script" path="res://Player/Actions/CooldownManager.cs" id="2_04frq"]
 [ext_resource type="Material" uid="uid://wj4mswryba1p" path="res://Rewind/ghostMaterial.tres" id="3_4eep7"]
+[ext_resource type="Script" path="res://Player/Actions/Greatsword/GreatswordSideslash.cs" id="4_u5mt0"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_y1ggq"]
+size = Vector3(0.09, 2, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_bc13e"]
+size = Vector3(0.5, 2.228, 0.5)
 
 [sub_resource type="Animation" id="Animation_7xbki"]
 length = 0.001
@@ -28,7 +35,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 1.72421, -1.0067)]
+"values": [Vector3(0, 0.359612, 0.186193)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -43,9 +50,8 @@ tracks/2/keys = {
 "values": [Vector3(-0.84748, 0, 0)]
 }
 
-[sub_resource type="Animation" id="Animation_n2fe3"]
-resource_name = "Swing"
-length = 2.0
+[sub_resource type="Animation" id="Animation_uq5cn"]
+resource_name = "Sideslash"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -53,7 +59,7 @@ tracks/0/path = NodePath("AnimatableBody3D:monitoring")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.633333, 0.7),
+"times": PackedFloat32Array(0, 0.166667, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
@@ -65,10 +71,64 @@ tracks/1/path = NodePath("AnimatableBody3D:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.633333, 0.7, 1.3, 1.4, 1.6, 2),
-"transitions": PackedFloat32Array(1, 2, 1, 1, 1, 1, 2, 2),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 1.72421, -1.0067), Vector3(0, 2.78111, 0), Vector3(0, 2.32512, 2.49463), Vector3(0, 0.0423775, 3.45915), Vector3(0, 0.0423775, 3.45915), Vector3(0, 2.32512, 2.49463), Vector3(0, 2.78111, 0), Vector3(0, 1.72421, -1.0067)]
+"values": [Vector3(0, 0.359612, 0.186193)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AnimatableBody3D:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.166667, 0.5, 1),
+"transitions": PackedFloat32Array(1, 0.5, 2, 0.5),
+"update": 0,
+"values": [Vector3(-0.84748, 0, 0), Vector3(0, 0.785398, 1.5708), Vector3(0, 2.35619, 1.5708), Vector3(-0.84748, 0, 0)]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GreatswordSideslash")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"EndAction"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_n2fe3"]
+resource_name = "Swing"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatableBody3D:monitoring")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.633333, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AnimatableBody3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.359612, 0.186193)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -85,11 +145,11 @@ tracks/2/keys = {
 tracks/3/type = "method"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath(".")
+tracks/3/path = NodePath("GreatswordDownslash")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.966667),
+"times": PackedFloat32Array(1),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -100,48 +160,62 @@ tracks/3/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ecl6u"]
 _data = {
 "RESET": SubResource("Animation_7xbki"),
+"Sideslash": SubResource("Animation_uq5cn"),
 "Swing": SubResource("Animation_n2fe3")
 }
 
-[sub_resource type="BoxMesh" id="BoxMesh_y1ggq"]
-size = Vector3(0.09, 4, 0.25)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_bc13e"]
-size = Vector3(0.5, 4.228, 0.5)
-
-[node name="Greatsword" type="Node3D" node_paths=PackedStringArray("ActionAnimator", "Cooldown") groups=["Rewindable"]]
-script = ExtResource("1_3044c")
-Damage = 50.0
-CallKeyBind = "E"
-ActionAnimator = NodePath("AnimationPlayer")
-Cooldown = NodePath("CooldownManager")
+[node name="Greatsword" type="Node3D"]
 
 [node name="CooldownManager" type="Node3D" parent="." groups=["Rewindable"]]
 script = ExtResource("2_04frq")
-CDBase = 2.0
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-"": SubResource("AnimationLibrary_ecl6u")
-}
+CDBase = 1.0
 
 [node name="AnimatableBody3D" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749614, 0, -0.749614, 0.661874, 0, 1.72421, -1.0067)
+transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749614, 0, -0.749614, 0.661874, 0, 0.359612, 0.186193)
 collision_layer = 2
 collision_mask = 2
 monitoring = false
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="AnimatableBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, -2.27374e-13, 0, 2.27374e-13, 1, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, -2.27374e-13, 0, 2.27374e-13, 1, 0, 0.923, 0)
 visible = false
 material_override = ExtResource("3_4eep7")
 mesh = SubResource("BoxMesh_y1ggq")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="AnimatableBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.923, 0)
 mesh = SubResource("BoxMesh_y1ggq")
 skeleton = NodePath("../..")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.923, 0)
 shape = SubResource("BoxShape3D_bc13e")
 
-[connection signal="body_entered" from="AnimatableBody3D" to="." method="DealDamage"]
+[node name="GreatswordDownslash" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("1_3044c")
+Damage = 50.0
+CallKeyBind = "E"
+ActionAnimator = NodePath("AnimationPlayer")
+Cooldown = NodePath("../CooldownManager")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GreatswordDownslash"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_ecl6u")
+}
+
+[node name="GreatswordSideslash" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("4_u5mt0")
+Damage = 30.0
+CallKeyBind = "R"
+ActionAnimator = NodePath("AnimationPlayer")
+Cooldown = NodePath("../CooldownManager")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="GreatswordSideslash"]
+root_node = NodePath("../..")
+libraries = {
+"": SubResource("AnimationLibrary_ecl6u")
+}
+
+[connection signal="body_entered" from="AnimatableBody3D" to="GreatswordDownslash" method="DealDamage"]
+[connection signal="body_entered" from="AnimatableBody3D" to="GreatswordSideslash" method="DealDamage"]

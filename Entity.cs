@@ -15,10 +15,12 @@ public partial class Entity : AnimatableBody3D, RewindableObject, ActionState
     [Export]
 	public bool LerpOn = true;
     [Export]
-	public float Weight = .5f;public bool IsChannelling{get; set;}
+	public float Weight = .5f;
+    public bool IsChannelling{get; set;}
 	public bool IsActing{get; set;}
 	public bool IsLagging{get; set;}
 	public bool Active {get{ return IsChannelling || IsActing || IsLagging;} }
+    public float Time = 0;
     public Vector3 TargetPos = new Vector3(0,0,0);
     public override void _Ready()
 	{
@@ -27,7 +29,10 @@ public partial class Entity : AnimatableBody3D, RewindableObject, ActionState
 	}
     public override void _Process(double delta) {
         base._Process(delta);
-
+        // GD.Print("IsChannelling : "+IsChannelling+"\n"+
+        //          "IsActing      : "+IsActing+"\n"+
+        //          "IsLagging     : "+IsLagging+"\n"+
+        //          "Active        : "+Active+"\n");
         if (LerpOn)
 			Position = Position.Lerp(TargetPos,Weight);
 		else
@@ -63,9 +68,9 @@ public partial class Entity : AnimatableBody3D, RewindableObject, ActionState
     {
 		CurrentHP      = (float)   data[0];
 		MaxHP          = (float)   data[1];
-		IsActing         = (bool)    data[2];
-		IsChannelling    = (bool)    data[3];
-        IsLagging    = (bool)    data[4];
+		IsActing       = (bool)    data[2];
+		IsChannelling  = (bool)    data[3];
+        IsLagging      = (bool)    data[4];
         TargetPos      = (Vector3) data[5];
     }
 

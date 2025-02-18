@@ -32,6 +32,7 @@ public abstract partial class AttackAction : Action, Attack
         Entity entity = body as Entity;
         if (entity == null || entity == Root)
             return;
+        //GD.Print(entity.Name+" took "+Damage+" damage");
         entity.TakeHit(Damage);
     }
 }

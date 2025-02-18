@@ -3,10 +3,12 @@ using System;
 
 public partial class Neutral : WeightedAction
 {
-    protected override void StartAction()
+    protected override bool StartAction()
     {
-        base.StartAction();
+        if (!base.StartAction())
+            return false;
 		EndAction();
+        return true;
     }
 
     public override double GetWeight()

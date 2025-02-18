@@ -6,11 +6,13 @@ public partial class TailWhip : WeightedAttackAction
 {
 
     String AttackName = "TailWhip";
-    protected override void StartAction()
+    protected override bool StartAction()
     {
-        base.StartAction();
+        if (!base.StartAction())
+            return false;
         GlobalBasis = Basis.LookingAt(Player.Instance.GlobalPosition-Root.TargetPos);
         ActionAnimator.Play(AttackName);
+        return true;
     }
     public void AnimationEnd(String name)
 	{

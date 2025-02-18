@@ -15,19 +15,23 @@ public partial class Burrow : WeightedAction
         randomSeed = randomSeedGen.Next();
     }
     //static Random randSeed = new Random()
-    protected override void StartChannel()
+    protected override bool StartChannel()
     {
-        base.StartChannel();
+        if (!base.StartChannel())
+            return false;
 		ActionAnimator.Play(AttackName);
+        return true;
     }
     int adj(double val){
         return (int)((val-0.5) * 2 * Radius);
     }
-    protected override void StartAction()
+    protected override bool StartAction()
     {
-        base.StartAction();
+        if (!base.StartAction())
+            return false;
         if (Math.Abs(Radius) == 1)
-            return;
+            return false;
+
         int count = 0;
         Vector3 start = Root.TargetPos;
         do {
@@ -41,6 +45,7 @@ public partial class Burrow : WeightedAction
         if (Root.GridSpace.TestMove(new Transform3D(Root.GridSpace.GlobalBasis,Root.TargetPos+Vector3.Down),Vector3.Up))
             Root.TargetPos = start;
        //GD.Print(Root.TargetPos);
+       return true;
     }
     public void AnimationEnd(String name)
 	{

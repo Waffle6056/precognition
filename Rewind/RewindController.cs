@@ -71,13 +71,13 @@ public partial class RewindController : Node
     public LinkedListNode<StateNode> PredictionStartNode = null;
     public LinkedList<StateNode> Past = new LinkedList<StateNode>();
     public LinkedList<StateNode> Fated = new LinkedList<StateNode>();
-    public double PredictionTimeLimit = .9; // seconds
+    public double PredictionTimeLimit = 3.0; // seconds
     
     public double PredictionCallTime = 0.0;
 
     public double PredictionCooldownBase = 0.0;
     public double PredictionCooldownCurrent = 0.0;
-    public double RewindTimeLimit = 2.5; // TODO
+    public double RewindTimeLimit = 10.0;
     public double RewindCooldownBase = 0.0;
     public double RewindCooldownCurrent = 0.0;
     public double RewindSpeed = 9.0;
@@ -107,6 +107,8 @@ public partial class RewindController : Node
             RewindableObject r = n as RewindableObject;
             if (n is RewindableObject)
                 frameData.Add(r,new NodeData(r));
+            else
+                GD.Print("Save error, "+n.Name+" doesn't extend RewindableObject");
             // if (r is Enemy)
             //     GD.Print(r.GetData().Count);
         }

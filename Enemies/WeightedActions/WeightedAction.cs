@@ -11,10 +11,6 @@ public abstract partial class WeightedAction : Action
     [Export]
     public WeightedAction[] FollowUpOptions;
     public abstract double GetWeight();
-    public override void _Ready()
-	{
-
-	}
     public static double LinearFalloff(float BaseWeight, float WeightMultiplier, float x){
         if (x < 0)
             return -1;

@@ -5,11 +5,13 @@ public partial class Step : WeightedAction
 {
     [Export]
     public Vector3 Direction;
-    protected override void StartAction()
+    protected override bool StartAction()
     {
-        base.StartAction();
+        if (!base.StartAction())
+		 	return false;
         Root.TargetPos += Direction;
         EndAction();
+        return true;
     }
     public override double GetWeight()
     {
