@@ -1,11 +1,11 @@
 [gd_scene load_steps=15 format=3 uid="uid://brwh4xwo6lkki"]
 
 [ext_resource type="ArrayMesh" uid="uid://bhnum0rdd6yj2" path="res://Setting/GridSpaceResource.tres" id="1_sdsix"]
-[ext_resource type="PackedScene" uid="uid://cy3lc06bhqvis" path="res://Enemies/Rat/Rat.tscn" id="2_ikv24"]
 [ext_resource type="Script" path="res://Setting/multi_mesh_instance_3d.gd" id="2_uwtei"]
-[ext_resource type="PackedScene" uid="uid://debea5my12hmc" path="res://Player/player.tscn" id="3_2nrxg"]
+[ext_resource type="PackedScene" uid="uid://debea5my12hmc" path="res://Entities/Player/player.tscn" id="3_2nrxg"]
 [ext_resource type="Texture2D" uid="uid://ctfbbt1g3qphb" path="res://icon.svg" id="5_unxtb"]
-[ext_resource type="Script" path="res://Player/TargetFollowCamera.cs" id="6_h61i1"]
+[ext_resource type="Script" path="res://Entities/Player/TargetFollowCamera.cs" id="6_h61i1"]
+[ext_resource type="PackedScene" uid="uid://cy3lc06bhqvis" path="res://Entities/Enemies/Rat/Rat.tscn" id="6_w5ghl"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_a8lcq"]
 
@@ -190,5 +190,5 @@ shape = SubResource("BoxShape3D_wc0fm")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
 mesh = SubResource("TorusMesh_0hnvi")
 
-[node name="Root" parent="." instance=ExtResource("2_ikv24")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.28322, 0, -1.41408)
+[node name="Root" parent="." instance=ExtResource("6_w5ghl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, 4)

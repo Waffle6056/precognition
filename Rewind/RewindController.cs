@@ -222,10 +222,22 @@ public partial class RewindController : Node
     }
 
     public static RewindController Instance {get; private set;}
+    public static Godot.Collections.Array<Node> GetAllChildren(Node n){
+		Godot.Collections.Array<Node> children = n.GetChildren(true);
+		foreach (Node next in n.GetChildren(true))
+			children.AddRange(GetAllChildren(next));
+		return children;
+	}
     public override void _Ready() 
     {
         Instance = this;
         ProcessMode = Node.ProcessModeEnum.Always;
+        foreach (Node n in GetAllChildren(GetTree().Root)){
+			//GD.Print(n.GetType()+" "+(n is AnimationManager)+" "+n.GetScript());
+			if (n is RewindableObject && !n.IsInGroup("Rewindable"))
+				n.AddToGroup("Rewindable", true);
+		}
+		GD.Print();
     }
 }
 

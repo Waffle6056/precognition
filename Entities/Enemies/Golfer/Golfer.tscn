@@ -1,0 +1,283 @@
+[gd_scene load_steps=18 format=3 uid="uid://bdoj4cjx8lgjv"]
+
+[ext_resource type="Script" path="res://Entities/Enemies/Enemy.cs" id="1_itlbc"]
+[ext_resource type="Script" path="res://Actions/CooldownManager.cs" id="2_b2f6n"]
+[ext_resource type="Script" path="res://Actions/WeightedActions/Attacks/TailWhip.cs" id="4_a5kbv"]
+[ext_resource type="Script" path="res://Actions/WeightedActions/Mobility/Burrow.cs" id="4_skhlo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_g4465"]
+size = Vector3(0.7, 0.7, 0.9)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_bj31h"]
+albedo_color = Color(0.819122, 0.434175, 0.307191, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_s7o76"]
+material = SubResource("StandardMaterial3D_bj31h")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8hug3"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[sub_resource type="TorusMesh" id="TorusMesh_jfyjj"]
+inner_radius = 0.436
+outer_radius = 0.311
+
+[sub_resource type="Animation" id="Animation_27rx1"]
+resource_name = "Burrow"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, -1, 0), Vector3(0, -1, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_jnbld"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("../MeshInstance3D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4s534"]
+_data = {
+"Burrow": SubResource("Animation_27rx1"),
+"RESET": SubResource("Animation_jnbld")
+}
+
+[sub_resource type="Animation" id="Animation_h0neq"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node3D/AnimatableBody3D/CollisionShape3D:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.5, 0.5, 0.5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Node3D/AnimatableBody3D/CollisionShape3D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Node3D/AnimatableBody3D:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Node3D/AnimatableBody3D:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8xkgg"]
+resource_name = "TailWhip"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Node3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.8),
+"transitions": PackedFloat32Array(-2, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.28319, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Node3D/AnimatableBody3D/CollisionShape3D:shape:size")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.5, 0.5, 0.5), Vector3(0.5, 0.5, 1.81641), Vector3(0.5, 0.5, 0.5)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Node3D/AnimatableBody3D/CollisionShape3D:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-4.09273e-12, 0, -0.658194), Vector3(0, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Node3D/AnimatableBody3D:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Node3D/AnimatableBody3D:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.8),
+"transitions": PackedFloat32Array(1, -0.5, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 2), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0v7kj"]
+_data = {
+"RESET": SubResource("Animation_h0neq"),
+"TailWhip": SubResource("Animation_8xkgg")
+}
+
+[sub_resource type="BoxMesh" id="BoxMesh_ic8uo"]
+size = Vector3(0.4, 0.3, 0.3)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_17svl"]
+size = Vector3(0.5, 0.5, 0.5)
+
+[node name="Root" type="AnimatableBody3D" node_paths=PackedStringArray("VisualHP", "GridSpace") groups=["Rewindable"]]
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("1_itlbc")
+VisualHP = NodePath("ColorRect")
+GridSpace = NodePath("GridSpace")
+
+[node name="Hitbox" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_g4465")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_s7o76")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = 498.0
+offset_top = 517.0
+offset_right = 1148.0
+offset_bottom = 557.0
+color = Color(0.835294, 0, 0, 1)
+
+[node name="GridSpace" type="AnimatableBody3D" parent="."]
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GridSpace"]
+shape = SubResource("BoxShape3D_8hug3")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GridSpace"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
+mesh = SubResource("TorusMesh_jfyjj")
+
+[node name="Burrow" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("4_skhlo")
+Radius = 2.0
+BaseWeight = 90.0
+FollowUpOptions = []
+ChannelTimeBase = 0.5
+ActionAnimator = NodePath("AnimationPlayer")
+Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
+
+[node name="CooldownManager" type="Node3D" parent="Burrow"]
+script = ExtResource("2_b2f6n")
+CDBase = 0.5
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Burrow"]
+libraries = {
+"": SubResource("AnimationLibrary_4s534")
+}
+
+[node name="TailWhip" type="Node3D" parent="." node_paths=PackedStringArray("FollowUpOptions", "ActionAnimator", "Root", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("4_a5kbv")
+Damage = 20.0
+WeightMultiplier = 25.0
+FollowUpOptions = []
+ActionAnimator = NodePath("AnimationPlayer")
+Root = NodePath("..")
+Cooldown = NodePath("CooldownManager")
+
+[node name="CooldownManager" type="Node3D" parent="TailWhip" groups=["Rewindable"]]
+script = ExtResource("2_b2f6n")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="TailWhip"]
+libraries = {
+"": SubResource("AnimationLibrary_0v7kj")
+}
+
+[node name="Node3D" type="Node3D" parent="TailWhip"]
+
+[node name="AnimatableBody3D" type="Area3D" parent="TailWhip/Node3D"]
+transform = Transform3D(1, 0, 0, 0, 0.999999, 0, 0, 0, 0.999999, 0, 0, 0)
+collision_layer = 2
+collision_mask = 2
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TailWhip/Node3D/AnimatableBody3D"]
+mesh = SubResource("BoxMesh_ic8uo")
+skeleton = NodePath("../../..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TailWhip/Node3D/AnimatableBody3D"]
+transform = Transform3D(1, 0, -7.00311e-11, 0, 1, 0, 7.00311e-11, 0, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_17svl")
+
+[connection signal="animation_finished" from="Burrow/AnimationPlayer" to="Burrow" method="AnimationEnd"]
+[connection signal="animation_finished" from="TailWhip/AnimationPlayer" to="TailWhip" method="AnimationEnd"]
+[connection signal="body_entered" from="TailWhip/Node3D/AnimatableBody3D" to="TailWhip" method="DealDamage"]
