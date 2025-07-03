@@ -24,7 +24,7 @@ public partial class Pivot : Node3D
 	[Export]
 	public float SlerpWeight = 0.5f;
 	[Export]
-	public Vector3 Target;
+	public Vector3 Target = Vector3.Forward;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -32,7 +32,11 @@ public partial class Pivot : Node3D
 	}
 
 	public virtual void UpdateTarget(){
-		Target = Player.Instance.GlobalPosition - GlobalPosition;
+        Vector3 nTarget = Player.Instance.GlobalPosition - GlobalPosition;
+		if (!nTarget.IsEqualApprox(Vector3.Zero))
+		{
+			Target = nTarget;
+		}
 	}
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
@@ -43,8 +47,9 @@ public partial class Pivot : Node3D
 			return;
 		
 		UpdateTarget();
-		
+
 		//GD.Print(mousePos);
+		//GD.Print(Target+"-");
 		Basis next = Basis.LookingAt(Target);
 		if (!DirectionLocked)
 			GlobalBasis = GlobalBasis.Slerp(next, SlerpWeight);

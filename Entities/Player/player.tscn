@@ -1,20 +1,38 @@
-[gd_scene load_steps=11 format=3 uid="uid://debea5my12hmc"]
+[gd_scene load_steps=19 format=3 uid="uid://debea5my12hmc"]
 
-[ext_resource type="Script" path="res://Entities/Player/Player.cs" id="1_83h1a"]
+[ext_resource type="Script" uid="uid://beq0x31h1kshl" path="res://Entities/Player/Player.cs" id="1_83h1a"]
+[ext_resource type="Script" uid="uid://cocpcvof8gsku" path="res://Entities/Player/TargetFollowCamera.cs" id="2_dtv0t"]
+[ext_resource type="Script" uid="uid://cao6rc61mbn4e" path="res://Entities/Limb.cs" id="2_lvkyw"]
 [ext_resource type="PackedScene" uid="uid://bxmyobowlg05o" path="res://Rewind/VFX/PredictVFX.tscn" id="2_vpue6"]
 [ext_resource type="PackedScene" uid="uid://kg61a3u54odt" path="res://Rewind/VFX/RewindVFX.tscn" id="3_l0e06"]
-[ext_resource type="Script" path="res://Misc/MouseDirection.cs" id="4_vgarj"]
 [ext_resource type="PackedScene" uid="uid://o44110d7ha38" path="res://Actions/Greatsword/Greatsword.tscn" id="5_ttt55"]
+[ext_resource type="Script" uid="uid://dba7tcyn2xv52" path="res://Actions/WeightedActions/TrackingProperties.cs" id="7_1vjjv"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_mvk7k"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dupfr"]
+radius = 0.512653
+height = 1.02531
+
+[sub_resource type="PrismMesh" id="PrismMesh_f63f6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hctjx"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_6i0wb"]
+material = SubResource("StandardMaterial3D_hctjx")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pte46"]
+transparency = 4
+albedo_color = Color(1, 1, 1, 0.309804)
+
+[sub_resource type="BoxMesh" id="BoxMesh_80kcv"]
+material = SubResource("StandardMaterial3D_pte46")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_yxuyj"]
+radius = 0.03
+height = 31.71
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_5tayy"]
 size = Vector3(0.7, 0.7, 0.7)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_vph7y"]
-size = Vector3(0.5, 0.5, 0.5)
-
-[sub_resource type="TorusMesh" id="TorusMesh_1rbbg"]
-inner_radius = 0.436
-outer_radius = 0.311
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6ufca"]
 albedo_color = Color(0, 0, 0, 1)
@@ -23,19 +41,95 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_6ufca")
 size = Vector3(0.7, 0.7, 0.7)
 
-[node name="Player" type="AnimatableBody3D" node_paths=PackedStringArray("VisualHP", "GridSpace") groups=["Rewindable"]]
-process_mode = 3
-collision_layer = 2
-collision_mask = 2
-script = ExtResource("1_83h1a")
-HoldMovementCD = 0.25
-MaxHP = 200.0
-CurrentHP = 200.0
-VisualHP = NodePath("ColorRect")
-GridSpace = NodePath("GridSpace")
+[sub_resource type="BoxShape3D" id="BoxShape3D_6fvw3"]
 
-[node name="Hitbox" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_mvk7k")
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CurrentCamera", "TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "VisualHP", "CurrentAction") groups=["Rewindable"]]
+process_mode = 3
+process_priority = -1
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_83h1a")
+CurrentCamera = NodePath("Camera3D")
+TargetSpeed = 3.0
+SidestepDashDistance = 0.75
+DashLength = 0.1
+JumpDistance = 1.0
+JumpLength = 0.1
+TrackingPropertiesBase = NodePath("TrackingProperties")
+TargetPos = NodePath("TargetPosition")
+CenterOfMass = NodePath("CenterOfMassVisual")
+CenterOfMassBase = NodePath("CenterOfMassVisual2")
+VisualHP = NodePath("ColorRect")
+MaxWalkSpeed = 20.0
+Repel = 0.0
+CurrentAction = NodePath("TargetPosition")
+resistance = Vector3(1, 0.5, 1)
+
+[node name="TargetPosition" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.682068, 0)
+top_level = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TargetPosition"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.133347, 0)
+shape = SubResource("CapsuleShape3D_dupfr")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TargetPosition"]
+visible = false
+mesh = SubResource("PrismMesh_f63f6")
+
+[node name="CenterOfMassVisual" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 1, 0)
+mesh = SubResource("SphereMesh_6i0wb")
+skeleton = NodePath("../..")
+
+[node name="CenterOfMassVisual2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 1, 0)
+mesh = SubResource("BoxMesh_80kcv")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Target", "PivotIndicator")]
+process_mode = 3
+process_priority = -2
+transform = Transform3D(1, 0, 0, 0, 1, -3.45707e-06, 0, 3.45707e-06, 1, 0, -3.50078e-05, 10)
+top_level = true
+script = ExtResource("2_dtv0t")
+Target = NodePath("..")
+IdleOffset = Vector3(0, 0.5, 1.5)
+FocusOffset = Vector3(0, 0.5, 1.5)
+RotationWeight = 0.4
+DPI = 0.002
+PivotIndicator = NodePath("MeshInstance3D2")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Camera3D"]
+top_level = true
+mesh = SubResource("CapsuleMesh_yxuyj")
+skeleton = NodePath("../..")
+
+[node name="LimbBox" type="Area3D" parent="." node_paths=PackedStringArray("Parent")]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("2_lvkyw")
+Parent = NodePath("..")
+IsFooting = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LimbBox"]
+shape = SubResource("BoxShape3D_5tayy")
+
+[node name="Greatsword" parent="." instance=ExtResource("5_ttt55")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="piv" parent="Greatsword" index="1"]
+transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749614, 0, -0.749614, 0.661874, 0, 0.359612, 0.186193)
+
+[node name="ActionProperties" parent="Greatsword" index="2" node_paths=PackedStringArray("Root")]
+Root = NodePath("../..")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -3.50078e-06, -1, 0, 1, -3.50078e-06, 0, 0, 0)
+mesh = SubResource("BoxMesh_nuwvb")
+
+[node name="EnvironmentHitbox" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_6fvw3")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_right = 650.0
@@ -46,32 +140,12 @@ color = Color(0.835294, 0, 0, 1)
 
 [node name="PredictVFX" parent="." instance=ExtResource("2_vpue6")]
 
-[node name="GridSpace" type="AnimatableBody3D" parent="."]
-visible = false
+[node name="TrackingProperties" type="Node" parent="."]
+script = ExtResource("7_1vjjv")
+SlerpWeight = 6.0
+MaximumRotationPerSecond = 62.83
+LinearRotationPerSecond = 6283.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GridSpace"]
-shape = SubResource("BoxShape3D_vph7y")
+[connection signal="area_entered" from="LimbBox" to="LimbBox" method="AreaEntered"]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="GridSpace"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
-mesh = SubResource("TorusMesh_1rbbg")
-
-[node name="GridLockedDirection" type="Node3D" parent="."]
-
-[node name="UnlockedDirection" type="Node3D" parent="." node_paths=PackedStringArray("Root")]
-script = ExtResource("4_vgarj")
-FreezeOnActive = true
-Root = NodePath("..")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="UnlockedDirection"]
-transform = Transform3D(1, 0, 0, 0, -3.50078e-06, -1, 0, 1, -3.50078e-06, 0, 0, 0)
-mesh = SubResource("BoxMesh_nuwvb")
-skeleton = NodePath("../..")
-
-[node name="Greatsword" parent="UnlockedDirection" instance=ExtResource("5_ttt55")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="Node" parent="UnlockedDirection/Greatsword" index="2" node_paths=PackedStringArray("Root")]
-Root = NodePath("../../..")
-
-[editable path="UnlockedDirection/Greatsword"]
+[editable path="Greatsword"]

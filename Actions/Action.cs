@@ -6,11 +6,11 @@ using System.Dynamic;
 public partial class Action : Option, RewindableObject, ActionState
 {
 	[Export]
-	public String CallKeyBind;
+	public String[] CallKeyBind;
 	[Export]
 	public CooldownManager Cooldown;
 	[Export]
-	public ActionProperties Properties;
+	public ActionProperties ActionProperties;
 	protected double ChannelCallTime = 0;
 	protected double EndLagCallTime = 0;
 	protected double ActionCallTime = 0;
@@ -31,7 +31,7 @@ public partial class Action : Option, RewindableObject, ActionState
 	}
 	protected virtual bool Channel(double delta)
 	{
-		if (ActionTime >= ChannelCallTime + Properties.ChannelTime)
+		if (ActionTime >= ChannelCallTime + ActionProperties.ChannelTime)
 			EndChannel();
 		return true;
 	}
@@ -76,7 +76,7 @@ public partial class Action : Option, RewindableObject, ActionState
 	}
 	protected virtual bool Lag(double delta)
 	{
-		if (ActionTime >= EndLagCallTime + Properties.EndLagTime)
+		if (ActionTime >= EndLagCallTime + ActionProperties.EndLagTime)
 			EndEndLag();
 		return true;
 	}
@@ -86,15 +86,28 @@ public partial class Action : Option, RewindableObject, ActionState
 		Cooldown?.Start();
 		return true;
 	}
+	public virtual bool Interrupt()
+	{
+		if (!Active)
+			return false;
 
+		EndChannel();
+		EndAction();
+		EndEndLag();
 
+		if (this is IAnimated)
+			(this as IAnimated).Animation.EndAnimation();
+
+		return true;
+	}
+	
 	public bool CallAction()
 	{
 		//GD.Print("Attack Called");
-		if (OnCD() || Properties.Root.Active || Active)
+		if (OnCD() || ActionProperties.Root.Active || Active)
 			return false;
 		if (StartChannel()){
-			Properties.Root.CurrentAction = this;
+			ActionProperties.Root.CurrentAction = this;
 			return true;
 		}
 		return false;
@@ -108,8 +121,23 @@ public partial class Action : Option, RewindableObject, ActionState
 
 		ActionTime += delta;
 
-		if (CallKeyBind != null && CallKeyBind.Length > 0 && Input.IsActionJustPressed(CallKeyBind))
-			CallAction();
+		if (CallKeyBind != null && CallKeyBind.Length > 0)
+		{
+			bool good = true;
+			foreach (String Bind in CallKeyBind)
+			{
+				String[] query = Bind.Split(',');
+				bool justP = Input.IsActionJustPressed(query[0]);
+                bool contP = Input.IsActionPressed(query[0]);
+
+				if (query.Length > 1 && query[1].Equals("JustPressed")) 
+					good &= justP;
+				else
+					good &= contP;
+			}
+			if (good)
+				CallAction();
+		}
 
 		if (IsChannelling)
 			Channel(delta);

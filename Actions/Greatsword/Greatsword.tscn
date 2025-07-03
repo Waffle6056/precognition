@@ -1,56 +1,107 @@
-[gd_scene load_steps=14 format=3 uid="uid://o44110d7ha38"]
+[gd_scene load_steps=15 format=3 uid="uid://o44110d7ha38"]
 
-[ext_resource type="Script" path="res://Actions/Greatsword/GreatswordDownslash.cs" id="1_3044c"]
-[ext_resource type="Script" path="res://Actions/CooldownManager.cs" id="2_04frq"]
-[ext_resource type="Material" uid="uid://wj4mswryba1p" path="res://Rewind/ghostMaterial.tres" id="3_4eep7"]
-[ext_resource type="Script" path="res://Actions/ActionProperties.cs" id="3_i5yeq"]
-[ext_resource type="Script" path="res://Actions/AttackManager.cs" id="4_spnnb"]
-[ext_resource type="Script" path="res://Actions/Greatsword/GreatswordSideslash.cs" id="4_u5mt0"]
-[ext_resource type="Script" path="res://Actions/AnimationManager.cs" id="5_jyuq4"]
+[ext_resource type="Script" uid="uid://bdpl1lo6sk2e5" path="res://Actions/Greatsword/GreatswordDownslash.cs" id="1_3044c"]
+[ext_resource type="Script" uid="uid://sh5hpgdf7x1e" path="res://Actions/CooldownManager.cs" id="2_04frq"]
+[ext_resource type="Script" uid="uid://bchnl4uspmyfe" path="res://Entities/Hurtbox.cs" id="2_cjg66"]
+[ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="3_i5yeq"]
+[ext_resource type="Script" uid="uid://cv7qx7ccmd6g1" path="res://Actions/Greatsword/GenericAnimatedAction.cs" id="4_lf8a5"]
+[ext_resource type="Script" uid="uid://b5h24cntogyul" path="res://Actions/Greatsword/GreatswordSideslash.cs" id="4_u5mt0"]
+[ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/AnimationManager.cs" id="5_jyuq4"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_y1ggq"]
 size = Vector3(0.09, 2, 0.25)
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_bc13e"]
-size = Vector3(0.5, 2.228, 0.5)
+[sub_resource type="Animation" id="Animation_3cuj6"]
+resource_name = "Impale"
+length = 0.8
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("piv:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.1, 0.233333, 0.4, 0.533333),
+"transitions": PackedFloat32Array(0.5, -2, 2, 2, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.359612, 0.186193), Vector3(0, 0.641854, -0.248025), Vector3(0, 0.712123, -0.646215), Vector3(0, 0.381323, 0.989497), Vector3(0, 0.712123, -0.646215), Vector3(0, 0.359612, 0.186193)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("piv:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.0333333, 0.1, 0.233333, 0.4, 0.533333),
+"transitions": PackedFloat32Array(1, -2, 2, 2, 1, 1),
+"update": 0,
+"values": [Vector3(-0.84748, 0, 0), Vector3(1.66033, 0, 0), Vector3(1.66033, 0, 0), Vector3(1.57811, 0, 0), Vector3(1.66033, 0, 0), Vector3(-0.84748, 0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GreatswordImpale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"EndAction"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("GreatswordImpale/Hurtbox:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.233333, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
 
 [sub_resource type="Animation" id="Animation_7xbki"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatableBody3D:monitoring")
+tracks/0/path = NodePath("piv:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
+"update": 0,
+"values": [Vector3(0, 0.359612, 0.186193)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatableBody3D:position")
+tracks/1/path = NodePath("piv:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(0, 0.359612, 0.186193)]
+"values": [Vector3(-0.84748, 0, 0)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatableBody3D:rotation")
+tracks/2/path = NodePath("GreatswordImpale/Hurtbox:monitoring")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(-0.84748, 0, 0)]
+"update": 1,
+"values": [false]
 }
 
 [sub_resource type="Animation" id="Animation_uq5cn"]
@@ -58,46 +109,34 @@ resource_name = "Sideslash"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatableBody3D:monitoring")
+tracks/0/path = NodePath("piv:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.166667, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [false, true, false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatableBody3D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0.359612, 0.186193)]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatableBody3D:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("piv:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.166667, 0.5, 1),
 "transitions": PackedFloat32Array(1, 0.5, 2, 0.5),
 "update": 0,
 "values": [Vector3(-0.84748, 0, 0), Vector3(0, 0.785398, 1.5708), Vector3(0, 2.35619, 1.5708), Vector3(-0.84748, 0, 0)]
 }
-tracks/3/type = "method"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("GreatswordSideslash")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GreatswordSideslash")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0.5),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -112,46 +151,34 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("AnimatableBody3D:monitoring")
+tracks/0/path = NodePath("piv:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.633333, 1),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [false, true, false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("AnimatableBody3D:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0.359612, 0.186193)]
 }
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("AnimatableBody3D:rotation")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("piv:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.4, 0.633333, 0.7, 1.3, 1.4, 1.6, 2),
 "transitions": PackedFloat32Array(1, 2, 1, 1, 1, 1, 2, 2),
 "update": 0,
 "values": [Vector3(-0.84748, 0, 0), Vector3(0, 0, 0), Vector3(0.785398, 0, 0), Vector3(1.5708, 0, 0), Vector3(1.5708, 0, 0), Vector3(0.785398, 0, 0), Vector3(0, 0, 0), Vector3(-0.84748, 0, 0)]
 }
-tracks/3/type = "method"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("GreatswordDownslash")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("GreatswordDownslash")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(1),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -162,10 +189,14 @@ tracks/3/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ecl6u"]
 _data = {
-"RESET": SubResource("Animation_7xbki"),
-"Sideslash": SubResource("Animation_uq5cn"),
-"Swing": SubResource("Animation_n2fe3")
+&"Impale": SubResource("Animation_3cuj6"),
+&"RESET": SubResource("Animation_7xbki"),
+&"Sideslash": SubResource("Animation_uq5cn"),
+&"Swing": SubResource("Animation_n2fe3")
 }
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_12r05"]
+size = Vector3(1, 1, 3.646)
 
 [node name="Greatsword" type="Node3D"]
 
@@ -173,69 +204,64 @@ _data = {
 script = ExtResource("2_04frq")
 CDBase = 1.0
 
-[node name="AnimatableBody3D" type="Area3D" parent="."]
+[node name="piv" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749614, 0, -0.749614, 0.661874, 0, 0.359612, 0.186193)
-collision_layer = 2
-collision_mask = 2
-monitoring = false
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="AnimatableBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, -2.27374e-13, 0, 2.27374e-13, 1, 0, 0.923, 0)
-visible = false
-material_override = ExtResource("3_4eep7")
-mesh = SubResource("BoxMesh_y1ggq")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="AnimatableBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="piv"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.923, 0)
 mesh = SubResource("BoxMesh_y1ggq")
 skeleton = NodePath("../..")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="AnimatableBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.923, 0)
-shape = SubResource("BoxShape3D_bc13e")
-
-[node name="Node" type="Node" parent="."]
+[node name="ActionProperties" type="Node" parent="."]
 script = ExtResource("3_i5yeq")
+ChannelTime = 0.1
 
-[node name="GreatswordDownslash" type="Node3D" parent="." node_paths=PackedStringArray("Attack", "Animation", "Cooldown", "Properties") groups=["Rewindable"]]
-script = ExtResource("1_3044c")
-Attack = NodePath("Node")
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ecl6u")
+}
+
+[node name="GreatswordImpale" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown", "ActionProperties") groups=["Rewindable"]]
+script = ExtResource("4_lf8a5")
 Animation = NodePath("AnimationManager")
-CallKeyBind = "E"
+AttackName = "Impale"
+CallKeyBind = PackedStringArray("R")
 Cooldown = NodePath("../CooldownManager")
-Properties = NodePath("../Node")
+ActionProperties = NodePath("../ActionProperties")
 
-[node name="Node" type="Node" parent="GreatswordDownslash" node_paths=PackedStringArray("Hitbox")]
-script = ExtResource("4_spnnb")
-Damage = 50.0
-Hitbox = NodePath("../../AnimatableBody3D")
+[node name="AnimationManager" type="Node" parent="GreatswordImpale" node_paths=PackedStringArray("ActionAnimator")]
+script = ExtResource("5_jyuq4")
+ActionAnimator = NodePath("../../AnimationPlayer")
+
+[node name="Hurtbox" type="Area3D" parent="GreatswordImpale"]
+transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, -2.98023e-08, 1.49012e-08)
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+script = ExtResource("2_cjg66")
+ForceMagnitude = 0.175
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GreatswordImpale/Hurtbox"]
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, -1.99767e-07, 0.59712, 1.323)
+shape = SubResource("BoxShape3D_12r05")
+
+[node name="GreatswordDownslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown") groups=["Rewindable"]]
+script = ExtResource("1_3044c")
+Animation = NodePath("AnimationManager")
+Cooldown = NodePath("../CooldownManager")
 
 [node name="AnimationManager" type="Node" parent="GreatswordDownslash" node_paths=PackedStringArray("ActionAnimator")]
 script = ExtResource("5_jyuq4")
-ActionAnimator = NodePath("../../GreatswordSideslash/Node/AnimationPlayer")
+ActionAnimator = NodePath("../../AnimationPlayer")
 
-[node name="GreatswordSideslash" type="Node3D" parent="." node_paths=PackedStringArray("Attack", "Animation", "Cooldown", "Properties") groups=["Rewindable"]]
+[node name="GreatswordSideslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown") groups=["Rewindable"]]
 script = ExtResource("4_u5mt0")
-Attack = NodePath("Node2")
-Animation = NodePath("Node")
-CallKeyBind = "R"
+Animation = NodePath("AnimationManager")
 Cooldown = NodePath("../CooldownManager")
-Properties = NodePath("../Node")
 
-[node name="Node2" type="Node" parent="GreatswordSideslash" node_paths=PackedStringArray("Hitbox")]
-script = ExtResource("4_spnnb")
-Damage = 30.0
-Hitbox = NodePath("../../AnimatableBody3D")
-
-[node name="Node" type="Node" parent="GreatswordSideslash" node_paths=PackedStringArray("ActionAnimator")]
+[node name="AnimationManager" type="Node" parent="GreatswordSideslash" node_paths=PackedStringArray("ActionAnimator")]
 script = ExtResource("5_jyuq4")
-ActionAnimator = NodePath("AnimationPlayer")
+ActionAnimator = NodePath("../../AnimationPlayer")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="GreatswordSideslash/Node"]
-root_node = NodePath("../../..")
-libraries = {
-"": SubResource("AnimationLibrary_ecl6u")
-}
-
-[connection signal="body_entered" from="AnimatableBody3D" to="GreatswordDownslash" method="DealDamage"]
-[connection signal="body_entered" from="AnimatableBody3D" to="GreatswordSideslash/Node2" method="DealDamage"]
+[connection signal="area_entered" from="GreatswordImpale/Hurtbox" to="GreatswordImpale/Hurtbox" method="Collide"]

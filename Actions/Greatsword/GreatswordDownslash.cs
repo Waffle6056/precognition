@@ -2,11 +2,8 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class GreatswordDownslash : Action, IAttack, IAnimated
+public partial class GreatswordDownslash : Action, IAnimated
 {
-
-	[Export]
-    public AttackManager Attack{get;set;}
 	[Export]
     public AnimationManager Animation{get; set;}
 	String AttackName = "Swing";

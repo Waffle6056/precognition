@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://bxmyobowlg05o"]
 
-[ext_resource type="Script" path="res://Rewind/VFX/PredictVFX.cs" id="1_77ope"]
+[ext_resource type="Script" uid="uid://v8l0n2dm7lok" path="res://Rewind/VFX/PredictVFX.cs" id="1_77ope"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_u13ln"]
 particle_flag_disable_z = true

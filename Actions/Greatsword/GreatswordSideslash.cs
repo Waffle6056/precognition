@@ -1,10 +1,8 @@
 using Godot;
 using System;
 
-public partial class GreatswordSideslash : Action, IAttack, IAnimated 
+public partial class GreatswordSideslash : Action, IAnimated 
 {
-	[Export]
-    public AttackManager Attack{get;set;}
 	[Export]
     public AnimationManager Animation{get; set;}
 	String AttackName = "Sideslash";

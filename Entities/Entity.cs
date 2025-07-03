@@ -2,74 +2,338 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class Entity : AnimatableBody3D, RewindableObject, ActionState
+public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IAnimated
 {
     [Export]
-	public float MaxHP{get; set;} = 100;
+    TrackingProperties TrackingPropertiesBase;
+    [Export]
+	public float MaxEnergy{get; set;} = 100;
 	[Export]
-	public float CurrentHP{get; set;} = 100;
+	public float CurrentEnergy{get; set;} = 100;
+    public double LastHitTime  = 0;
+    [Export]
+    public virtual AnimationManager Animation { get; set; }
+    [Export]
+    public CharacterBody3D TargetPos = null;
+
+    [Export]
+    public Node3D CenterOfMass;
+    [Export]
+    public Node3D CenterOfMassBase;
+    [Export]
+    public float SlowRecoveryWeight = 0.05f;
+    [Export]
+    public float QuickRecoveryWeight = 1f;
+    [Export]
+    public float StumbleStabilityThreshold = 1f;
+    [Export]
+    public float FallStabilityThreshold = 0.5f;
+    [Export]
+    public float StumbleStunDuration = 0.5f;
+    [Export]
+    public float FallStunDuration = 2f;
+
+    public List<Limb> Limbs = new List<Limb>();
+    public float Stability = 1;
     [Export]
 	public ColorRect VisualHP;
     [Export]
-	public AnimatableBody3D GridSpace;
-    [Export]
 	public bool LerpOn = true;
     [Export]
-	public float Weight = .5f;
+	public float WalkLerpWeight = 10f;
+    [Export]
+    public float AirborneLerpWeight = 20f;
+    [Export]
+    public float FallingGravity = -15f;
+    [Export]
+    public float RisingGravity = -10f;
+    [Export]
+    public float MaxWalkSpeed = 10f;
+    [Export]    
+    public float Speed = -1f;
+    [Export]
+    public float Repel = 0.1f;
+    private double AirTimeStart = 0f;
     [Export]
     public Action CurrentAction;
+
+    public bool test2 = true;
+    [Export]
+    public Vector3 resistance = Vector3.One;
     public bool IsChannelling{get{ return CurrentAction!=null && CurrentAction.IsChannelling; } set{}}
 	public bool IsActing{get{ return CurrentAction!=null && CurrentAction.IsActing; } set{}}
-	public bool IsLagging{get{ return CurrentAction!=null && CurrentAction.IsLagging; } set{}}
-	public bool Active {get{ return IsChannelling || IsActing || IsLagging;} }
-    public float Time = 0;
-    public Vector3 TargetPos = new Vector3(0,0,0);
+	public bool IsLagging{get{ return CurrentAction!=null && CurrentAction.IsLagging; } set{} }
+    public bool IsStunned{ get { return EntityTime >= StunCallTime && EntityTime < StunCallTime+StunDuration; } set { } }
+    public bool Active {get{ return IsChannelling || IsActing || IsLagging;} }
+    public double EntityTime = 0;
+    double StunCallTime = 0;
+    float StunDuration = 0;
     public override void _Ready()
 	{
 		base._Ready();
-        TargetPos = Position;
+        TargetPos.GlobalPosition = GlobalPosition;
+        //GD.Print(Limbs.Count);
+        SetCenters();
 	}
-    public override void _Process(double delta) {
+    public override void _Process(double delta) 
+    {
         base._Process(delta);
         // GD.Print("IsChannelling : "+IsChannelling+"\n"+
         //          "IsActing      : "+IsActing+"\n"+
         //          "IsLagging     : "+IsLagging+"\n"+
         //          "Active        : "+Active+"\n");
-        if (LerpOn)
-			Position = Position.Lerp(TargetPos,Weight);
-		else
-			Position = TargetPos;
-		GridSpace.GlobalPosition = TargetPos;
-        VisualHP.Size = new Vector2(CurrentHP,40);
+
+        
+        VisualHP.Size = new Vector2(CurrentEnergy,40);
 
         if (RewindController.Instance.IsRewinding)
 			return;
+
+        EntityTime += delta;
+
+
+        processMovement(delta);
+        rotateTowardTarget(delta);
+        if (IsStunned)
+            stunned(delta);
     }
-    public virtual float TakeHit(float Damage){
-        CurrentHP -= Damage;
+
+    public override void _PhysicsProcess(double delta)
+    {
+        SetCenters();
+    }
+
+    protected void processMovement(double delta)
+    {
+        processGravity(delta);
+        TargetPos.MoveAndSlide();
+        Vector3 vec = (TargetPos.GlobalPosition - GlobalPosition);
+        Vector3 dir = vec.Normalized();
+        if (TargetPos.IsOnFloor())
+        {
+            Speed = Math.Min(MaxWalkSpeed, vec.Length() * WalkLerpWeight);
+
+        }
+        else
+        {
+            Speed = vec.Length() * AirborneLerpWeight;
+        }
+        Velocity = dir * Speed;
+        //GD.Print(AirTime);
+        //GD.Print(Velocity + " "+TargetPos+" "+Speed+" "+Position+" "+ (TargetPos - GlobalPosition).Normalized());
+        bool res = MoveAndSlide();
+
+        //if (res)
+        //{
+        //    processBounce();
+        //}
+        TargetPos.Velocity = Vector3.Zero;
+    }
+
+    //protected void processBounce()
+    //{
+    //    Vector3 vec = (TargetPos.GlobalPosition - GlobalPosition);
+    //    Vector3 deltaTargetPos = Vector3.Zero;
+    //    for (int i = 0; i < GetSlideCollisionCount(); i++)
+    //    {
+    //        KinematicCollision3D col = GetSlideCollision(i);
+    //        //GD.Print(col.GetAngle() + " " + FloorMaxAngle);
+    //        if (col.GetAngle() < FloorMaxAngle)
+    //            continue;
+    //        //GD.Print("col " + col.GetCollider());
+    //        Vector3 repel = col.GetNormal() * Repel;
+    //        Vector3 bounce = vec.Bounce(col.GetNormal()) * resistance;
+    //        deltaTargetPos += repel + bounce;
+
+    //    }
+    //    if (!deltaTargetPos.Equals(Vector3.Zero))
+    //        TargetPos.GlobalPosition = GlobalPosition + deltaTargetPos;
+    //}
+
+    protected void processGravity(double delta)
+    {
+        if (TargetPos.IsOnFloor())
+            AirTimeStart = EntityTime;
+        float magnitude = -1;
+        if (TargetPos.Velocity.Y > 0)
+            magnitude = RisingGravity;
+        else
+            magnitude = FallingGravity;
+        TargetPos.Velocity += new Vector3(0, (float)(magnitude * Math.Max(0,EntityTime-AirTimeStart)), 0);
+    }
+
+
+
+    public virtual Vector3 TakeKnockback(Vector3 Force)
+    {
+        ////GD.Print("KNOCKBACK NOT IMPLEMENTED");
+        //KinematicCollision3D col = MoveAndCollide(Force, true);
+        ////GD.Print(col);
+        //if (col != null)
+        //    TargetPos += col.GetTravel();
+        //else
+        //    TargetPos += Force;
+        //GD.Print("KNOCKBACK FORCE " + Force);
+        //TargetPos += Force;
+        CenterOfMass.GlobalPosition += Force;
+        
+        return Force;
+    }
+    public virtual float TakeHit(float Damage)
+    { 
+        CurrentEnergy -= Damage;
+        LastHitTime = EntityTime;
         return Damage;
     }
 
-    
+    public virtual float TakeStunned(float Duration)
+    {
+        if (IsStunned || CurrentAction != null && !CurrentAction.Interrupt())
+            return 0;
+        StunCallTime = EntityTime;
+        StunDuration = Duration;
+
+        //GD.Print("FALL/STUMBLE ANIMATIONS NOT IMPLEMENTED");
+        Animation?.EndAnimation();   
+       
+        
+        
+        return Duration;
+    }
+    public virtual void stunned(double delta)
+    {
+        ;
+    }
+    public virtual void SetCenters()
+    {
+        setMassCenter();
+        setStability();
+        if (!IsStunned)
+        {
+            if (Stability < FallStabilityThreshold)
+            {
+                TakeStunned(FallStunDuration);
+                Animation?.Play("Fall");
+            }
+            else if (Stability < StumbleStabilityThreshold)
+            {
+                TakeStunned(StumbleStunDuration);
+                Animation?.Play("Stumble");
+            }
+        }
+        float weight = 0;
+        if (IsStunned)
+            weight = SlowRecoveryWeight;
+        else
+            weight = QuickRecoveryWeight;
+        CenterOfMass.GlobalPosition = CenterOfMass.GlobalPosition.Lerp(CenterOfMassBase.GlobalPosition, weight);
+
+        //GD.Print(Stability + " " +IsStunned );
+    }
+    public virtual void setStability()
+    {
+        List<Vector3> legs = new List<Vector3>();
+        foreach (Limb L in Limbs)
+        {
+            if (L.IsFooting)
+            {
+                legs.Add((L.GlobalPosition - CenterOfMass.GlobalPosition).Normalized());
+                //GD.Print((L.GlobalPosition - CenterOfMass.GlobalPosition).Normalized());
+            }
+        }
+
+        float pi = (float)Math.PI;
+        float maxClosestAngle = 0;
+        for (int ang = 0; ang < 360; ang++) 
+        {
+            Vector3 vec = Vector3.Forward.Rotated(Vector3.Up, ang * pi / 180f);
+            //GD.Print(ang * pi / 180f);
+            //GD.Print(vec);
+            float closestAngle = pi;
+            foreach (Vector3 limb in legs)
+            {
+               closestAngle = Math.Min(closestAngle, vec.AngleTo(limb));
+            }
+
+            maxClosestAngle = Math.Max(maxClosestAngle, closestAngle);
+        }
+        //GD.Print(legs.Count);
+        Stability = (pi - maxClosestAngle) / pi;
+    }
+
+    public virtual void setMassCenter()
+    {
+        Vector3 MassCenter = Vector3.Zero;
+        float mCount = 0;
+        foreach (Limb L in Limbs)
+        {
+            MassCenter += L.GlobalPosition * L.MassFactor;
+            mCount += L.MassFactor;
+        }
+        if (mCount > 0)
+            MassCenter /= mCount;
+        else
+            MassCenter = GlobalPosition;
+
+        Vector3 delta = MassCenter - CenterOfMassBase.GlobalPosition;
+        CenterOfMassBase.GlobalPosition += delta;
+        CenterOfMass.GlobalPosition += delta;   
+    }
+
+    public virtual void rotateTowardTarget(double delta)
+    {
+        TrackingProperties currentTrackingProperties = TrackingPropertiesBase;
+        if (CurrentAction is ITrackingChange)
+            currentTrackingProperties = (CurrentAction as ITrackingChange).TrackingProperties;
+
+        if (!IsActing && !IsStunned)    
+        {
+            float anglePerSecond = 0f;
+            Vector3 start = new Vector3(GlobalBasis[2][0], 0, GlobalBasis[2][2]).Normalized();
+            Vector3 end = new Vector3(TargetPos.GlobalBasis[2][0], 0, TargetPos.GlobalBasis[2][2]).Normalized();
+            float angleTo = start.SignedAngleTo(end, Vector3.Up);
+            if (currentTrackingProperties.SlerpTracking)
+            {
+                anglePerSecond = Math.Min(Math.Abs(angleTo * currentTrackingProperties.SlerpWeight), currentTrackingProperties.MaximumRotationPerSecond);
+
+                if (angleTo < 0)
+                    anglePerSecond = -anglePerSecond;
+            }
+            else
+            {
+                if (angleTo > 0)
+                    anglePerSecond = currentTrackingProperties.LinearRotationPerSecond;
+                else
+                    anglePerSecond = -currentTrackingProperties.LinearRotationPerSecond;
+            }
+            //GD.Print(angle);
+            //GD.Print(cross);
+            if (Math.Abs(anglePerSecond * delta) > Math.Abs(angleTo))
+                GlobalBasis = GlobalBasis.Rotated(Vector3.Up, angleTo);
+            else
+                GlobalBasis = GlobalBasis.Rotated(Vector3.Up, (float)(anglePerSecond * delta));
+        }
+
+    }
     public int DataLength{get{return 4;}}
     public virtual List<Object> GetData()
     {
         List<Object> data = new List<Object>
         {
-            CurrentHP,
-            MaxHP,
+            CurrentEnergy,
+            MaxEnergy,
             CurrentAction,
-            TargetPos
+            TargetPos.GlobalPosition
         };
 		return data;
     }
 
     public virtual void SetData(List<Object> data)
     {
-		CurrentHP      = (float)   data[0];
-		MaxHP          = (float)   data[1];
+		CurrentEnergy      = (float)   data[0];
+		MaxEnergy          = (float)   data[1];
         CurrentAction  = (Action)  data[2];
-        TargetPos      = (Vector3) data[3];
+        TargetPos.GlobalPosition      = (Vector3) data[3];
     }
 
 }

@@ -1,0 +1,742 @@
+[gd_scene load_steps=31 format=3 uid="uid://dgvaf6cplot6e"]
+
+[ext_resource type="Script" uid="uid://dku8cie5ivhqt" path="res://Entities/Enemies/Enemy.cs" id="1_j5j4p"]
+[ext_resource type="Script" uid="uid://uw6larch5h11" path="res://Actions/WeightedActions/Neutral.cs" id="2_53qhn"]
+[ext_resource type="Script" uid="uid://cao6rc61mbn4e" path="res://Entities/Limb.cs" id="2_q3mo3"]
+[ext_resource type="Texture2D" uid="uid://dfjqg4xry1vvp" path="res://betterwaffle&background.PNG" id="3_2rmgh"]
+[ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="3_ndtma"]
+[ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/AnimationManager.cs" id="8_36q5h"]
+[ext_resource type="Script" uid="uid://dhusv5cw7bo7w" path="res://Actions/WeightedActions/Attacks/GenericAnimatedWeighted.cs" id="8_psr6a"]
+[ext_resource type="Script" uid="uid://c0kpj3vdo5qnc" path="res://Actions/WeightedActions/WeightingOptions/ConstantWeightManager.cs" id="9_vgj7f"]
+[ext_resource type="Script" uid="uid://b3bpjrk0rjehp" path="res://Actions/WeightedActions/WeightingOptions/WeightProperties.cs" id="10_5vhlu"]
+[ext_resource type="Script" uid="uid://cweth5wqgngb3" path="res://Actions/WeightedActions/WeightingOptions/OffsetLinearFalloff.cs" id="10_e4j22"]
+[ext_resource type="Script" uid="uid://dba7tcyn2xv52" path="res://Actions/WeightedActions/TrackingProperties.cs" id="10_ifyqx"]
+[ext_resource type="Script" uid="uid://dmnfw8ms2fb0b" path="res://Actions/WeightedActions/Mobility/Roll.cs" id="12_dxs2k"]
+[ext_resource type="Script" uid="uid://sh5hpgdf7x1e" path="res://Actions/CooldownManager.cs" id="13_6rac8"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_f6mev"]
+radius = 0.512653
+height = 1.02531
+
+[sub_resource type="PrismMesh" id="PrismMesh_4y3ma"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xruaa"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_t06hs"]
+material = SubResource("StandardMaterial3D_xruaa")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7gt7o"]
+transparency = 4
+albedo_color = Color(1, 1, 1, 0.309804)
+
+[sub_resource type="BoxMesh" id="BoxMesh_hv1tq"]
+material = SubResource("StandardMaterial3D_7gt7o")
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_caduy"]
+radius = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jaqr8"]
+transparency = 1
+specular_mode = 2
+albedo_color = Color(0.627451, 0.627451, 0.627451, 0.227451)
+metallic_specular = 0.0
+roughness_texture = ExtResource("3_2rmgh")
+
+[sub_resource type="SphereMesh" id="SphereMesh_bqttr"]
+material = SubResource("StandardMaterial3D_jaqr8")
+radius = 1.0
+height = 2.0
+
+[sub_resource type="Animation" id="Animation_ktdxy"]
+resource_name = "Ball"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.00833333, 0.2, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 0.0717349, 0), Vector3(0, 0.0717349, 0), Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Limbs/RArm1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.00833333, 0.2, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Limbs/RArm2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.00833333, 0.2, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1.6, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(1.6, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Limbs/LArm2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.00833333, 0.2, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-1.6, 0, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(-1.6, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Limbs/LArm1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.00833333, 0.2, 0.9, 1),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-1, 1, 0), Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(-1, 1, 0)]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Actions/Roll")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0.9),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"EndAction"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_j8y48"]
+resource_name = "Fall"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 0.0717349, 0), Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Limbs/RArm1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.1001, 2),
+"transitions": PackedFloat32Array(2, 1, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 0), Vector3(1, 0.680219, 0), Vector3(0.835146, 0.0717349, 0.550029), Vector3(1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Limbs/RArm2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector3(1.6, 0, 0), Vector3(1.6, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Limbs/LArm2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector3(-1.6, 0, 0), Vector3(-1.6, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Limbs/LArm1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.1001, 2),
+"transitions": PackedFloat32Array(2, 1, 1, 1),
+"update": 0,
+"values": [Vector3(-1, 1, 0), Vector3(-1, 0.680219, 0), Vector3(-0.835146, 0.0717349, -0.550029), Vector3(-1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_23uap"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Limbs/RArm1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Limbs/RArm2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1.6, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Limbs/LArm2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.6, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Limbs/LArm1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1, 1, 0)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Limbs/LLeg:position")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-0.3, -0.1, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Limbs/RLeg:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.3, -0.1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_0er8i"]
+resource_name = "StepForward"
+length = 0.7
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.7),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Limbs/LLeg:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.366667, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-0.3, -0.1, 0), Vector3(-0.3, -0.1, 0.161054), Vector3(-0.3, -0.1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Limbs/RLeg:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.366667, 0.7),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.3, -0.1, 0), Vector3(0.3, -0.1, -0.296273), Vector3(0.3, -0.1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mqab3"]
+resource_name = "Stumble"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 0.680219, 0), Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Limbs/RArm1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(2, 1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 0), Vector3(1, 0.680219, 0), Vector3(1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Limbs/RArm2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector3(1.6, 0, 0), Vector3(1.6, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Limbs/LArm2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector3(-1.6, 0, 0), Vector3(-1.6, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Limbs/LArm1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(2, 1, 1),
+"update": 0,
+"values": [Vector3(-1, 1, 0), Vector3(-1, 0.680219, 0), Vector3(-1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_8p42r"]
+resource_name = "Swing"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 1, 0), Vector3(0, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Limbs/RArm1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.2001, 0.566667, 0.566767, 1),
+"transitions": PackedFloat32Array(2, 1, 2, -2, -2, 1),
+"update": 0,
+"values": [Vector3(1, 1, 0), Vector3(1.1, 1.7, 0.963636), Vector3(1.1, 1.7, 0.963636), Vector3(0.499698, 0.8, -1.54774), Vector3(0.3, 1, -1.54737), Vector3(1, 1, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Limbs/RArm2:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.2001, 0.566667, 1),
+"transitions": PackedFloat32Array(2, 1, 2, -2, 1),
+"update": 0,
+"values": [Vector3(1.6, 0, 0), Vector3(2.23636, 1.1, 0.818182), Vector3(2.23636, 1.1, 0.818182), Vector3(0.394737, 0.2, -2.73158), Vector3(1.6, 0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Limbs/LArm2:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.566667, 0.566767, 1),
+"transitions": PackedFloat32Array(2, 2, -2, -2, 1),
+"update": 0,
+"values": [Vector3(-1.6, 0, 0), Vector3(-1.4, 0.1, -1.1), Vector3(-2, 0.7, 0.4), Vector3(-2, 0.7, 0.4), Vector3(-1.6, 0, 0)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Limbs/LArm1:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.566667, 0.566767, 0.566867, 0.566967, 1),
+"transitions": PackedFloat32Array(2, 2, -2, -2, -2, -2, 1),
+"update": 0,
+"values": [Vector3(-1, 1, 0), Vector3(-1.2, 0.4, -0.4), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1, 0)]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Actions/Swing")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"EndAction"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nwfa0"]
+_data = {
+&"Ball": SubResource("Animation_ktdxy"),
+&"Fall": SubResource("Animation_j8y48"),
+&"RESET": SubResource("Animation_23uap"),
+&"StepForward": SubResource("Animation_0er8i"),
+&"Stumble": SubResource("Animation_mqab3"),
+&"Swing": SubResource("Animation_8p42r")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ccfhe"]
+size = Vector3(1.4, 2.5, 1.5)
+
+[node name="Golem" type="CharacterBody3D" node_paths=PackedStringArray("TrackingPropertiesBase", "Animation", "TargetPos", "CenterOfMass", "CenterOfMassBase", "VisualHP", "CurrentAction")]
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_j5j4p")
+TrackingPropertiesBase = NodePath("BaseTracking")
+Animation = NodePath("AnimationManager")
+TargetPos = NodePath("MiscVisuals/TargetPosition")
+CenterOfMass = NodePath("Limbs/CenterOfMassVisual")
+CenterOfMassBase = NodePath("Limbs/CenterOfMassVisual2")
+QuickRecoveryWeight = 0.5
+StumbleStabilityThreshold = 0.2
+FallStabilityThreshold = 0.175
+VisualHP = NodePath("MiscVisuals/ColorRect")
+CurrentAction = NodePath("Actions/Neutral")
+
+[node name="MiscVisuals" type="Node3D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="MiscVisuals"]
+offset_left = 498.0
+offset_top = 606.0
+offset_right = 1148.0
+offset_bottom = 646.0
+color = Color(0.835294, 0, 0, 1)
+
+[node name="TargetPosition" type="CharacterBody3D" parent="MiscVisuals"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47684, 0)
+top_level = true
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MiscVisuals/TargetPosition"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.133347, 0)
+shape = SubResource("CapsuleShape3D_f6mev")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="MiscVisuals/TargetPosition"]
+mesh = SubResource("PrismMesh_4y3ma")
+
+[node name="Limbs" type="Node3D" parent="."]
+
+[node name="CenterOfMassVisual" type="MeshInstance3D" parent="Limbs"]
+transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 1, 0)
+mesh = SubResource("SphereMesh_t06hs")
+skeleton = NodePath("../..")
+
+[node name="CenterOfMassVisual2" type="MeshInstance3D" parent="Limbs"]
+transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 1, 0)
+mesh = SubResource("BoxMesh_hv1tq")
+skeleton = NodePath("../..")
+
+[node name="Chest" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+transform = Transform3D(0.835146, 0, -0.550029, 0, 1, 0, 0.550029, 0, 0.835146, 0, 1, 0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("2_q3mo3")
+Parent = NodePath("../..")
+MassFactor = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/Chest"]
+shape = SubResource("SphereShape3D_caduy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/Chest"]
+mesh = SubResource("SphereMesh_bqttr")
+
+[node name="LArm1" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+transform = Transform3D(0.501087, 0, -0.330017, 0, 0.6, 0, 0.330017, 0, 0.501087, -1, 1, 0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("2_q3mo3")
+Parent = NodePath("../..")
+MassFactor = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/LArm1"]
+shape = SubResource("SphereShape3D_caduy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/LArm1"]
+mesh = SubResource("SphereMesh_bqttr")
+
+[node name="LArm2" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+transform = Transform3D(0.504, 0, 0, 0, 0.504, 0, 0, 0, 0.504, -1.6, 0, 0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("2_q3mo3")
+Parent = NodePath("../..")
+MassFactor = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/LArm2"]
+shape = SubResource("SphereShape3D_caduy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/LArm2"]
+mesh = SubResource("SphereMesh_bqttr")
+
+[node name="RArm1" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+transform = Transform3D(0.527944, -3.5843e-09, -0.285089, 4.50218e-09, 0.6, 7.93858e-10, 0.285089, -2.83772e-09, 0.527944, 1, 1, 0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("2_q3mo3")
+Parent = NodePath("../..")
+MassFactor = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/RArm1"]
+shape = SubResource("SphereShape3D_caduy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/RArm1"]
+transform = Transform3D(1, -1.35308e-16, 0, -1.31839e-16, 1, -1.11022e-16, 0, -2.22045e-16, 1, 0, 0, 0)
+mesh = SubResource("SphereMesh_bqttr")
+
+[node name="RArm2" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+transform = Transform3D(0.502082, -3.82556e-09, 0.0439265, 3.78184e-09, 0.504, 6.66839e-10, -0.0439265, -3.34694e-10, 0.502082, 1.6, 0, 0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("2_q3mo3")
+Parent = NodePath("../..")
+MassFactor = 3.0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/RArm2"]
+shape = SubResource("SphereShape3D_caduy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/RArm2"]
+mesh = SubResource("SphereMesh_bqttr")
+
+[node name="LLeg" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.3, -0.1, 0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("2_q3mo3")
+Parent = NodePath("../..")
+MassFactor = 3.0
+IsFooting = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/LLeg"]
+shape = SubResource("SphereShape3D_caduy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/LLeg"]
+mesh = SubResource("SphereMesh_bqttr")
+
+[node name="RLeg" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0.3, -0.1, 0)
+collision_layer = 4
+collision_mask = 0
+script = ExtResource("2_q3mo3")
+Parent = NodePath("../..")
+MassFactor = 3.0
+IsFooting = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/RLeg"]
+shape = SubResource("SphereShape3D_caduy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/RLeg"]
+mesh = SubResource("SphereMesh_bqttr")
+
+[node name="AnimationManager" type="Node" parent="." node_paths=PackedStringArray("ActionAnimator")]
+script = ExtResource("8_36q5h")
+ActionAnimator = NodePath("AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationManager"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_nwfa0")
+}
+
+[node name="EnvironmentHitbox" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.96046e-08, 0.75, -0.05)
+shape = SubResource("BoxShape3D_ccfhe")
+
+[node name="BaseTracking" type="Node" parent="."]
+script = ExtResource("10_ifyqx")
+SlerpWeight = 3.0
+
+[node name="Actions" type="Node3D" parent="."]
+
+[node name="Neutral" type="Node3D" parent="Actions" node_paths=PackedStringArray("WeightManager", "ActionProperties")]
+script = ExtResource("2_53qhn")
+WeightManager = NodePath("WeightManager")
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="Actions/Neutral" node_paths=PackedStringArray("Root")]
+script = ExtResource("3_ndtma")
+Root = NodePath("../../..")
+
+[node name="WeightManager" type="Node" parent="Actions/Neutral" node_paths=PackedStringArray("WeightProperties")]
+script = ExtResource("9_vgj7f")
+WeightProperties = NodePath("WeightProperties")
+
+[node name="WeightProperties" type="Node" parent="Actions/Neutral/WeightManager" node_paths=PackedStringArray("FollowUpOptions")]
+script = ExtResource("10_5vhlu")
+BaseWeight = 10.0
+FollowUpOptions = [NodePath("../../../Swing"), NodePath("../.."), NodePath("../../../Roll")]
+
+[node name="EndSequence" type="Node3D" parent="Actions" node_paths=PackedStringArray("WeightManager", "ActionProperties")]
+script = ExtResource("2_53qhn")
+WeightManager = NodePath("WeightManager")
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="Actions/EndSequence" node_paths=PackedStringArray("Root")]
+script = ExtResource("3_ndtma")
+ChannelTime = 0.3
+Root = NodePath("../../..")
+
+[node name="WeightManager" type="Node" parent="Actions/EndSequence" node_paths=PackedStringArray("WeightProperties")]
+script = ExtResource("9_vgj7f")
+WeightProperties = NodePath("WeightProperties")
+
+[node name="WeightProperties" type="Node" parent="Actions/EndSequence/WeightManager" node_paths=PackedStringArray("FollowUpOptions")]
+script = ExtResource("10_5vhlu")
+BaseWeight = 10.0
+FollowUpOptions = [NodePath("../../../Neutral")]
+
+[node name="Swing" type="Node3D" parent="Actions" node_paths=PackedStringArray("WeightManager", "Animation", "ActionProperties")]
+script = ExtResource("8_psr6a")
+LocalOffset = Vector3(0, 0, -2)
+WeightManager = NodePath("WeightManager")
+Animation = NodePath("../../AnimationManager")
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="Actions/Swing" node_paths=PackedStringArray("Root")]
+script = ExtResource("3_ndtma")
+Root = NodePath("../../..")
+
+[node name="WeightManager" type="Node" parent="Actions/Swing" node_paths=PackedStringArray("WeightProperties")]
+script = ExtResource("10_e4j22")
+WeightProperties = NodePath("WeightProperties")
+
+[node name="WeightProperties" type="Node" parent="Actions/Swing/WeightManager" node_paths=PackedStringArray("FollowUpOptions")]
+script = ExtResource("10_5vhlu")
+BaseWeight = 20.0
+WeightMultiplier = 4.0
+FollowUpOptions = [NodePath("../../../EndSequence"), NodePath("../../../Roll")]
+
+[node name="Roll" type="Node3D" parent="Actions" node_paths=PackedStringArray("WeightManager", "Animation", "TrackingProperties", "Cooldown", "ActionProperties")]
+script = ExtResource("12_dxs2k")
+LocalOffset = Vector3(0, 0, -2)
+WeightManager = NodePath("OffsetLinearFalloff")
+Animation = NodePath("../../AnimationManager")
+TrackingProperties = NodePath("TrackingProperties")
+Distance = 5.0
+Cooldown = NodePath("CooldownManager")
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="Actions/Roll" node_paths=PackedStringArray("Root")]
+script = ExtResource("3_ndtma")
+ChannelTime = 0.2
+EndLagTime = 0.1
+Root = NodePath("../../..")
+
+[node name="CooldownManager" type="Node" parent="Actions/Roll"]
+script = ExtResource("13_6rac8")
+CDBase = 3.0
+
+[node name="TrackingProperties" type="Node" parent="Actions/Roll"]
+script = ExtResource("10_ifyqx")
+SlerpTracking = false
+LinearRotationPerSecond = 6.283
+
+[node name="OffsetLinearFalloff" type="Node" parent="Actions/Roll" node_paths=PackedStringArray("WeightProperties")]
+script = ExtResource("10_e4j22")
+WeightProperties = NodePath("WeightProperties")
+
+[node name="WeightProperties" type="Node" parent="Actions/Roll/OffsetLinearFalloff" node_paths=PackedStringArray("FollowUpOptions")]
+script = ExtResource("10_5vhlu")
+BaseWeight = 40.0
+WeightMultiplier = 20.0
+FollowUpOptions = [NodePath("../../../Swing"), NodePath("../../../EndSequence")]
+
+[connection signal="area_entered" from="Limbs/Chest" to="Limbs/Chest" method="AreaEntered"]
+[connection signal="area_entered" from="Limbs/LArm1" to="Limbs/LArm1" method="AreaEntered"]
+[connection signal="area_entered" from="Limbs/LArm2" to="Limbs/LArm2" method="AreaEntered"]
+[connection signal="area_entered" from="Limbs/RArm1" to="Limbs/RArm1" method="AreaEntered"]
+[connection signal="area_entered" from="Limbs/RArm2" to="Limbs/RArm2" method="AreaEntered"]
+[connection signal="area_entered" from="Limbs/LLeg" to="Limbs/LLeg" method="AreaEntered"]
+[connection signal="area_entered" from="Limbs/RLeg" to="Limbs/RLeg" method="AreaEntered"]

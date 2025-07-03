@@ -10,7 +10,5 @@ public partial class ActionProperties : Node
 	public float EndLagTime = 0;
 	[Export]
 	public Entity Root;
-	[Export]
-	public bool Interruptable = true;
 	
 }

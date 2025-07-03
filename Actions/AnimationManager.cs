@@ -7,11 +7,19 @@ public partial class AnimationManager : Node, RewindableObject
 {
 	[Export]
 	public AnimationPlayer ActionAnimator{get;set;}
-	public void Play(String Name){
+	public void Play(String Name)
+	{
 		ActionAnimator.Play(Name);
 	}
 
-	public int DataLength{get{return 2;}}
+
+	public void EndAnimation()
+	{
+		ActionAnimator.Advance(ActionAnimator.CurrentAnimationLength - ActionAnimator.CurrentAnimationPosition);
+	}
+
+
+    public int DataLength{get{return 2;}}
 	public List<Object> GetData()
 	{		
 		List<Object> data = new List<Object>
