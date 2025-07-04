@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://debea5my12hmc"]
+[gd_scene load_steps=20 format=3 uid="uid://debea5my12hmc"]
 
 [ext_resource type="Script" uid="uid://beq0x31h1kshl" path="res://Entities/Player/Player.cs" id="1_83h1a"]
 [ext_resource type="Script" uid="uid://cocpcvof8gsku" path="res://Entities/Player/TargetFollowCamera.cs" id="2_dtv0t"]
@@ -30,6 +30,9 @@ material = SubResource("StandardMaterial3D_pte46")
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_yxuyj"]
 radius = 0.03
 height = 31.71
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_01a4e"]
+radius = 50.0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5tayy"]
 size = Vector3(0.7, 0.7, 0.7)
@@ -87,13 +90,15 @@ transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 1, 0)
 mesh = SubResource("BoxMesh_80kcv")
 skeleton = NodePath("../..")
 
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Target", "PivotIndicator")]
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Target", "SelectionBox", "YPivot", "PivotIndicator")]
 process_mode = 3
 process_priority = -2
 transform = Transform3D(1, 0, 0, 0, 1, -3.45707e-06, 0, 3.45707e-06, 1, 0, -3.50078e-05, 10)
 top_level = true
 script = ExtResource("2_dtv0t")
 Target = NodePath("..")
+SelectionBox = NodePath("SelectionBox")
+YPivot = [NodePath("../TargetPosition")]
 IdleOffset = Vector3(0, 0.5, 1.5)
 FocusOffset = Vector3(0, 0.5, 1.5)
 RotationWeight = 0.4
@@ -104,6 +109,13 @@ PivotIndicator = NodePath("MeshInstance3D2")
 top_level = true
 mesh = SubResource("CapsuleMesh_yxuyj")
 skeleton = NodePath("../..")
+
+[node name="SelectionBox" type="Area3D" parent="Camera3D"]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/SelectionBox"]
+shape = SubResource("SphereShape3D_01a4e")
 
 [node name="LimbBox" type="Area3D" parent="." node_paths=PackedStringArray("Parent")]
 collision_layer = 2
@@ -117,9 +129,6 @@ shape = SubResource("BoxShape3D_5tayy")
 
 [node name="Greatsword" parent="." instance=ExtResource("5_ttt55")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="piv" parent="Greatsword" index="1"]
-transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749614, 0, -0.749614, 0.661874, 0, 0.359612, 0.186193)
 
 [node name="ActionProperties" parent="Greatsword" index="2" node_paths=PackedStringArray("Root")]
 Root = NodePath("../..")
@@ -142,6 +151,7 @@ color = Color(0.835294, 0, 0, 1)
 
 [node name="TrackingProperties" type="Node" parent="."]
 script = ExtResource("7_1vjjv")
+SlerpTracking = false
 SlerpWeight = 6.0
 MaximumRotationPerSecond = 62.83
 LinearRotationPerSecond = 6283.0

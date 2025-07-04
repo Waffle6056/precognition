@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://dgvaf6cplot6e"]
+[gd_scene load_steps=32 format=3 uid="uid://dgvaf6cplot6e"]
 
 [ext_resource type="Script" uid="uid://dku8cie5ivhqt" path="res://Entities/Enemies/Enemy.cs" id="1_j5j4p"]
 [ext_resource type="Script" uid="uid://uw6larch5h11" path="res://Actions/WeightedActions/Neutral.cs" id="2_53qhn"]
@@ -471,6 +471,8 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_ccfhe"]
 size = Vector3(1.4, 2.5, 1.5)
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_mfp7y"]
+
 [node name="Golem" type="CharacterBody3D" node_paths=PackedStringArray("TrackingPropertiesBase", "Animation", "TargetPos", "CenterOfMass", "CenterOfMassBase", "VisualHP", "CurrentAction")]
 collision_layer = 0
 collision_mask = 0
@@ -732,6 +734,14 @@ script = ExtResource("10_5vhlu")
 BaseWeight = 40.0
 WeightMultiplier = 20.0
 FollowUpOptions = [NodePath("../../../Swing"), NodePath("../../../EndSequence")]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05189, 0)
+collision_layer = 8
+collision_mask = 0
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("SphereShape3D_mfp7y")
 
 [connection signal="area_entered" from="Limbs/Chest" to="Limbs/Chest" method="AreaEntered"]
 [connection signal="area_entered" from="Limbs/LArm1" to="Limbs/LArm1" method="AreaEntered"]

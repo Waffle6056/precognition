@@ -165,3 +165,6 @@ mesh = SubResource("BoxMesh_vcxov")
 
 [node name="Golem" parent="." instance=ExtResource("6_x4jhb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.94949, 2.1408, -3.39911)
+
+[node name="Golem2" parent="." instance=ExtResource("6_x4jhb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545465, -0.38138, -1.33715)

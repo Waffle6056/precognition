@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "D:\\godot\\precognition\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\player\\targetfollowcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\player\\targetfollowcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\player\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\player\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -13,10 +17,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\weightedactions\\mobility\\roll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\weightedactions\\mobility\\roll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\player\\targetfollowcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\player\\targetfollowcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\enemies\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -62,11 +62,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Roll.cs",
               "DocumentMoniker": "D:\\godot\\precognition\\Actions\\WeightedActions\\Mobility\\Roll.cs",
               "RelativeDocumentMoniker": "Actions\\WeightedActions\\Mobility\\Roll.cs",
@@ -79,7 +79,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Entity.cs",
               "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Entity.cs",
               "RelativeDocumentMoniker": "Entities\\Entity.cs",
@@ -92,7 +92,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "Player.cs",
               "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Player\\Player.cs",
               "RelativeDocumentMoniker": "Entities\\Player\\Player.cs",
@@ -101,20 +101,22 @@
               "ViewState": "AgIAAD4AAAAAAAAAAAAIwFgAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-18T20:20:01.421Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 0,
               "Title": "TargetFollowCamera.cs",
               "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Player\\TargetFollowCamera.cs",
               "RelativeDocumentMoniker": "Entities\\Player\\TargetFollowCamera.cs",
               "ToolTip": "D:\\godot\\precognition\\Entities\\Player\\TargetFollowCamera.cs",
               "RelativeToolTip": "Entities\\Player\\TargetFollowCamera.cs",
-              "ViewState": "AgIAAAUAAAAAAAAAAAAQwBAAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-05-26T19:26:54.789Z",
-              "IsPinned": true
+              "IsPinned": true,
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",

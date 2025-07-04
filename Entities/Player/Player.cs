@@ -85,8 +85,9 @@ public partial class Player : Entity
         TargetPos.Velocity += movement * TargetSpeed;
 
         //GD.Print(Velocity.Length() + " " + Velocity.Y);
-        if (!movement.Length().Equals(Math.Abs(movement.Y)))
-            TargetPos.GlobalBasis = Basis.LookingAt((movement * new Vector3(1, 0, 1)).Normalized());
+        //if (!movement.Length().Equals(Math.Abs(movement.Y)))
+        //    TargetPos.GlobalBasis = Basis.LookingAt((movement * new Vector3(1, 0, 1)).Normalized());
+        
 
         processDash(movement);
         

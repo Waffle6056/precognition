@@ -7,6 +7,8 @@ public partial class TargetFollowCamera : Camera3D
     [Export]
     public Node3D Target;
     [Export]
+    public Area3D SelectionBox;
+    [Export]
     public Node3D[] YPivot = new Node3D[0];
     [Export]
     public Node3D[] XPivot = new Node3D[0];
@@ -27,12 +29,11 @@ public partial class TargetFollowCamera : Camera3D
     public float FollowWeight = .5f;
     [Export]
     public float DPI = 1;
-    [Export]
-    public float PivotDuration = .1f;
+
     [Export]
     public Node3D PivotIndicator;
-    public Vector3 pivotPosition = Vector3.Zero;
-    public double pivotRemainingDuration = 0;
+    public Node3D pivot;
+    public bool lockOn = false;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -48,29 +49,22 @@ public partial class TargetFollowCamera : Camera3D
 
             //GD.Print("SWAPPED FOCUS " + Focused);
         }
-
-        if (Input.IsActionPressed("PivotRight") || Input.IsActionPressed("PivotLeft"))
-            pivotRemainingDuration = delta;
-        if (Input.IsActionJustPressed("PivotRight") || Input.IsActionJustPressed("PivotLeft"))
+        if (Input.IsActionJustPressed("LockOn"))
         {
-            pivotPosition = Target.GlobalPosition * new Vector3(1,0,1);
-            pivotRemainingDuration = PivotDuration;
+            GD.Print("Lock on pressed");
+            lockOn = !lockOn;
+            pivot = selectPivot();
         }
-        if (Input.IsActionJustPressed("PivotLeft"))
-            pivotPosition +=  (-GlobalBasis[0] * new Vector3(1, 0, 1)).Normalized();
-        if (Input.IsActionJustPressed("PivotRight"))
-            pivotPosition +=  (GlobalBasis[0] * new Vector3(1, 0, 1)).Normalized();
 
 
-        if (pivotRemainingDuration > 0)
+        if (lockOn)
         {
             PivotIndicator.Visible = true;
-            PivotIndicator.GlobalPosition = pivotPosition;
-            Vector3 targetDir = ((pivotPosition - GlobalPosition) * new Vector3(1, 0, 1)).Normalized();
+            PivotIndicator.GlobalPosition = pivot.GlobalPosition;
+            Vector3 targetDir = ((pivot.GlobalPosition - GlobalPosition) * new Vector3(1, 0, 1)).Normalized();
             Vector3 startDir = (-TargetRotation[2] * new Vector3(1, 0, 1)).Normalized();
             TargetRotation = TargetRotation.Rotated(Vector3.Up, startDir.SignedAngleTo(targetDir,Vector3.Up));
             //GD.Print(startDir.SignedAngleTo(targetDir, Vector3.Up));
-            pivotRemainingDuration -= delta;
         }
         else
             PivotIndicator.Visible = false;
@@ -92,6 +86,24 @@ public partial class TargetFollowCamera : Camera3D
         Vector3 Offset = Focused ? FocusOffset : IdleOffset;
 		GlobalPosition = GlobalPosition.Lerp(Target.GlobalPosition + GlobalBasis * Offset, FollowWeight);
 	}
+    Node3D selectPivot()
+    {
+        Node3D closest = null;
+        float closestAngle = 0;
+        foreach (Node3D n in SelectionBox.GetOverlappingBodies())
+        {
+            Vector3 tar = (n.GlobalPosition - GlobalPosition).Normalized();
+
+            float angle = (-TargetRotation[2]).AngleTo(tar);
+            if (closest == null || angle < closestAngle)
+            {
+                closest = n;
+                closestAngle = angle;
+            }
+        }
+
+        return closest;
+    }
     public override void _Input(InputEvent @event)
     {
         base._Input(@event);
