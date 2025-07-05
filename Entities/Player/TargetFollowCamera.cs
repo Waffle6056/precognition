@@ -34,6 +34,7 @@ public partial class TargetFollowCamera : Camera3D
     public Node3D PivotIndicator;
     public Node3D pivot;
     public bool lockOn = false;
+    private Vector3 _lastPivotDir = Vector3.Forward;
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -62,8 +63,9 @@ public partial class TargetFollowCamera : Camera3D
             PivotIndicator.Visible = true;
             PivotIndicator.GlobalPosition = pivot.GlobalPosition;
             Vector3 targetDir = ((pivot.GlobalPosition - GlobalPosition) * new Vector3(1, 0, 1)).Normalized();
-            Vector3 startDir = (-TargetRotation[2] * new Vector3(1, 0, 1)).Normalized();
+            Vector3 startDir = _lastPivotDir;
             TargetRotation = TargetRotation.Rotated(Vector3.Up, startDir.SignedAngleTo(targetDir,Vector3.Up));
+            _lastPivotDir = targetDir;
             //GD.Print(startDir.SignedAngleTo(targetDir, Vector3.Up));
         }
         else

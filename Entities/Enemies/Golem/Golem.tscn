@@ -1,10 +1,11 @@
-[gd_scene load_steps=32 format=3 uid="uid://dgvaf6cplot6e"]
+[gd_scene load_steps=34 format=3 uid="uid://dgvaf6cplot6e"]
 
 [ext_resource type="Script" uid="uid://dku8cie5ivhqt" path="res://Entities/Enemies/Enemy.cs" id="1_j5j4p"]
 [ext_resource type="Script" uid="uid://uw6larch5h11" path="res://Actions/WeightedActions/Neutral.cs" id="2_53qhn"]
 [ext_resource type="Script" uid="uid://cao6rc61mbn4e" path="res://Entities/Limb.cs" id="2_q3mo3"]
 [ext_resource type="Texture2D" uid="uid://dfjqg4xry1vvp" path="res://betterwaffle&background.PNG" id="3_2rmgh"]
 [ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="3_ndtma"]
+[ext_resource type="Script" uid="uid://bchnl4uspmyfe" path="res://Entities/Hurtbox.cs" id="4_05r0g"]
 [ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/AnimationManager.cs" id="8_36q5h"]
 [ext_resource type="Script" uid="uid://dhusv5cw7bo7w" path="res://Actions/WeightedActions/Attacks/GenericAnimatedWeighted.cs" id="8_psr6a"]
 [ext_resource type="Script" uid="uid://c0kpj3vdo5qnc" path="res://Actions/WeightedActions/WeightingOptions/ConstantWeightManager.cs" id="9_vgj7f"]
@@ -47,6 +48,9 @@ roughness_texture = ExtResource("3_2rmgh")
 material = SubResource("StandardMaterial3D_jaqr8")
 radius = 1.0
 height = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_05r0g"]
+radius = 1.0
 
 [sub_resource type="Animation" id="Animation_ktdxy"]
 resource_name = "Ball"
@@ -275,6 +279,18 @@ tracks/6/keys = {
 "update": 0,
 "values": [Vector3(0.3, -0.1, 0)]
 }
+tracks/7/type = "value"
+tracks/7/imported = false
+tracks/7/enabled = true
+tracks/7/path = NodePath("Limbs/RArm2/Hurtbox:monitoring")
+tracks/7/interp = 1
+tracks/7/loop_wrap = true
+tracks/7/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
 
 [sub_resource type="Animation" id="Animation_0er8i"]
 resource_name = "StepForward"
@@ -457,6 +473,18 @@ tracks/5/keys = {
 "method": &"EndAction"
 }]
 }
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("Limbs/RArm2/Hurtbox:monitoring")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.566667),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nwfa0"]
 _data = {
@@ -478,6 +506,8 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_j5j4p")
 TrackingPropertiesBase = NodePath("BaseTracking")
+MaxEnergy = 50.0
+CurrentEnergy = 50.0
 Animation = NodePath("AnimationManager")
 TargetPos = NodePath("MiscVisuals/TargetPosition")
 CenterOfMass = NodePath("Limbs/CenterOfMassVisual")
@@ -591,6 +621,19 @@ shape = SubResource("SphereShape3D_caduy")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/RArm2"]
 mesh = SubResource("SphereMesh_bqttr")
+
+[node name="Hurtbox" type="Area3D" parent="Limbs/RArm2"]
+transform = Transform3D(0.725381, -0.20699, 0.656489, 0, 0.953717, 0.300706, -0.688347, -0.218127, 0.691808, 0, 0, 0)
+collision_layer = 0
+collision_mask = 2
+monitoring = false
+script = ExtResource("4_05r0g")
+ForceMagnitude = 5.0
+Damage = 5.0
+metadata/_custom_type_script = "uid://bchnl4uspmyfe"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/RArm2/Hurtbox"]
+shape = SubResource("SphereShape3D_05r0g")
 
 [node name="LLeg" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.3, -0.1, 0)
@@ -748,5 +791,6 @@ shape = SubResource("SphereShape3D_mfp7y")
 [connection signal="area_entered" from="Limbs/LArm2" to="Limbs/LArm2" method="AreaEntered"]
 [connection signal="area_entered" from="Limbs/RArm1" to="Limbs/RArm1" method="AreaEntered"]
 [connection signal="area_entered" from="Limbs/RArm2" to="Limbs/RArm2" method="AreaEntered"]
+[connection signal="area_entered" from="Limbs/RArm2/Hurtbox" to="Limbs/RArm2/Hurtbox" method="Collide"]
 [connection signal="area_entered" from="Limbs/LLeg" to="Limbs/LLeg" method="AreaEntered"]
 [connection signal="area_entered" from="Limbs/RLeg" to="Limbs/RLeg" method="AreaEntered"]

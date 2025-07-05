@@ -234,16 +234,18 @@ script = ExtResource("5_jyuq4")
 ActionAnimator = NodePath("../../AnimationPlayer")
 
 [node name="Hurtbox" type="Area3D" parent="GreatswordImpale"]
-transform = Transform3D(1, 0, 0, 0, 1, 2.98023e-08, 0, -2.98023e-08, 1, 0, -2.98023e-08, 1.49012e-08)
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, -2.98023e-08, 1.49012e-08)
 collision_layer = 0
 collision_mask = 4
 monitoring = false
 monitorable = false
 script = ExtResource("2_cjg66")
 ForceMagnitude = 0.175
+Damage = 5.0
+CounterDamageMultipler = 2.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="GreatswordImpale/Hurtbox"]
-transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, -1.99767e-07, 0.59712, 1.323)
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0.597, -1.323)
 shape = SubResource("BoxShape3D_12r05")
 
 [node name="GreatswordDownslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown") groups=["Rewindable"]]

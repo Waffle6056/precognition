@@ -11,6 +11,10 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
 	[Export]
 	public float CurrentEnergy{get; set;} = 100;
     public double LastHitTime  = 0;
+    public double InvulnTimeRemaining = 0;
+    [Export]
+    public bool InvulnToggle = false;
+    public bool IsInvuln { get { return InvulnToggle || InvulnTimeRemaining > 0; } }
     [Export]
     public virtual AnimationManager Animation { get; set; }
     [Export]
@@ -84,10 +88,20 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         //          "Active        : "+Active+"\n");
 
         
-        VisualHP.Size = new Vector2(CurrentEnergy,40);
+        VisualHP.Size = new Vector2(CurrentEnergy * 10,40);
+
+        if (InvulnTimeRemaining > 0)
+            InvulnTimeRemaining -= delta;
 
         if (RewindController.Instance.IsRewinding)
 			return;
+
+        
+    }
+
+    public override void _PhysicsProcess(double delta)
+    {
+        SetCenters();
 
         EntityTime += delta;
 
@@ -96,11 +110,6 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         rotateTowardTarget(delta);
         if (IsStunned)
             stunned(delta);
-    }
-
-    public override void _PhysicsProcess(double delta)
-    {
-        SetCenters();
     }
 
     protected void processMovement(double delta)
@@ -175,12 +184,16 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         //    TargetPos += Force;
         //GD.Print("KNOCKBACK FORCE " + Force);
         //TargetPos += Force;
+        if (IsInvuln)
+            return Vector3.Zero;
         CenterOfMass.GlobalPosition += Force;
         
         return Force;
     }
     public virtual float TakeHit(float Damage)
-    { 
+    {
+        if (IsInvuln)
+            return 0;
         CurrentEnergy -= Damage;
         LastHitTime = EntityTime;
         return Damage;
@@ -188,7 +201,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
 
     public virtual float TakeStunned(float Duration)
     {
-        if (IsStunned || CurrentAction != null && !CurrentAction.Interrupt())
+        if (IsStunned || IsInvuln || CurrentAction != null && !CurrentAction.Interrupt())
             return 0;
         StunCallTime = EntityTime;
         StunDuration = Duration;

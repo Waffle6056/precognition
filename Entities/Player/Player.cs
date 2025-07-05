@@ -60,7 +60,7 @@ public partial class Player : Entity
             DistortionRegenCalltime = EntityTime;
         }
         //Rotation = new Vector3(0, CurrentCamera.Rotation.Y, CurrentCamera.Rotation.Z);
-        MoveTarget(delta);
+        
 
         if (Active)
             CurrentCamera.Focused = true;
@@ -71,6 +71,11 @@ public partial class Player : Entity
         base._Process(delta);
         //GD.Print("PARENT");
     }
+    public override void _PhysicsProcess(double delta)
+    {
+        MoveTarget(delta);
+        base._PhysicsProcess(delta);
+    }
 
     private void MoveTarget(double delta)
 	{
@@ -80,16 +85,16 @@ public partial class Player : Entity
 			return;	
 		}
 
-        Vector3 movement = inputDirection();
+        Vector3 globalMovement = inputDirection();
         
-        TargetPos.Velocity += movement * TargetSpeed;
+        TargetPos.Velocity += globalMovement * TargetSpeed;
 
         //GD.Print(Velocity.Length() + " " + Velocity.Y);
         //if (!movement.Length().Equals(Math.Abs(movement.Y)))
         //    TargetPos.GlobalBasis = Basis.LookingAt((movement * new Vector3(1, 0, 1)).Normalized());
         
 
-        processDash(movement);
+        processDash(globalMovement * CurrentCamera.GlobalBasis);
         
         processJump();
     }
@@ -98,7 +103,7 @@ public partial class Player : Entity
     private void processDash(Vector3 movement)
     {
         if (movement.Length() == 0)
-            movement = (GlobalBasis[2] * new Vector3(1, 0, 1)).Normalized();
+            DashDirection = new Vector3(0, 0, 1);
         if (!IsDashing && Input.IsActionJustPressed("Dash")) {
             //if (Input.IsActionJustPressed("PivotLeft"))
             //    movement = (CurrentCamera.TargetRotation[0] * new Vector3(1, 0, 1)).Normalized();
@@ -116,7 +121,7 @@ public partial class Player : Entity
 
                     DashCallTime = EntityTime;
                     DashDirection = movement;
-                    
+                    GD.Print(movement + " " + DashDirection);
                 }
             }
             else
@@ -128,9 +133,9 @@ public partial class Player : Entity
             }
         }
 
-
+        
         if (IsDashing)
-            TargetPos.Velocity += DashDirection * DashDistance / DashLength;
+            TargetPos.Velocity += (CurrentCamera.GlobalBasis * DashDirection * new Vector3(1,0,1)).Normalized() * DashDistance / DashLength;
     }
     private void processJump()
     {
@@ -177,6 +182,8 @@ public partial class Player : Entity
         //else
         //    TargetPos += Force;
         //GD.Print("KNOCKBACK FORCE " + Force);
+        if (IsInvuln)
+            return Vector3.Zero;
         TargetPos.GlobalPosition += Force;
         return Force;
     }
