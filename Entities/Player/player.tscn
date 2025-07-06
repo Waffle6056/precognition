@@ -46,7 +46,7 @@ size = Vector3(0.7, 0.7, 0.7)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6fvw3"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CurrentCamera", "TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "VisualHP", "CurrentAction") groups=["Rewindable"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CurrentCamera", "HeadBox", "LegBox", "TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "VisualHP", "CurrentAction") groups=["Rewindable"]]
 process_mode = 3
 process_priority = -1
 collision_layer = 0
@@ -58,6 +58,8 @@ SidestepDashDistance = 0.75
 DashLength = 0.1
 JumpDistance = 1.0
 JumpLength = 0.1
+HeadBox = NodePath("HeadBox")
+LegBox = NodePath("LegBox")
 TrackingPropertiesBase = NodePath("TrackingProperties")
 MaxEnergy = 50.0
 CurrentEnergy = 50.0
@@ -119,25 +121,44 @@ collision_mask = 8
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/SelectionBox"]
 shape = SubResource("SphereShape3D_01a4e")
 
-[node name="LimbBox" type="Area3D" parent="." node_paths=PackedStringArray("Parent")]
+[node name="HeadBox" type="Area3D" parent="." node_paths=PackedStringArray("Parent")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.700409, 0)
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("2_lvkyw")
+Parent = NodePath("..")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HeadBox"]
+shape = SubResource("BoxShape3D_5tayy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HeadBox"]
+transform = Transform3D(1, 0, 0, 0, -3.50078e-06, -1, 0, 1, -3.50078e-06, 0, 0, 0)
+mesh = SubResource("BoxMesh_nuwvb")
+skeleton = NodePath("../..")
+
+[node name="LegBox" type="Area3D" parent="." node_paths=PackedStringArray("Parent")]
 collision_layer = 2
 collision_mask = 0
 script = ExtResource("2_lvkyw")
 Parent = NodePath("..")
 IsFooting = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LimbBox"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LegBox"]
 shape = SubResource("BoxShape3D_5tayy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LegBox"]
+transform = Transform3D(1, 0, 0, 0, -3.50078e-06, -1, 0, 1, -3.50078e-06, 0, 0, 0)
+mesh = SubResource("BoxMesh_nuwvb")
+skeleton = NodePath("../..")
 
 [node name="Greatsword" parent="." instance=ExtResource("5_ttt55")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
+[node name="piv" parent="Greatsword" index="1"]
+transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749614, 0, -0.749614, 0.661874, 0, 0.359612, 0.186193)
+
 [node name="ActionProperties" parent="Greatsword" index="2" node_paths=PackedStringArray("Root")]
 Root = NodePath("../..")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -3.50078e-06, -1, 0, 1, -3.50078e-06, 0, 0, 0)
-mesh = SubResource("BoxMesh_nuwvb")
 
 [node name="EnvironmentHitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_6fvw3")
@@ -158,6 +179,7 @@ SlerpWeight = 6.0
 MaximumRotationPerSecond = 62.83
 LinearRotationPerSecond = 6283.0
 
-[connection signal="area_entered" from="LimbBox" to="LimbBox" method="AreaEntered"]
+[connection signal="area_entered" from="HeadBox" to="HeadBox" method="AreaEntered"]
+[connection signal="area_entered" from="LegBox" to="LegBox" method="AreaEntered"]
 
 [editable path="Greatsword"]

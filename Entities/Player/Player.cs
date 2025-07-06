@@ -39,7 +39,12 @@ public partial class Player : Entity
     public float JumpLength = 2f;
     public double JumpCallTime = -10;
     public static Player Instance {get; private set;}
-	public override void _Ready()
+    [Export]
+    public Limb HeadBox;
+    [Export]
+    public Limb LegBox;
+    public bool IsCrouching;
+    public override void _Ready()
     {
         //GD.Print(" SET INSTANCE _-_--------------------");
         base._Ready();
@@ -49,6 +54,13 @@ public partial class Player : Entity
 
     public override void _Process(double delta)
     {
+        LegBox.Visible = LegBox.Monitorable = LegBox.Monitoring = TargetPos.IsOnFloor();
+
+        if (Input.IsActionPressed("Crouch") && TargetPos.IsOnFloor())
+            HeadBox.Position = Vector3.Zero;
+        else
+            HeadBox.Position = new Vector3(0, .7f, 0);
+
         if (Input.IsActionJustPressed("Distort"))
             IsDistorted = !IsDistorted;
 
@@ -119,6 +131,7 @@ public partial class Player : Entity
                     DashDistance = DistortedDashDistance;
                     IsDistorted = false;
 
+                    InvulnTimeRemaining = DashLength;
                     DashCallTime = EntityTime;
                     DashDirection = movement;
                     GD.Print(movement + " " + DashDirection);
@@ -128,6 +141,7 @@ public partial class Player : Entity
             {
                 DashDistance = SidestepDashDistance;
 
+                InvulnTimeRemaining = DashLength;
                 DashCallTime = EntityTime;
                 DashDirection = movement;
             }

@@ -3,12 +3,12 @@
   "WorkspaceRootPath": "D:\\godot\\precognition\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\player\\targetfollowcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\player\\targetfollowcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\player\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\player\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\player\\targetfollowcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\player\\targetfollowcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -34,20 +34,23 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 6,
           "Children": [
             {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "TargetFollowCamera.cs",
               "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Player\\TargetFollowCamera.cs",
               "RelativeDocumentMoniker": "Entities\\Player\\TargetFollowCamera.cs",
               "ToolTip": "D:\\godot\\precognition\\Entities\\Player\\TargetFollowCamera.cs",
               "RelativeToolTip": "Entities\\Player\\TargetFollowCamera.cs",
-              "ViewState": "AgIAAB0AAAAAAAAAAAAQwCQAAAAzAAAAAAAAAA==",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAowDwAAAATAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-05T03:22:57.776Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-05T03:22:57.776Z"
             },
             {
               "$type": "Document",
@@ -59,12 +62,7 @@
               "RelativeToolTip": "Entities\\Entity.cs",
               "ViewState": "AgIAANMAAAAAAAAAAAAQwA4AAAALAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-04T23:57:33.564Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+              "WhenOpened": "2025-07-04T23:57:33.564Z"
             },
             {
               "$type": "Document",
@@ -76,8 +74,7 @@
               "RelativeToolTip": "Entities\\Enemies\\Enemy.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-05T00:06:44.367Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-05T00:06:44.367Z"
             },
             {
               "$type": "Document",
@@ -89,8 +86,7 @@
               "RelativeToolTip": "Entities\\Limb.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-04T23:57:36.41Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-04T23:57:36.41Z"
             },
             {
               "$type": "Document",
@@ -102,18 +98,17 @@
               "RelativeToolTip": "Entities\\Hurtbox.cs",
               "ViewState": "AgIAAAUAAAAAAAAAAAAxwBcAAAAFAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-04T23:57:26.832Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-07-04T23:57:26.832Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
               "Title": "Player.cs",
               "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Player\\Player.cs",
               "RelativeDocumentMoniker": "Entities\\Player\\Player.cs",
               "ToolTip": "D:\\godot\\precognition\\Entities\\Player\\Player.cs",
               "RelativeToolTip": "Entities\\Player\\Player.cs",
-              "ViewState": "AgIAAK4AAAAAAAAAAAA3wLwAAAAFAAAAAAAAAA==",
+              "ViewState": "AgIAACMAAAAAAAAAAAAQwDoAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-07-04T23:41:45.942Z",
               "EditorCaption": ""

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://brwh4xwo6lkki"]
+[gd_scene load_steps=9 format=3 uid="uid://brwh4xwo6lkki"]
 
 [ext_resource type="PackedScene" uid="uid://debea5my12hmc" path="res://Entities/Player/player.tscn" id="3_2nrxg"]
 [ext_resource type="Texture2D" uid="uid://ctfbbt1g3qphb" path="res://icon.svg" id="5_unxtb"]
@@ -19,13 +19,6 @@ reflected_light_source = 2
 [sub_resource type="BoxShape3D" id="BoxShape3D_kai55"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vcxov"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_wc0fm"]
-size = Vector3(0.5, 0.5, 0.5)
-
-[sub_resource type="TorusMesh" id="TorusMesh_0hnvi"]
-inner_radius = 0.436
-outer_radius = 0.311
 
 [node name="Main" type="Node3D"]
 
@@ -140,16 +133,6 @@ shape = SubResource("BoxShape3D_kai55")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D12/CollisionShape3D"]
 mesh = SubResource("BoxMesh_vcxov")
-
-[node name="GridSpace" type="AnimatableBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 0, 6)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GridSpace"]
-shape = SubResource("BoxShape3D_wc0fm")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="GridSpace"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.855644, 0)
-mesh = SubResource("TorusMesh_0hnvi")
 
 [node name="Node3D" type="Node3D" parent="."]
 transform = Transform3D(21.6653, 0, 0, 0, 0.999999, 0, 0, 0, 21.7054, -0.0141764, -0.388518, -0.0450611)

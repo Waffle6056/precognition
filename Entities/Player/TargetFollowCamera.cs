@@ -63,7 +63,7 @@ public partial class TargetFollowCamera : Camera3D
             PivotIndicator.Visible = true;
             PivotIndicator.GlobalPosition = pivot.GlobalPosition;
             Vector3 targetDir = ((pivot.GlobalPosition - GlobalPosition) * new Vector3(1, 0, 1)).Normalized();
-            Vector3 startDir = _lastPivotDir;
+            Vector3 startDir = (-GlobalBasis[2]*new Vector3(1, 0, 1)).Normalized();
             TargetRotation = TargetRotation.Rotated(Vector3.Up, startDir.SignedAngleTo(targetDir,Vector3.Up));
             _lastPivotDir = targetDir;
             //GD.Print(startDir.SignedAngleTo(targetDir, Vector3.Up));
