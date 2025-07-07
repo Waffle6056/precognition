@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public partial class GreatswordDownslash : Action, IAnimated
 {
 	[Export]
-    public AnimationManager Animation{get; set;}
+    public VisualManager Animation{get; set;}
 	String AttackName = "Swing";
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	protected override bool StartAction()

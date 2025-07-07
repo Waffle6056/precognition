@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://debea5my12hmc"]
+[gd_scene load_steps=21 format=3 uid="uid://debea5my12hmc"]
 
 [ext_resource type="Script" uid="uid://beq0x31h1kshl" path="res://Entities/Player/Player.cs" id="1_83h1a"]
 [ext_resource type="Script" uid="uid://cocpcvof8gsku" path="res://Entities/Player/TargetFollowCamera.cs" id="2_dtv0t"]
@@ -44,9 +44,13 @@ albedo_color = Color(0, 0, 0, 1)
 material = SubResource("StandardMaterial3D_6ufca")
 size = Vector3(0.7, 0.7, 0.7)
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_01a4e"]
+radius = 0.35
+height = 1.4
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_6fvw3"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CurrentCamera", "HeadBox", "LegBox", "TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "VisualHP", "CurrentAction") groups=["Rewindable"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CurrentCamera", "HeadBox", "LegBox", "TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "VisualHP") groups=["Rewindable"]]
 process_mode = 3
 process_priority = -1
 collision_layer = 0
@@ -57,7 +61,7 @@ TargetSpeed = 3.0
 SidestepDashDistance = 0.75
 DashLength = 0.1
 JumpDistance = 1.0
-JumpLength = 0.1
+JumpLength = 0.2
 HeadBox = NodePath("HeadBox")
 LegBox = NodePath("LegBox")
 TrackingPropertiesBase = NodePath("TrackingProperties")
@@ -66,10 +70,11 @@ CurrentEnergy = 50.0
 TargetPos = NodePath("TargetPosition")
 CenterOfMass = NodePath("CenterOfMassVisual")
 CenterOfMassBase = NodePath("CenterOfMassVisual2")
+StumbleStabilityThreshold = 0.0
+FallStabilityThreshold = 0.0
 VisualHP = NodePath("ColorRect")
 MaxWalkSpeed = 20.0
 Repel = 0.0
-CurrentAction = NodePath("TargetPosition")
 resistance = Vector3(1, 0.5, 1)
 
 [node name="TargetPosition" type="CharacterBody3D" parent="."]
@@ -103,8 +108,8 @@ script = ExtResource("2_dtv0t")
 Target = NodePath("..")
 SelectionBox = NodePath("SelectionBox")
 YPivot = [NodePath("../TargetPosition")]
-IdleOffset = Vector3(0, 0.5, 1.5)
-FocusOffset = Vector3(0, 0.5, 1.5)
+IdleOffset = Vector3(0, 1, 3)
+FocusOffset = Vector3(0, 1, 3)
 RotationWeight = 0.4
 DPI = 0.002
 PivotIndicator = NodePath("MeshInstance3D2")
@@ -133,7 +138,13 @@ shape = SubResource("BoxShape3D_5tayy")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="HeadBox"]
 transform = Transform3D(1, 0, 0, 0, -3.50078e-06, -1, 0, 1, -3.50078e-06, 0, 0, 0)
+visible = false
 mesh = SubResource("BoxMesh_nuwvb")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="HeadBox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.358143, 0)
+mesh = SubResource("CapsuleMesh_01a4e")
 skeleton = NodePath("../..")
 
 [node name="LegBox" type="Area3D" parent="." node_paths=PackedStringArray("Parent")]
@@ -148,14 +159,12 @@ shape = SubResource("BoxShape3D_5tayy")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="LegBox"]
 transform = Transform3D(1, 0, 0, 0, -3.50078e-06, -1, 0, 1, -3.50078e-06, 0, 0, 0)
+visible = false
 mesh = SubResource("BoxMesh_nuwvb")
 skeleton = NodePath("../..")
 
 [node name="Greatsword" parent="." instance=ExtResource("5_ttt55")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="piv" parent="Greatsword" index="1"]
-transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749614, 0, -0.749614, 0.661874, 0, 0.359612, 0.186193)
 
 [node name="ActionProperties" parent="Greatsword" index="2" node_paths=PackedStringArray("Root")]
 Root = NodePath("../..")

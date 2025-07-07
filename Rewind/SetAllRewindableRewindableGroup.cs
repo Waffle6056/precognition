@@ -15,7 +15,7 @@ public partial class SetAllRewindableRewindableGroup : EditorScript
 	public override void _Run()
 	{
 		foreach (Node n in GetAllChildren(GetScene())){
-			GD.Print(n.GetType()+" "+(n is AnimationManager)+" "+n.GetScript());
+			GD.Print(n.GetType()+" "+(n is VisualManager)+" "+n.GetScript());
 			if (n is RewindableObject && !n.IsInGroup("Rewindable"))
 				n.AddToGroup("Rewindable", true);
 		}

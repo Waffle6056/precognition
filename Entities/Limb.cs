@@ -14,10 +14,7 @@ public partial class Limb : Area3D
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
 	{
-		if (Parent != null)
-		{
-			Parent.Limbs.Add(this);
-		}
+		
 	}
     
 }

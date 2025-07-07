@@ -17,7 +17,7 @@ public partial class Roll : Action, IOffsetLinearFalloff, IAnimated, ITrackingCh
     }
 
     [Export]
-    public AnimationManager Animation { get; set; }
+    public VisualManager Animation { get; set; }
     [Export]
     public TrackingProperties TrackingProperties { get; set; }
     [Export]

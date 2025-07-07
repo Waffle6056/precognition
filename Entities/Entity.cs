@@ -16,7 +16,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     public bool InvulnToggle = false;
     public bool IsInvuln { get { return InvulnToggle || InvulnTimeRemaining > 0; } }
     [Export]
-    public virtual AnimationManager Animation { get; set; }
+    public virtual VisualManager Animation { get; set; }
     [Export]
     public CharacterBody3D TargetPos = null;
 

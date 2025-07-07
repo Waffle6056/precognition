@@ -7,7 +7,9 @@ public partial class GenericAnimatedAction : Action, IAnimated
 
 
     [Export]
-    public AnimationManager Animation { get; set; }
+    public VisualManager Animation { get; set; }
+    [Export]
+    public bool playGhost = false;
     [Export]
     public String AttackName = "Swing";
     // Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -16,6 +18,8 @@ public partial class GenericAnimatedAction : Action, IAnimated
         if (!base.StartChannel())
             return false;
         Animation.Play(AttackName);
+        if (playGhost)
+            Animation.PlayFuture(ActionProperties.ChannelTime);
         return true;
     }
 }

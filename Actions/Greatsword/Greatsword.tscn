@@ -6,14 +6,14 @@
 [ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="3_i5yeq"]
 [ext_resource type="Script" uid="uid://cv7qx7ccmd6g1" path="res://Actions/Greatsword/GenericAnimatedAction.cs" id="4_lf8a5"]
 [ext_resource type="Script" uid="uid://b5h24cntogyul" path="res://Actions/Greatsword/GreatswordSideslash.cs" id="4_u5mt0"]
-[ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/AnimationManager.cs" id="5_jyuq4"]
+[ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/VisualManager.cs" id="5_jyuq4"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_y1ggq"]
 size = Vector3(0.09, 2, 0.25)
 
 [sub_resource type="Animation" id="Animation_3cuj6"]
 resource_name = "Impale"
-length = 0.8
+length = 0.533337
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -229,7 +229,7 @@ CallKeyBind = PackedStringArray("R")
 Cooldown = NodePath("../CooldownManager")
 ActionProperties = NodePath("../ActionProperties")
 
-[node name="AnimationManager" type="Node" parent="GreatswordImpale" node_paths=PackedStringArray("ActionAnimator")]
+[node name="AnimationManager" type="Node3D" parent="GreatswordImpale" node_paths=PackedStringArray("ActionAnimator")]
 script = ExtResource("5_jyuq4")
 ActionAnimator = NodePath("../../AnimationPlayer")
 
@@ -248,21 +248,23 @@ CounterDamageMultipler = 2.0
 transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0.597, -1.323)
 shape = SubResource("BoxShape3D_12r05")
 
-[node name="GreatswordDownslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown") groups=["Rewindable"]]
+[node name="GreatswordDownslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown", "ActionProperties") groups=["Rewindable"]]
 script = ExtResource("1_3044c")
 Animation = NodePath("AnimationManager")
 Cooldown = NodePath("../CooldownManager")
+ActionProperties = NodePath("../ActionProperties")
 
-[node name="AnimationManager" type="Node" parent="GreatswordDownslash" node_paths=PackedStringArray("ActionAnimator")]
+[node name="AnimationManager" type="Node3D" parent="GreatswordDownslash" node_paths=PackedStringArray("ActionAnimator")]
 script = ExtResource("5_jyuq4")
 ActionAnimator = NodePath("../../AnimationPlayer")
 
-[node name="GreatswordSideslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown") groups=["Rewindable"]]
+[node name="GreatswordSideslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown", "ActionProperties") groups=["Rewindable"]]
 script = ExtResource("4_u5mt0")
 Animation = NodePath("AnimationManager")
 Cooldown = NodePath("../CooldownManager")
+ActionProperties = NodePath("../ActionProperties")
 
-[node name="AnimationManager" type="Node" parent="GreatswordSideslash" node_paths=PackedStringArray("ActionAnimator")]
+[node name="AnimationManager" type="Node3D" parent="GreatswordSideslash" node_paths=PackedStringArray("ActionAnimator")]
 script = ExtResource("5_jyuq4")
 ActionAnimator = NodePath("../../AnimationPlayer")
 

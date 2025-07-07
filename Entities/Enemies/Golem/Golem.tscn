@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://dgvaf6cplot6e"]
+[gd_scene load_steps=35 format=3 uid="uid://dgvaf6cplot6e"]
 
 [ext_resource type="Script" uid="uid://dku8cie5ivhqt" path="res://Entities/Enemies/Enemy.cs" id="1_j5j4p"]
 [ext_resource type="Script" uid="uid://uw6larch5h11" path="res://Actions/WeightedActions/Neutral.cs" id="2_53qhn"]
@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://dfjqg4xry1vvp" path="res://betterwaffle&background.PNG" id="3_2rmgh"]
 [ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="3_ndtma"]
 [ext_resource type="Script" uid="uid://bchnl4uspmyfe" path="res://Entities/Hurtbox.cs" id="4_05r0g"]
-[ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/AnimationManager.cs" id="8_36q5h"]
+[ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/VisualManager.cs" id="8_36q5h"]
 [ext_resource type="Script" uid="uid://dhusv5cw7bo7w" path="res://Actions/WeightedActions/Attacks/GenericAnimatedWeighted.cs" id="8_psr6a"]
 [ext_resource type="Script" uid="uid://c0kpj3vdo5qnc" path="res://Actions/WeightedActions/WeightingOptions/ConstantWeightManager.cs" id="9_vgj7f"]
 [ext_resource type="Script" uid="uid://b3bpjrk0rjehp" path="res://Actions/WeightedActions/WeightingOptions/WeightProperties.cs" id="10_5vhlu"]
@@ -34,30 +34,16 @@ albedo_color = Color(1, 1, 1, 0.309804)
 [sub_resource type="BoxMesh" id="BoxMesh_hv1tq"]
 material = SubResource("StandardMaterial3D_7gt7o")
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_caduy"]
-radius = 1.0
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jaqr8"]
-transparency = 1
-specular_mode = 2
-albedo_color = Color(0.627451, 0.627451, 0.627451, 0.227451)
-metallic_specular = 0.0
-roughness_texture = ExtResource("3_2rmgh")
-
-[sub_resource type="SphereMesh" id="SphereMesh_bqttr"]
-material = SubResource("StandardMaterial3D_jaqr8")
-radius = 1.0
-height = 2.0
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_05r0g"]
-radius = 1.0
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_05r0g"]
+transparency = 4
+albedo_color = Color(0.360784, 1, 1, 0.482353)
 
 [sub_resource type="Animation" id="Animation_ktdxy"]
 resource_name = "Ball"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/path = NodePath("VisualManager/Limbs/Chest:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -69,7 +55,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Limbs/RArm1:position")
+tracks/1/path = NodePath("VisualManager/Limbs/RArm1:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -81,7 +67,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Limbs/RArm2:position")
+tracks/2/path = NodePath("VisualManager/Limbs/RArm2:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -93,7 +79,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Limbs/LArm2:position")
+tracks/3/path = NodePath("VisualManager/Limbs/LArm2:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -105,7 +91,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Limbs/LArm1:position")
+tracks/4/path = NodePath("VisualManager/Limbs/LArm1:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -135,7 +121,7 @@ length = 2.0
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/path = NodePath("VisualManager/Limbs/Chest:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -147,7 +133,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Limbs/RArm1:position")
+tracks/1/path = NodePath("VisualManager/Limbs/RArm1:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -159,7 +145,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Limbs/RArm2:position")
+tracks/2/path = NodePath("VisualManager/Limbs/RArm2:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -171,7 +157,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Limbs/LArm2:position")
+tracks/3/path = NodePath("VisualManager/Limbs/LArm2:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -183,7 +169,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Limbs/LArm1:position")
+tracks/4/path = NodePath("VisualManager/Limbs/LArm1:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -198,7 +184,7 @@ length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/path = NodePath("VisualManager/Limbs/Chest:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -210,7 +196,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Limbs/RArm1:position")
+tracks/1/path = NodePath("VisualManager/Limbs/RArm1:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -222,7 +208,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Limbs/RArm2:position")
+tracks/2/path = NodePath("VisualManager/Limbs/RArm2:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -234,7 +220,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Limbs/LArm2:position")
+tracks/3/path = NodePath("VisualManager/Limbs/LArm2:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -246,7 +232,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Limbs/LArm1:position")
+tracks/4/path = NodePath("VisualManager/Limbs/LArm1:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -258,7 +244,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("Limbs/LLeg:position")
+tracks/5/path = NodePath("VisualManager/Limbs/LLeg:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -270,7 +256,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Limbs/RLeg:position")
+tracks/6/path = NodePath("VisualManager/Limbs/RLeg:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -282,7 +268,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("Limbs/RArm2/Hurtbox:monitoring")
+tracks/7/path = NodePath("VisualManager/Limbs/RArm2/Hurtbox:monitoring")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -299,7 +285,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/path = NodePath("VisualManager/Limbs/Chest:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -311,7 +297,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Limbs/LLeg:position")
+tracks/1/path = NodePath("VisualManager/Limbs/LLeg:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -323,7 +309,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Limbs/RLeg:position")
+tracks/2/path = NodePath("VisualManager/Limbs/RLeg:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -339,7 +325,7 @@ length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/path = NodePath("VisualManager/Limbs/Chest:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -351,7 +337,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Limbs/RArm1:position")
+tracks/1/path = NodePath("VisualManager/Limbs/RArm1:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -363,7 +349,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Limbs/RArm2:position")
+tracks/2/path = NodePath("VisualManager/Limbs/RArm2:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -375,7 +361,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Limbs/LArm2:position")
+tracks/3/path = NodePath("VisualManager/Limbs/LArm2:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -387,7 +373,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Limbs/LArm1:position")
+tracks/4/path = NodePath("VisualManager/Limbs/LArm1:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -402,7 +388,7 @@ resource_name = "Swing"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Limbs/Chest:position")
+tracks/0/path = NodePath("VisualManager/Limbs/Chest:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -414,7 +400,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Limbs/RArm1:position")
+tracks/1/path = NodePath("VisualManager/Limbs/RArm1:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -426,7 +412,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Limbs/RArm2:position")
+tracks/2/path = NodePath("VisualManager/Limbs/RArm2:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -438,7 +424,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Limbs/LArm2:position")
+tracks/3/path = NodePath("VisualManager/Limbs/LArm2:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -450,7 +436,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Limbs/LArm1:position")
+tracks/4/path = NodePath("VisualManager/Limbs/LArm1:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -476,7 +462,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("Limbs/RArm2/Hurtbox:monitoring")
+tracks/6/path = NodePath("VisualManager/Limbs/RArm2/Hurtbox:monitoring")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -496,22 +482,39 @@ _data = {
 &"Swing": SubResource("Animation_8p42r")
 }
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_caduy"]
+radius = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jaqr8"]
+transparency = 1
+specular_mode = 2
+albedo_color = Color(0.627451, 0.627451, 0.627451, 0.227451)
+metallic_specular = 0.0
+roughness_texture = ExtResource("3_2rmgh")
+
+[sub_resource type="SphereMesh" id="SphereMesh_bqttr"]
+material = SubResource("StandardMaterial3D_jaqr8")
+radius = 1.0
+height = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_05r0g"]
+radius = 1.0
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_ccfhe"]
 size = Vector3(1.4, 2.5, 1.5)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_mfp7y"]
 
-[node name="Golem" type="CharacterBody3D" node_paths=PackedStringArray("TrackingPropertiesBase", "Animation", "TargetPos", "CenterOfMass", "CenterOfMassBase", "VisualHP", "CurrentAction")]
+[node name="Golem" type="CharacterBody3D" node_paths=PackedStringArray("TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "VisualHP", "CurrentAction")]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_j5j4p")
 TrackingPropertiesBase = NodePath("BaseTracking")
 MaxEnergy = 50.0
 CurrentEnergy = 50.0
-Animation = NodePath("AnimationManager")
 TargetPos = NodePath("MiscVisuals/TargetPosition")
-CenterOfMass = NodePath("Limbs/CenterOfMassVisual")
-CenterOfMassBase = NodePath("Limbs/CenterOfMassVisual2")
+CenterOfMass = NodePath("MiscVisuals/CenterOfMassVisual")
+CenterOfMassBase = NodePath("MiscVisuals/CenterOfMassVisual2")
 QuickRecoveryWeight = 0.5
 StumbleStabilityThreshold = 0.2
 FallStabilityThreshold = 0.175
@@ -539,90 +542,102 @@ shape = SubResource("CapsuleShape3D_f6mev")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="MiscVisuals/TargetPosition"]
 mesh = SubResource("PrismMesh_4y3ma")
 
-[node name="Limbs" type="Node3D" parent="."]
-
-[node name="CenterOfMassVisual" type="MeshInstance3D" parent="Limbs"]
+[node name="CenterOfMassVisual" type="MeshInstance3D" parent="MiscVisuals"]
 transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 1, 0)
 mesh = SubResource("SphereMesh_t06hs")
 skeleton = NodePath("../..")
 
-[node name="CenterOfMassVisual2" type="MeshInstance3D" parent="Limbs"]
+[node name="CenterOfMassVisual2" type="MeshInstance3D" parent="MiscVisuals"]
 transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 1, 0)
 mesh = SubResource("BoxMesh_hv1tq")
 skeleton = NodePath("../..")
 
-[node name="Chest" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+[node name="VisualManager" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "VisualRoot")]
+script = ExtResource("8_36q5h")
+ActionAnimator = NodePath("AnimationPlayer")
+VisualRoot = NodePath("Limbs")
+GhostMaterial = SubResource("StandardMaterial3D_05r0g")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="VisualManager"]
+root_node = NodePath("../..")
+libraries = {
+&"": SubResource("AnimationLibrary_nwfa0")
+}
+
+[node name="Limbs" type="Node3D" parent="VisualManager"]
+
+[node name="Chest" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
 transform = Transform3D(0.835146, 0, -0.550029, 0, 1, 0, 0.550029, 0, 0.835146, 0, 1, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../..")
+Parent = NodePath("../../..")
 MassFactor = 3.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/Chest"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/Chest"]
 shape = SubResource("SphereShape3D_caduy")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/Chest"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/Chest"]
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="LArm1" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+[node name="LArm1" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
 transform = Transform3D(0.501087, 0, -0.330017, 0, 0.6, 0, 0.330017, 0, 0.501087, -1, 1, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../..")
+Parent = NodePath("../../..")
 MassFactor = 3.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/LArm1"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/LArm1"]
 shape = SubResource("SphereShape3D_caduy")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/LArm1"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/LArm1"]
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="LArm2" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+[node name="LArm2" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
 transform = Transform3D(0.504, 0, 0, 0, 0.504, 0, 0, 0, 0.504, -1.6, 0, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../..")
+Parent = NodePath("../../..")
 MassFactor = 3.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/LArm2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/LArm2"]
 shape = SubResource("SphereShape3D_caduy")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/LArm2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/LArm2"]
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="RArm1" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+[node name="RArm1" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
 transform = Transform3D(0.527944, -3.5843e-09, -0.285089, 4.50218e-09, 0.6, 7.93858e-10, 0.285089, -2.83772e-09, 0.527944, 1, 1, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../..")
+Parent = NodePath("../../..")
 MassFactor = 3.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/RArm1"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/RArm1"]
 shape = SubResource("SphereShape3D_caduy")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/RArm1"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/RArm1"]
 transform = Transform3D(1, -1.35308e-16, 0, -1.31839e-16, 1, -1.11022e-16, 0, -2.22045e-16, 1, 0, 0, 0)
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="RArm2" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+[node name="RArm2" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
 transform = Transform3D(0.502082, -3.82556e-09, 0.0439265, 3.78184e-09, 0.504, 6.66839e-10, -0.0439265, -3.34694e-10, 0.502082, 1.6, 0, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../..")
+Parent = NodePath("../../..")
 MassFactor = 3.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/RArm2"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/RArm2"]
 shape = SubResource("SphereShape3D_caduy")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/RArm2"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/RArm2"]
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="Hurtbox" type="Area3D" parent="Limbs/RArm2"]
+[node name="Hurtbox" type="Area3D" parent="VisualManager/Limbs/RArm2"]
 transform = Transform3D(0.725381, -0.20699, 0.656489, 0, 0.953717, 0.300706, -0.688347, -0.218127, 0.691808, 0, 0, 0)
 collision_layer = 0
 collision_mask = 2
@@ -632,48 +647,38 @@ ForceMagnitude = 5.0
 Damage = 5.0
 metadata/_custom_type_script = "uid://bchnl4uspmyfe"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/RArm2/Hurtbox"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/RArm2/Hurtbox"]
 shape = SubResource("SphereShape3D_05r0g")
 
-[node name="LLeg" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+[node name="LLeg" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.3, -0.1, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../..")
+Parent = NodePath("../../..")
 MassFactor = 3.0
 IsFooting = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/LLeg"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/LLeg"]
 shape = SubResource("SphereShape3D_caduy")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/LLeg"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/LLeg"]
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="RLeg" type="Area3D" parent="Limbs" node_paths=PackedStringArray("Parent")]
+[node name="RLeg" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0.3, -0.1, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../..")
+Parent = NodePath("../../..")
 MassFactor = 3.0
 IsFooting = true
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Limbs/RLeg"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/RLeg"]
 shape = SubResource("SphereShape3D_caduy")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Limbs/RLeg"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/RLeg"]
 mesh = SubResource("SphereMesh_bqttr")
-
-[node name="AnimationManager" type="Node" parent="." node_paths=PackedStringArray("ActionAnimator")]
-script = ExtResource("8_36q5h")
-ActionAnimator = NodePath("AnimationPlayer")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationManager"]
-root_node = NodePath("../..")
-libraries = {
-&"": SubResource("AnimationLibrary_nwfa0")
-}
 
 [node name="EnvironmentHitbox" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.96046e-08, 0.75, -0.05)
@@ -726,11 +731,13 @@ FollowUpOptions = [NodePath("../../../Neutral")]
 script = ExtResource("8_psr6a")
 LocalOffset = Vector3(0, 0, -2)
 WeightManager = NodePath("WeightManager")
-Animation = NodePath("../../AnimationManager")
+Animation = NodePath("../../VisualManager")
+playGhost = true
 ActionProperties = NodePath("ActionProperties")
 
 [node name="ActionProperties" type="Node" parent="Actions/Swing" node_paths=PackedStringArray("Root")]
 script = ExtResource("3_ndtma")
+ChannelTime = 0.2
 Root = NodePath("../../..")
 
 [node name="WeightManager" type="Node" parent="Actions/Swing" node_paths=PackedStringArray("WeightProperties")]
@@ -747,7 +754,7 @@ FollowUpOptions = [NodePath("../../../EndSequence"), NodePath("../../../Roll")]
 script = ExtResource("12_dxs2k")
 LocalOffset = Vector3(0, 0, -2)
 WeightManager = NodePath("OffsetLinearFalloff")
-Animation = NodePath("../../AnimationManager")
+Animation = NodePath("../../VisualManager")
 TrackingProperties = NodePath("TrackingProperties")
 Distance = 5.0
 Cooldown = NodePath("CooldownManager")
@@ -786,11 +793,11 @@ collision_mask = 0
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
 shape = SubResource("SphereShape3D_mfp7y")
 
-[connection signal="area_entered" from="Limbs/Chest" to="Limbs/Chest" method="AreaEntered"]
-[connection signal="area_entered" from="Limbs/LArm1" to="Limbs/LArm1" method="AreaEntered"]
-[connection signal="area_entered" from="Limbs/LArm2" to="Limbs/LArm2" method="AreaEntered"]
-[connection signal="area_entered" from="Limbs/RArm1" to="Limbs/RArm1" method="AreaEntered"]
-[connection signal="area_entered" from="Limbs/RArm2" to="Limbs/RArm2" method="AreaEntered"]
-[connection signal="area_entered" from="Limbs/RArm2/Hurtbox" to="Limbs/RArm2/Hurtbox" method="Collide"]
-[connection signal="area_entered" from="Limbs/LLeg" to="Limbs/LLeg" method="AreaEntered"]
-[connection signal="area_entered" from="Limbs/RLeg" to="Limbs/RLeg" method="AreaEntered"]
+[connection signal="area_entered" from="VisualManager/Limbs/Chest" to="VisualManager/Limbs/Chest" method="AreaEntered"]
+[connection signal="area_entered" from="VisualManager/Limbs/LArm1" to="VisualManager/Limbs/LArm1" method="AreaEntered"]
+[connection signal="area_entered" from="VisualManager/Limbs/LArm2" to="VisualManager/Limbs/LArm2" method="AreaEntered"]
+[connection signal="area_entered" from="VisualManager/Limbs/RArm1" to="VisualManager/Limbs/RArm1" method="AreaEntered"]
+[connection signal="area_entered" from="VisualManager/Limbs/RArm2" to="VisualManager/Limbs/RArm2" method="AreaEntered"]
+[connection signal="area_entered" from="VisualManager/Limbs/RArm2/Hurtbox" to="VisualManager/Limbs/RArm2/Hurtbox" method="Collide"]
+[connection signal="area_entered" from="VisualManager/Limbs/LLeg" to="VisualManager/Limbs/LLeg" method="AreaEntered"]
+[connection signal="area_entered" from="VisualManager/Limbs/RLeg" to="VisualManager/Limbs/RLeg" method="AreaEntered"]
