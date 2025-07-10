@@ -10,7 +10,7 @@ public partial class OffsetLinearFalloff : WeightManager
     }
 
 }
-interface IOffsetLinearFalloff : IWeighted
+interface IOffsetFalloff : IWeighted
 {
     [Export]
     public OffsetLinearFalloff WeightManager { get; set; }

@@ -27,7 +27,7 @@ public partial class Action : Option, RewindableObject, ActionState
 		IsChannelling = true;
 		return true;
 		
-		//GD.Print("Channel Started");
+		//GD.Print("Channel Started");	
 	}
 	protected virtual bool Channel(double delta)
 	{
@@ -56,7 +56,9 @@ public partial class Action : Option, RewindableObject, ActionState
 	}
 	protected virtual bool Act(double delta)
 	{
-		return true;
+        if (ActionTime >= ActionCallTime + ActionProperties.ActingMaximumTime)
+            EndAction();
+        return true;
 	}
 	protected virtual bool EndAction()
 	{
@@ -96,7 +98,7 @@ public partial class Action : Option, RewindableObject, ActionState
 		EndEndLag();
 
 		if (this is IAnimated)
-			(this as IAnimated).Animation.EndAnimation();
+			(this as IAnimated).Animation?.EndAnimation();
 
 		return true;
 	}
@@ -107,7 +109,6 @@ public partial class Action : Option, RewindableObject, ActionState
 		if (OnCD() || ActionProperties.Root.Active || Active)
 			return false;
 		if (StartChannel()){
-			ActionProperties.Root.CurrentAction = this;
 			return true;
 		}
 		return false;

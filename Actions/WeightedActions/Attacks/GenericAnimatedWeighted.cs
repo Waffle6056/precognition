@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class GenericAnimatedWeighted : GenericAnimatedAction, IOffsetLinearFalloff
+public partial class GenericAnimatedWeighted : GenericAnimatedAction, IOffsetFalloff
 {
     [Export]
     public Vector3 LocalOffset { get; set; }

@@ -12,26 +12,12 @@ public partial class Player : Entity
     [Export]
     public float TargetSpeed = 15f;
     [Export]
-    public float DistortedDashDistance = 3f;
+    public float SlideDashDistance = 3f;
     [Export]
-    public float SidestepDashDistance = 1f;
-    public float DashDistance = 2f;
+    public Roll SlideRoll;
     [Export]
-    public float DashLength = 1f;
-    public double DashCallTime = -10;
-    public Vector3 DashDirection;
-    [Export]
-    public float DistortedDashEnergyUsage = 2f;
-    [Export]
-    public float DistortedDashEnergyThreshold = 2f;
-    public bool IsDashing { get { return EntityTime >= DashCallTime && EntityTime <= DashCallTime + DashLength; } }
-    public bool IsDistorted = false;
-    [Export]
-    public int MaxDistortionCharges = 2;
-    public int DistortionCharges = 2;
-    [Export]
-    public float DistortionChargeCooldown = 2f;
-    public double DistortionRegenCalltime = 2f;
+    public Roll SidestepRoll;
+    public bool IsDashing { get { return SlideRoll.Active || SidestepRoll.Active; } }
 
     [Export]
     public float JumpDistance = 2f;
@@ -43,36 +29,44 @@ public partial class Player : Entity
     public Limb HeadBox;
     [Export]
     public Limb LegBox;
-    public bool IsCrouching;
+
+    enum State
+    {
+        Crouching,
+        Standing,
+        Airborne
+    }
+    State PlayerState = State.Standing;
+    
     public override void _Ready()
     {
         //GD.Print(" SET INSTANCE _-_--------------------");
         base._Ready();
 		Instance = this;
         //GD.Print(Instance+" SET INSTANCE _-_--------------------");
-	}
+    }
 
     public override void _Process(double delta)
     {
-        LegBox.Visible = LegBox.Monitorable = LegBox.Monitoring = TargetPos.IsOnFloor();
+        //GD.Print(Input.IsActionPressed("Crouch") + " && " + Active + " || " + SlideRoll.Active+" = "+PlayerState);
+        if (!TargetPos.IsOnFloor())
+            PlayerState = State.Airborne;
+        else if ((Input.IsActionPressed("Crouch") && !Active) || SlideRoll.Active)
+            PlayerState = State.Crouching;
+        else
+            PlayerState = State.Standing;
 
-        if (Input.IsActionPressed("Crouch") && TargetPos.IsOnFloor())
+        LegBox.Visible = LegBox.Monitorable = LegBox.Monitoring = PlayerState != State.Airborne;
+
+        if (PlayerState == State.Crouching)
             HeadBox.Position = Vector3.Zero;
         else
             HeadBox.Position = new Vector3(0, .7f, 0);
 
-        if (Input.IsActionJustPressed("Distort"))
-            IsDistorted = !IsDistorted;
 
-        if (DistortionCharges >= MaxDistortionCharges)
-            DistortionRegenCalltime = EntityTime;
-        if (DistortionRegenCalltime + DistortionChargeCooldown < EntityTime)
-        {
-            DistortionCharges++;
-            DistortionRegenCalltime = EntityTime;
-        }
+        processDash();
         //Rotation = new Vector3(0, CurrentCamera.Rotation.Y, CurrentCamera.Rotation.Z);
-        
+
 
         if (Active)
             CurrentCamera.Focused = true;
@@ -102,54 +96,61 @@ public partial class Player : Entity
         TargetPos.Velocity += globalMovement * TargetSpeed;
 
         //GD.Print(Velocity.Length() + " " + Velocity.Y);
-        //if (!movement.Length().Equals(Math.Abs(movement.Y)))
-        //    TargetPos.GlobalBasis = Basis.LookingAt((movement * new Vector3(1, 0, 1)).Normalized());
-        
+        if (!globalMovement.Length().Equals(Math.Abs(globalMovement.Y)))
+        {
+            //    TargetPos.GlobalBasis = Basis.LookingAt((movement * new Vector3(1, 0, 1)).Normalized());
+            SlideRoll.LocalOffset = (globalMovement * CurrentCamera.GlobalBasis * new Vector3(1, 0, 1)).Normalized();
+            SidestepRoll.LocalOffset = (globalMovement * CurrentCamera.GlobalBasis * new Vector3(1, 0, 1)).Normalized();
+            GD.Print(SidestepRoll.LocalOffset);
+        }
 
-        processDash(globalMovement * CurrentCamera.GlobalBasis);
-        
         processJump();
     }
 
     
-    private void processDash(Vector3 movement)
+    private void processDash()
     {
-        if (movement.Length() == 0)
-            DashDirection = new Vector3(0, 0, 1);
-        if (!IsDashing && Input.IsActionJustPressed("Dash")) {
-            //if (Input.IsActionJustPressed("PivotLeft"))
-            //    movement = (CurrentCamera.TargetRotation[0] * new Vector3(1, 0, 1)).Normalized();
-            //if (Input.IsActionJustPressed("PivotRight"))
-            //    movement = -(CurrentCamera.TargetRotation[0] * new Vector3(1, 0, 1)).Normalized();
-
-            if (IsDistorted)
-            {
-                if (DistortionCharges > 0 && CurrentEnergy > DistortedDashEnergyThreshold)
-                {
-                    DistortionCharges--;
-                    TakeHit(DistortedDashEnergyUsage);
-                    DashDistance = DistortedDashDistance;
-                    IsDistorted = false;
-
-                    InvulnTimeRemaining = DashLength;
-                    DashCallTime = EntityTime;
-                    DashDirection = movement;
-                    GD.Print(movement + " " + DashDirection);
-                }
-            }
-            else
-            {
-                DashDistance = SidestepDashDistance;
-
-                InvulnTimeRemaining = DashLength;
-                DashCallTime = EntityTime;
-                DashDirection = movement;
-            }
+        if (!IsDashing && Input.IsActionJustPressed("Dash"))
+        {
+            SidestepRoll.CallAction();
         }
+        //GD.Print(SidestepRoll.Active +" "+PlayerState);
+        if (SidestepRoll.Active && PlayerState == State.Crouching)
+        {
+            SidestepRoll.Interrupt();
+            SlideRoll.CallAction();
+        }
+        //if (movement.Length() == 0)
+        //    DashDirection = new Vector3(0, 0, 1);
+        //if (!IsDashing && Input.IsActionJustPressed("Dash")) {
+        //    //if (Input.IsActionJustPressed("PivotLeft"))
+        //    //    movement = (CurrentCamera.TargetRotation[0] * new Vector3(1, 0, 1)).Normalized();
+        //    //if (Input.IsActionJustPressed("PivotRight"))
+        //    //    movement = -(CurrentCamera.TargetRotation[0] * new Vector3(1, 0, 1)).Normalized();
 
-        
-        if (IsDashing)
-            TargetPos.Velocity += (CurrentCamera.GlobalBasis * DashDirection * new Vector3(1,0,1)).Normalized() * DashDistance / DashLength;
+        //    if (IsDistorted)
+        //    {
+
+
+        //        InvulnTimeRemaining = DashLength;
+        //        DashCallTime = EntityTime;
+        //        DashDirection = movement;
+        //        GD.Print(movement + " " + DashDirection);
+
+        //    }
+        //    else
+        //    {
+        //        DashDistance = SidestepDashDistance;
+
+        //        InvulnTimeRemaining = DashLength;
+        //        DashCallTime = EntityTime;
+        //        DashDirection = movement;
+        //    }
+        //}
+
+
+        //if (IsDashing)
+        //    TargetPos.Velocity += (CurrentCamera.GlobalBasis * DashDirection * new Vector3(1,0,1)).Normalized() * DashDistance / DashLength;
     }
     private void processJump()
     {
@@ -198,7 +199,7 @@ public partial class Player : Entity
         //GD.Print("KNOCKBACK FORCE " + Force);
         if (IsInvuln)
             return Vector3.Zero;
-        TargetPos.GlobalPosition += Force;
+        TargetPos.MoveAndCollide(Force);
         return Force;
     }
 
@@ -208,10 +209,10 @@ public partial class Player : Entity
     private Vector3 inputDirection()
     {
         for (int i = 0; i < 4; i++)
-            checkEnabled(KeyNames[i], KeyNames[(i + 2) % 4], i, (i + 2) % 4);
+            checkEnabled(KeyNames[i], KeyNames[(i + 2) % 4], ind:i, oind:(i + 2) % 4);
 
         for (int i = 0; i < 4; i++)
-            checkPressed(KeyNames[i], KeyNames[(i + 2) % 4], i, (i + 2) % 4);
+            checkPressed(KeyNames[i], KeyNames[(i + 2) % 4], ind:i, oind:(i + 2) % 4);
 
         Vector3 forward = -CurrentCamera.GlobalBasis[2];
         forward.Y = 0;

@@ -41,7 +41,7 @@ public partial class Enemy : Entity
         foreach (Action option in Options)
         {
             if (option is IWeighted){
-                    double actionWeight = (option as IWeighted).GetWeight();
+                double actionWeight = (option as IWeighted).GetWeight();
                 if (!option.OnCD() && actionWeight > largestWeight)
                 {
                     largestWeight = actionWeight;

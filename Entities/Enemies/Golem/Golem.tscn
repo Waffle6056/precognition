@@ -505,7 +505,7 @@ size = Vector3(1.4, 2.5, 1.5)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_mfp7y"]
 
-[node name="Golem" type="CharacterBody3D" node_paths=PackedStringArray("TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "VisualHP", "CurrentAction")]
+[node name="Golem" type="CharacterBody3D" node_paths=PackedStringArray("TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "StartingLimbs", "VisualHP", "CurrentAction")]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_j5j4p")
@@ -518,6 +518,7 @@ CenterOfMassBase = NodePath("MiscVisuals/CenterOfMassVisual2")
 QuickRecoveryWeight = 0.5
 StumbleStabilityThreshold = 0.2
 FallStabilityThreshold = 0.175
+StartingLimbs = [NodePath("VisualManager/Limbs/Chest"), NodePath("VisualManager/Limbs/LArm1"), NodePath("VisualManager/Limbs/LArm2"), NodePath("VisualManager/Limbs/RArm1"), NodePath("VisualManager/Limbs/RArm2"), NodePath("VisualManager/Limbs/LLeg"), NodePath("VisualManager/Limbs/RLeg")]
 VisualHP = NodePath("MiscVisuals/ColorRect")
 CurrentAction = NodePath("Actions/Neutral")
 
@@ -566,12 +567,11 @@ libraries = {
 
 [node name="Limbs" type="Node3D" parent="VisualManager"]
 
-[node name="Chest" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
+[node name="Chest" type="Area3D" parent="VisualManager/Limbs"]
 transform = Transform3D(0.835146, 0, -0.550029, 0, 1, 0, 0.550029, 0, 0.835146, 0, 1, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../../..")
 MassFactor = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/Chest"]
@@ -580,12 +580,11 @@ shape = SubResource("SphereShape3D_caduy")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/Chest"]
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="LArm1" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
+[node name="LArm1" type="Area3D" parent="VisualManager/Limbs"]
 transform = Transform3D(0.501087, 0, -0.330017, 0, 0.6, 0, 0.330017, 0, 0.501087, -1, 1, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../../..")
 MassFactor = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/LArm1"]
@@ -594,12 +593,11 @@ shape = SubResource("SphereShape3D_caduy")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/LArm1"]
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="LArm2" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
+[node name="LArm2" type="Area3D" parent="VisualManager/Limbs"]
 transform = Transform3D(0.504, 0, 0, 0, 0.504, 0, 0, 0, 0.504, -1.6, 0, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../../..")
 MassFactor = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/LArm2"]
@@ -608,12 +606,11 @@ shape = SubResource("SphereShape3D_caduy")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/LArm2"]
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="RArm1" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
+[node name="RArm1" type="Area3D" parent="VisualManager/Limbs"]
 transform = Transform3D(0.527944, -3.5843e-09, -0.285089, 4.50218e-09, 0.6, 7.93858e-10, 0.285089, -2.83772e-09, 0.527944, 1, 1, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../../..")
 MassFactor = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/RArm1"]
@@ -623,12 +620,11 @@ shape = SubResource("SphereShape3D_caduy")
 transform = Transform3D(1, -1.35308e-16, 0, -1.31839e-16, 1, -1.11022e-16, 0, -2.22045e-16, 1, 0, 0, 0)
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="RArm2" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
+[node name="RArm2" type="Area3D" parent="VisualManager/Limbs"]
 transform = Transform3D(0.502082, -3.82556e-09, 0.0439265, 3.78184e-09, 0.504, 6.66839e-10, -0.0439265, -3.34694e-10, 0.502082, 1.6, 0, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../../..")
 MassFactor = 3.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/RArm2"]
@@ -650,12 +646,11 @@ metadata/_custom_type_script = "uid://bchnl4uspmyfe"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/RArm2/Hurtbox"]
 shape = SubResource("SphereShape3D_05r0g")
 
-[node name="LLeg" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
+[node name="LLeg" type="Area3D" parent="VisualManager/Limbs"]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, -0.3, -0.1, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../../..")
 MassFactor = 3.0
 IsFooting = true
 
@@ -665,12 +660,11 @@ shape = SubResource("SphereShape3D_caduy")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/LLeg"]
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="RLeg" type="Area3D" parent="VisualManager/Limbs" node_paths=PackedStringArray("Parent")]
+[node name="RLeg" type="Area3D" parent="VisualManager/Limbs"]
 transform = Transform3D(0.4, 0, 0, 0, 0.4, 0, 0, 0, 0.4, 0.3, -0.1, 0)
 collision_layer = 4
 collision_mask = 0
 script = ExtResource("2_q3mo3")
-Parent = NodePath("../../..")
 MassFactor = 3.0
 IsFooting = true
 

@@ -36,7 +36,8 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     public float StumbleStunDuration = 0.5f;
     [Export]
     public float FallStunDuration = 2f;
-
+    [Export]
+    public Limb[] StartingLimbs;
     public List<Limb> Limbs = new List<Limb>();
     public float Stability = 1;
     [Export]
@@ -75,6 +76,12 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     public override void _Ready()
 	{
 		base._Ready();
+        foreach (Limb l in StartingLimbs)
+        {
+            Limbs.Add(l);
+            l.Parent = this;
+        }
+        //GD.Print(Limbs.Count+" "+StartingLimbs.Length);
         TargetPos.GlobalPosition = GlobalPosition;
         //GD.Print(Limbs.Count);
         SetCenters();
@@ -296,7 +303,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     public virtual void rotateTowardTarget(double delta)
     {
         TrackingProperties currentTrackingProperties = TrackingPropertiesBase;
-        if (CurrentAction is ITrackingChange)
+        if (CurrentAction is ITrackingChange && (CurrentAction as ITrackingChange).TrackingProperties != null)
             currentTrackingProperties = (CurrentAction as ITrackingChange).TrackingProperties;
 
         if (!IsActing && !IsStunned)    

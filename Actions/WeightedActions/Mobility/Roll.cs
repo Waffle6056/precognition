@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Roll : Action, IOffsetLinearFalloff, IAnimated, ITrackingChange
+public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
 {
     [Export]
     public Vector3 LocalOffset { get; set; }
@@ -29,15 +29,18 @@ public partial class Roll : Action, IOffsetLinearFalloff, IAnimated, ITrackingCh
     {
         if (!base.StartAction())
             return false;
-        Animation.Play(AttackName);
+        Animation?.Play(AttackName);
         return true;
     }
 
     protected override bool Act(double delta)
     {
-        if (!base.StartAction())
+        if (!base.Act(delta))
             return false;
-        ActionProperties.Root.TargetPos.GlobalPosition += -ActionProperties.Root.GlobalBasis[2] * Distance * (float) delta;
+        CharacterBody3D TargetPos = ActionProperties.Root.TargetPos;
+        Vector3 GlobalDirection = (TargetPos.GlobalBasis * LocalOffset.Normalized() * new Vector3(1, 0, 1)).Normalized();
+
+        TargetPos.MoveAndCollide(GlobalDirection * Distance / ActionProperties.ActingMaximumTime * (float)delta);
         return true;
     }
 }

@@ -19,7 +19,7 @@ public partial class VisualManager : Node3D, RewindableObject
     {
 		//GD.Print(name);
         ActionAnimator.Play(name);
-		ActionAnimator.Seek(offset);
+		ActionAnimator.Advance(offset);
     }
 
 
@@ -49,6 +49,7 @@ public partial class VisualManager : Node3D, RewindableObject
 
         dupe.Play(animName, offset);
 		dupe.ActionAnimator.AnimationFinished += dupe.DeleteSignal;
+
 
         AddChild(dupe);
         return dupe;
