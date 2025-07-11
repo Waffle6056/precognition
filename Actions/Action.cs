@@ -93,11 +93,11 @@ public partial class Action : Option, RewindableObject, ActionState
 		if (!Active)
 			return false;
 
-		EndChannel();
-		EndAction();
-		EndEndLag();
+		IsChannelling = false;
+        IsActing = false;
+        IsLagging = false;
 
-		if (this is IAnimated)
+        if (this is IAnimated)
 			(this as IAnimated).Animation?.EndAnimation();
 
 		return true;

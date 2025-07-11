@@ -4,7 +4,7 @@ using System;
 public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
 {
     [Export]
-    public Vector3 LocalOffset { get; set; }
+    public virtual Vector3 LocalOffset { get; set; }
     [Export]
     public OffsetLinearFalloff WeightManager { get; set; }
     public WeightManager GetWeightManager()
@@ -27,20 +27,34 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     protected override bool StartChannel()
     {
-        if (!base.StartAction())
+        if (!base.StartChannel())
             return false;
         Animation?.Play(AttackName);
         return true;
     }
-
-    protected override bool Act(double delta)
+    protected override bool StartAction()
     {
-        if (!base.Act(delta))
+        if (!base.StartAction())
             return false;
-        CharacterBody3D TargetPos = ActionProperties.Root.TargetPos;
-        Vector3 GlobalDirection = (TargetPos.GlobalBasis * LocalOffset.Normalized() * new Vector3(1, 0, 1)).Normalized();
-
-        TargetPos.MoveAndCollide(GlobalDirection * Distance / ActionProperties.ActingMaximumTime * (float)delta);
+        AddVelocity();
         return true;
+    }
+
+    public void AddVelocity()
+    {
+        CharacterBody3D TargetPos = ActionProperties.Root.TargetPos;
+        Vector3 GlobalDirection = (TargetPos.GlobalBasis * LocalOffset.Normalized()).Normalized();
+
+        TargetPos.Velocity += (GlobalDirection * Distance / ActionProperties.ActingMaximumTime);
+    }
+    public override void _PhysicsProcess(double delta)
+    {
+        
+        base._PhysicsProcess(delta);
+        //GD.Print(IsActing);
+        if (!IsActing)
+            return;
+
+        AddVelocity();
     }
 }

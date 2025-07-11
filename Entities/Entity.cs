@@ -118,6 +118,11 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         if (IsStunned)
             stunned(delta);
     }
+    protected virtual void postVelocityCalculation()
+    {
+        // for child classes to insert stuff after velocity calcuation
+        // otherwise does nothing
+    }
 
     protected void processMovement(double delta)
     {
@@ -135,6 +140,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
             Speed = vec.Length() * AirborneLerpWeight;
         }
         Velocity = dir * Speed;
+        postVelocityCalculation();
         //GD.Print(AirTime);
         //GD.Print(Velocity + " "+TargetPos+" "+Speed+" "+Position+" "+ (TargetPos - GlobalPosition).Normalized());
         bool res = MoveAndSlide();
@@ -171,10 +177,12 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         if (TargetPos.IsOnFloor())
             AirTimeStart = EntityTime;
         float magnitude = -1;
-        if (TargetPos.Velocity.Y > 0)
+        if (TargetPos.Velocity.Y + RisingGravity * Math.Max(0, EntityTime - AirTimeStart) > 0)
             magnitude = RisingGravity;
         else
             magnitude = FallingGravity;
+        //GD.Print(magnitude);
+        //GD.Print(TargetPos.Velocity.Y+" "+RisingGravity * Math.Max(0, EntityTime - AirTimeStart));
         TargetPos.Velocity += new Vector3(0, (float)(magnitude * Math.Max(0,EntityTime-AirTimeStart)), 0);
     }
 
@@ -302,6 +310,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
 
     public virtual void rotateTowardTarget(double delta)
     {
+        //GD.Print("going");
         TrackingProperties currentTrackingProperties = TrackingPropertiesBase;
         if (CurrentAction is ITrackingChange && (CurrentAction as ITrackingChange).TrackingProperties != null)
             currentTrackingProperties = (CurrentAction as ITrackingChange).TrackingProperties;

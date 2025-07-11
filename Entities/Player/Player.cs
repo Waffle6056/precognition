@@ -12,18 +12,13 @@ public partial class Player : Entity
     [Export]
     public float TargetSpeed = 15f;
     [Export]
-    public float SlideDashDistance = 3f;
-    [Export]
     public Roll SlideRoll;
     [Export]
     public Roll SidestepRoll;
+    [Export]
+    public Jump Jump;
     public bool IsDashing { get { return SlideRoll.Active || SidestepRoll.Active; } }
 
-    [Export]
-    public float JumpDistance = 2f;
-    [Export]
-    public float JumpLength = 2f;
-    public double JumpCallTime = -10;
     public static Player Instance {get; private set;}
     [Export]
     public Limb HeadBox;
@@ -49,12 +44,7 @@ public partial class Player : Entity
     public override void _Process(double delta)
     {
         //GD.Print(Input.IsActionPressed("Crouch") + " && " + Active + " || " + SlideRoll.Active+" = "+PlayerState);
-        if (!TargetPos.IsOnFloor())
-            PlayerState = State.Airborne;
-        else if ((Input.IsActionPressed("Crouch") && !Active) || SlideRoll.Active)
-            PlayerState = State.Crouching;
-        else
-            PlayerState = State.Standing;
+        
 
         LegBox.Visible = LegBox.Monitorable = LegBox.Monitoring = PlayerState != State.Airborne;
 
@@ -64,7 +54,6 @@ public partial class Player : Entity
             HeadBox.Position = new Vector3(0, .7f, 0);
 
 
-        processDash();
         //Rotation = new Vector3(0, CurrentCamera.Rotation.Y, CurrentCamera.Rotation.Z);
 
 
@@ -79,8 +68,24 @@ public partial class Player : Entity
     }
     public override void _PhysicsProcess(double delta)
     {
+
+        processDash();
         MoveTarget(delta);
         base._PhysicsProcess(delta);
+
+        if (!TargetPos.IsOnFloor())
+            PlayerState = State.Airborne;
+        else if ((Input.IsActionPressed("Crouch") && !Active) || SlideRoll.Active)
+            PlayerState = State.Crouching;
+        else
+            PlayerState = State.Standing;
+
+        if (PlayerState != State.Airborne && Jump.IsActing)
+        {
+            Jump.Interrupt();
+        }
+     
+
     }
 
     private void MoveTarget(double delta)
@@ -101,25 +106,39 @@ public partial class Player : Entity
             //    TargetPos.GlobalBasis = Basis.LookingAt((movement * new Vector3(1, 0, 1)).Normalized());
             SlideRoll.LocalOffset = (globalMovement * CurrentCamera.GlobalBasis * new Vector3(1, 0, 1)).Normalized();
             SidestepRoll.LocalOffset = (globalMovement * CurrentCamera.GlobalBasis * new Vector3(1, 0, 1)).Normalized();
-            GD.Print(SidestepRoll.LocalOffset);
+            //GD.Print(SidestepRoll.LocalOffset);
         }
 
-        processJump();
     }
 
-    
+    protected override void postVelocityCalculation()
+    {
+        base.postVelocityCalculation();
+    }
     private void processDash()
     {
-        if (!IsDashing && Input.IsActionJustPressed("Dash"))
+        if (!IsDashing && Input.IsActionJustPressed("Dash") && PlayerState != State.Airborne)
         {
             SidestepRoll.CallAction();
         }
-        //GD.Print(SidestepRoll.Active +" "+PlayerState);
+        //GD.Print(SidestepRoll.Active +" "+PlayerState);`
         if (SidestepRoll.Active && PlayerState == State.Crouching)
         {
             SidestepRoll.Interrupt();
             SlideRoll.CallAction();
         }
+        //GD.Print(TargetPos.Velocity);
+        
+        if (Input.IsActionJustPressed("Jump") && PlayerState != State.Airborne)
+        {
+            //SidestepRoll.Interrupt();
+            //SlideRoll.Interrupt();
+            Jump.SetDistance(TargetPos.Velocity, RisingGravity);
+            Jump.CallAction();
+
+
+        }
+        
         //if (movement.Length() == 0)
         //    DashDirection = new Vector3(0, 0, 1);
         //if (!IsDashing && Input.IsActionJustPressed("Dash")) {
@@ -152,21 +171,7 @@ public partial class Player : Entity
         //if (IsDashing)
         //    TargetPos.Velocity += (CurrentCamera.GlobalBasis * DashDirection * new Vector3(1,0,1)).Normalized() * DashDistance / DashLength;
     }
-    private void processJump()
-    {
-        //GD.Print("CHECKING JUMP "+ TargetPos.IsOnFloor());
-        if (Input.IsActionJustPressed("Jump") && TargetPos.IsOnFloor())
-        {
-            JumpCallTime = EntityTime;
-            GD.Print("CALLED JUMP");
-        }
-        if (EntityTime >= JumpCallTime && EntityTime <= JumpCallTime + JumpLength)
-            TargetPos.Velocity += Vector3.Up * JumpDistance / JumpLength;
-
-
-        //if (!IsOnFloor())
-        //	TargetPos += new Vector3(0, -1, 0) * (float)delta;
-    }
+    
     //private void RewindBlink()
     //{
     //	Vector3 blinkPos = (Vector3) RewindController.Instance.Past.First.Value.StateData[this].Data[3];
