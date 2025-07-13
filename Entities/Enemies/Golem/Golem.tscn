@@ -36,7 +36,7 @@ material = SubResource("StandardMaterial3D_7gt7o")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_05r0g"]
 transparency = 4
-albedo_color = Color(0.360784, 1, 1, 0.482353)
+albedo_color = Color(0.360784, 1, 1, 0.203922)
 
 [sub_resource type="Animation" id="Animation_ktdxy"]
 resource_name = "Ball"
@@ -488,7 +488,7 @@ radius = 1.0
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_jaqr8"]
 transparency = 1
 specular_mode = 2
-albedo_color = Color(0.627451, 0.627451, 0.627451, 0.227451)
+albedo_color = Color(0.627451, 0.627451, 0.627451, 1)
 metallic_specular = 0.0
 roughness_texture = ExtResource("3_2rmgh")
 
@@ -505,13 +505,14 @@ size = Vector3(1.4, 2.5, 1.5)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_mfp7y"]
 
-[node name="Golem" type="CharacterBody3D" node_paths=PackedStringArray("TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "StartingLimbs", "VisualHP", "CurrentAction")]
+[node name="Golem" type="CharacterBody3D" node_paths=PackedStringArray("TrackingPropertiesBase", "Animation", "TargetPos", "CenterOfMass", "CenterOfMassBase", "StartingLimbs", "VisualHP", "CurrentAction")]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_j5j4p")
 TrackingPropertiesBase = NodePath("BaseTracking")
 MaxEnergy = 50.0
 CurrentEnergy = 50.0
+Animation = NodePath("VisualManager")
 TargetPos = NodePath("MiscVisuals/TargetPosition")
 CenterOfMass = NodePath("MiscVisuals/CenterOfMassVisual")
 CenterOfMassBase = NodePath("MiscVisuals/CenterOfMassVisual2")
@@ -634,12 +635,12 @@ shape = SubResource("SphereShape3D_caduy")
 mesh = SubResource("SphereMesh_bqttr")
 
 [node name="Hurtbox" type="Area3D" parent="VisualManager/Limbs/RArm2"]
-transform = Transform3D(0.725381, -0.20699, 0.656489, 0, 0.953717, 0.300706, -0.688347, -0.218127, 0.691808, 0, 0, 0)
+transform = Transform3D(0.972377, 0.0730971, 0.221675, 0, 0.9497, -0.313162, -0.233416, 0.304512, 0.923466, 0, 0, 0)
 collision_layer = 0
 collision_mask = 2
 monitoring = false
 script = ExtResource("4_05r0g")
-ForceMagnitude = 5.0
+ForceMagnitude = 2.0
 Damage = 5.0
 metadata/_custom_type_script = "uid://bchnl4uspmyfe"
 
@@ -689,37 +690,35 @@ script = ExtResource("2_53qhn")
 WeightManager = NodePath("WeightManager")
 ActionProperties = NodePath("ActionProperties")
 
-[node name="ActionProperties" type="Node" parent="Actions/Neutral" node_paths=PackedStringArray("Root")]
+[node name="ActionProperties" type="Node" parent="Actions/Neutral" node_paths=PackedStringArray("FollowUpOptions")]
 script = ExtResource("3_ndtma")
-Root = NodePath("../../..")
+FollowUpOptions = [NodePath("../../Swing"), NodePath("../../Roll"), NodePath("..")]
 
 [node name="WeightManager" type="Node" parent="Actions/Neutral" node_paths=PackedStringArray("WeightProperties")]
 script = ExtResource("9_vgj7f")
 WeightProperties = NodePath("WeightProperties")
 
-[node name="WeightProperties" type="Node" parent="Actions/Neutral/WeightManager" node_paths=PackedStringArray("FollowUpOptions")]
+[node name="WeightProperties" type="Node" parent="Actions/Neutral/WeightManager"]
 script = ExtResource("10_5vhlu")
 BaseWeight = 10.0
-FollowUpOptions = [NodePath("../../../Swing"), NodePath("../.."), NodePath("../../../Roll")]
 
 [node name="EndSequence" type="Node3D" parent="Actions" node_paths=PackedStringArray("WeightManager", "ActionProperties")]
 script = ExtResource("2_53qhn")
 WeightManager = NodePath("WeightManager")
 ActionProperties = NodePath("ActionProperties")
 
-[node name="ActionProperties" type="Node" parent="Actions/EndSequence" node_paths=PackedStringArray("Root")]
+[node name="ActionProperties" type="Node" parent="Actions/EndSequence" node_paths=PackedStringArray("FollowUpOptions")]
 script = ExtResource("3_ndtma")
 ChannelTime = 0.3
-Root = NodePath("../../..")
+FollowUpOptions = [NodePath("../../Neutral")]
 
 [node name="WeightManager" type="Node" parent="Actions/EndSequence" node_paths=PackedStringArray("WeightProperties")]
 script = ExtResource("9_vgj7f")
 WeightProperties = NodePath("WeightProperties")
 
-[node name="WeightProperties" type="Node" parent="Actions/EndSequence/WeightManager" node_paths=PackedStringArray("FollowUpOptions")]
+[node name="WeightProperties" type="Node" parent="Actions/EndSequence/WeightManager"]
 script = ExtResource("10_5vhlu")
 BaseWeight = 10.0
-FollowUpOptions = [NodePath("../../../Neutral")]
 
 [node name="Swing" type="Node3D" parent="Actions" node_paths=PackedStringArray("WeightManager", "Animation", "ActionProperties")]
 script = ExtResource("8_psr6a")
@@ -729,20 +728,19 @@ Animation = NodePath("../../VisualManager")
 playGhost = true
 ActionProperties = NodePath("ActionProperties")
 
-[node name="ActionProperties" type="Node" parent="Actions/Swing" node_paths=PackedStringArray("Root")]
+[node name="ActionProperties" type="Node" parent="Actions/Swing" node_paths=PackedStringArray("FollowUpOptions")]
 script = ExtResource("3_ndtma")
 ChannelTime = 0.2
-Root = NodePath("../../..")
+FollowUpOptions = [NodePath("../../EndSequence")]
 
 [node name="WeightManager" type="Node" parent="Actions/Swing" node_paths=PackedStringArray("WeightProperties")]
 script = ExtResource("10_e4j22")
 WeightProperties = NodePath("WeightProperties")
 
-[node name="WeightProperties" type="Node" parent="Actions/Swing/WeightManager" node_paths=PackedStringArray("FollowUpOptions")]
+[node name="WeightProperties" type="Node" parent="Actions/Swing/WeightManager"]
 script = ExtResource("10_5vhlu")
 BaseWeight = 20.0
 WeightMultiplier = 4.0
-FollowUpOptions = [NodePath("../../../EndSequence"), NodePath("../../../Roll")]
 
 [node name="Roll" type="Node3D" parent="Actions" node_paths=PackedStringArray("WeightManager", "Animation", "TrackingProperties", "Cooldown", "ActionProperties")]
 script = ExtResource("12_dxs2k")
@@ -754,11 +752,11 @@ Distance = 5.0
 Cooldown = NodePath("CooldownManager")
 ActionProperties = NodePath("ActionProperties")
 
-[node name="ActionProperties" type="Node" parent="Actions/Roll" node_paths=PackedStringArray("Root")]
+[node name="ActionProperties" type="Node" parent="Actions/Roll" node_paths=PackedStringArray("FollowUpOptions")]
 script = ExtResource("3_ndtma")
 ChannelTime = 0.2
 EndLagTime = 0.1
-Root = NodePath("../../..")
+FollowUpOptions = [NodePath("../../EndSequence")]
 
 [node name="CooldownManager" type="Node" parent="Actions/Roll"]
 script = ExtResource("13_6rac8")
@@ -773,11 +771,10 @@ LinearRotationPerSecond = 6.283
 script = ExtResource("10_e4j22")
 WeightProperties = NodePath("WeightProperties")
 
-[node name="WeightProperties" type="Node" parent="Actions/Roll/OffsetLinearFalloff" node_paths=PackedStringArray("FollowUpOptions")]
+[node name="WeightProperties" type="Node" parent="Actions/Roll/OffsetLinearFalloff"]
 script = ExtResource("10_5vhlu")
 BaseWeight = 40.0
 WeightMultiplier = 20.0
-FollowUpOptions = [NodePath("../../../Swing"), NodePath("../../../EndSequence")]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05189, 0)

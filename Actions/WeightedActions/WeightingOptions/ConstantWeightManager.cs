@@ -3,7 +3,7 @@ using System;
 
 public partial class ConstantWeightManager : WeightManager
 {
-    public double GetWeight()
+    public double CalculateWeight()
     {
         return WeightProperties.BaseWeight;
     }

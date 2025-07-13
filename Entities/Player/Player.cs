@@ -1,4 +1,4 @@
-using Godot;
+    using Godot;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
@@ -38,6 +38,8 @@ public partial class Player : Entity
         //GD.Print(" SET INSTANCE _-_--------------------");
         base._Ready();
 		Instance = this;
+        foreach (Option a in CurrentAction.ActionProperties.FollowUpOptions)
+            Options.AddRange(a.GetActions());
         //GD.Print(Instance+" SET INSTANCE _-_--------------------");
     }
 
@@ -61,7 +63,9 @@ public partial class Player : Entity
             CurrentCamera.Focused = true;
         else
             CurrentCamera.Focused = false;
-        
+
+        InputAction();
+
         //GD.Print(DashCharges);
         base._Process(delta);
         //GD.Print("PARENT");
@@ -87,7 +91,31 @@ public partial class Player : Entity
      
 
     }
+    Action next = null;
+    List<Action> Options = new List<Action>();
+    public void InputAction()
+    {
+        if (CurrentAction == null)
+            return;
+        
 
+        for (int i = 1; i <= 5 && i-1 < Options.Count; i++)
+            if (Input.IsActionJustPressed("AttackOption" + i))
+                next = Options[i - 1];
+
+        GD.Print(next.Name+" "+Options.Count+" "+CurrentAction.Name+" "+Active);
+        if (!Active && next != null)
+        {
+            //GD.Print("Swap action to "+next.Name);
+            (CurrentAction = next).CallAction(this);
+            //GD.Print(CurrentAction.Name);
+
+            Options.Clear();
+            foreach (Option a in CurrentAction.ActionProperties.FollowUpOptions)
+                Options.AddRange(a.GetActions());
+            next = CurrentAction.ActionProperties.DefaultFollowUp;
+        }
+    }
     private void MoveTarget(double delta)
 	{
 		if (CurrentCamera == null)
@@ -117,24 +145,25 @@ public partial class Player : Entity
     }
     private void processDash()
     {
+        //GD.Print(IsDashing + " " + Input.IsActionJustPressed("Dash") + " " + PlayerState);
         if (!IsDashing && Input.IsActionJustPressed("Dash") && PlayerState != State.Airborne)
         {
-            SidestepRoll.CallAction();
+            SidestepRoll.CallAction(this);
         }
-        //GD.Print(SidestepRoll.Active +" "+PlayerState);`
+        //GD.Print(SidestepRoll.Active +" "+PlayerState);
         if (SidestepRoll.Active && PlayerState == State.Crouching)
         {
             SidestepRoll.Interrupt();
-            SlideRoll.CallAction();
+            SlideRoll.CallAction(this);
         }
         //GD.Print(TargetPos.Velocity);
         
         if (Input.IsActionJustPressed("Jump") && PlayerState != State.Airborne)
         {
-            //SidestepRoll.Interrupt();
-            //SlideRoll.Interrupt();
+            SidestepRoll.Interrupt();
+            SlideRoll.Interrupt();
             Jump.SetDistance(TargetPos.Velocity, RisingGravity);
-            Jump.CallAction();
+            Jump.CallAction(this);
 
 
         }

@@ -5,9 +5,9 @@ public partial class Neutral : Action, IConstantWeighted
 {
     [Export]
     public ConstantWeightManager WeightManager { get; set; }
-    public double GetWeight()
+    public double GetWeight(Entity root)
     {
-        return WeightManager.GetWeight();
+        return WeightManager.CalculateWeight();
     }
     public WeightManager GetWeightManager()
     {

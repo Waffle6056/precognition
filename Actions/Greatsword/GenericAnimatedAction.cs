@@ -17,7 +17,7 @@ public partial class GenericAnimatedAction : Action, IAnimated
     {
         if (!base.StartChannel())
             return false;
-        Animation.ActionAnimator.Play(AttackName);
+        Animation.Play(AttackName);
         if (playGhost)
             Animation.PlayFuture(ActionProperties.ChannelTime, AttackName);
         return true;

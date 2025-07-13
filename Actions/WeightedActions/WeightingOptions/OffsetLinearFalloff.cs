@@ -4,7 +4,7 @@ using static Godot.TextServer;
 
 public partial class OffsetLinearFalloff : WeightManager
 {
-    public double GetWeight(Vector3 Offset)
+    public double CalculateWeight(Vector3 Offset)
     {
         return LinearFalloff(WeightProperties.BaseWeight, WeightProperties.WeightMultiplier, PlayerDistance(Offset));
     }

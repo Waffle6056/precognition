@@ -8,6 +8,5 @@ public partial class WeightProperties : Node
     public float BaseWeight { get; set; }
     [Export]
     public float WeightMultiplier { get; set; }
-    [Export]
-    public Option[] FollowUpOptions { get; set; }
+    
 }

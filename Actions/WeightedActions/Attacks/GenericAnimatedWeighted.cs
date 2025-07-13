@@ -12,9 +12,9 @@ public partial class GenericAnimatedWeighted : GenericAnimatedAction, IOffsetFal
     {
         return WeightManager;
     }
-    public double GetWeight()
+    public double GetWeight(Entity root)
     {
-        return WeightManager.GetWeight(ActionProperties.Root.GlobalTransform * LocalOffset);
+        return WeightManager.CalculateWeight(root.GlobalTransform * LocalOffset);
     }
 
 }

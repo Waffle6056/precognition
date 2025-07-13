@@ -5,8 +5,8 @@ using System.Dynamic;
 
 public partial class Action : Option, RewindableObject, ActionState
 {
-	[Export]
-	public String[] CallKeyBind;
+	//[Export]
+	//public String[] CallKeyBind;
 	[Export]
 	public CooldownManager Cooldown;
 	[Export]
@@ -103,10 +103,11 @@ public partial class Action : Option, RewindableObject, ActionState
 		return true;
 	}
 	
-	public bool CallAction()
+	public bool CallAction(Entity Root)
 	{
-		//GD.Print("Attack Called");
-		if (OnCD() || ActionProperties.Root.Active || Active)
+		ActionProperties.Root = Root;
+		//GD.Print("Attack Called "+Name+" "+( Active));
+		if (OnCD() || Active)
 			return false;
 		if (StartChannel()){
 			return true;
@@ -122,23 +123,23 @@ public partial class Action : Option, RewindableObject, ActionState
 
 		ActionTime += delta;
 
-		if (CallKeyBind != null && CallKeyBind.Length > 0)
-		{
-			bool good = true;
-			foreach (String Bind in CallKeyBind)
-			{
-				String[] query = Bind.Split(',');
-				bool justP = Input.IsActionJustPressed(query[0]);
-                bool contP = Input.IsActionPressed(query[0]);
+		//if (CallKeyBind != null && CallKeyBind.Length > 0)
+		//{
+		//	bool good = true;
+		//	foreach (String Bind in CallKeyBind)
+		//	{
+		//		String[] query = Bind.Split(',');
+		//		bool justP = Input.IsActionJustPressed(query[0]);
+  //              bool contP = Input.IsActionPressed(query[0]);
 
-				if (query.Length > 1 && query[1].Equals("JustPressed")) 
-					good &= justP;
-				else
-					good &= contP;
-			}
-			if (good)
-				CallAction();
-		}
+		//		if (query.Length > 1 && query[1].Equals("JustPressed")) 
+		//			good &= justP;
+		//		else
+		//			good &= contP;
+		//	}
+		//	if (good)
+		//		CallAction();
+		//}
 
 		if (IsChannelling)
 			Channel(delta);

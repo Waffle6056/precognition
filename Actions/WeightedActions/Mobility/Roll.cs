@@ -11,9 +11,9 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
     {
         return WeightManager;
     }
-    public double GetWeight()
+    public double GetWeight(Entity root)
     {
-        return WeightManager.GetWeight(ActionProperties.Root.GlobalTransform * LocalOffset);
+        return WeightManager.CalculateWeight(root.GlobalTransform * LocalOffset);
     }
 
     [Export]
@@ -24,6 +24,8 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
     public String AttackName = "Ball";
     [Export]
     public float Distance = 2f;
+    [Export]
+    public float InvulnLength = 0;
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     protected override bool StartChannel()
     {
@@ -37,6 +39,7 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
         if (!base.StartAction())
             return false;
         AddVelocity();
+        ActionProperties.Root.InvulnTimeRemaining = InvulnLength;
         return true;
     }
 
@@ -56,5 +59,14 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
             return;
 
         AddVelocity();
+    }
+    public override bool Interrupt()
+    {
+        if (base.Interrupt())
+        {
+            ActionProperties.Root.InvulnTimeRemaining = 0;
+            return true;
+        }
+        return false;
     }
 }

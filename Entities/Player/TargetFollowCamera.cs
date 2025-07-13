@@ -44,12 +44,7 @@ public partial class TargetFollowCamera : Camera3D
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        if (Input.IsActionJustPressed("TestBind"))
-        {
-            Focused = !Focused;
-
-            //GD.Print("SWAPPED FOCUS " + Focused);
-        }
+        
         if (Input.IsActionJustPressed("LockOn"))
         {
             GD.Print("Lock on pressed");

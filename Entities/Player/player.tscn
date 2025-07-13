@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://debea5my12hmc"]
+[gd_scene load_steps=24 format=3 uid="uid://debea5my12hmc"]
 
 [ext_resource type="Script" uid="uid://beq0x31h1kshl" path="res://Entities/Player/Player.cs" id="1_83h1a"]
 [ext_resource type="Script" uid="uid://cocpcvof8gsku" path="res://Entities/Player/TargetFollowCamera.cs" id="2_dtv0t"]
@@ -9,6 +9,7 @@
 [ext_resource type="Script" uid="uid://dba7tcyn2xv52" path="res://Actions/WeightedActions/TrackingProperties.cs" id="7_1vjjv"]
 [ext_resource type="Script" uid="uid://dmnfw8ms2fb0b" path="res://Actions/WeightedActions/Mobility/Roll.cs" id="8_7a1se"]
 [ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="9_lub02"]
+[ext_resource type="Script" uid="uid://bwhimobdwhcis" path="res://Actions/WeightedActions/Mobility/Jump.cs" id="10_x1y6q"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dupfr"]
 radius = 0.512653
@@ -52,7 +53,7 @@ height = 1.4
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6fvw3"]
 
-[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CurrentCamera", "SlideRoll", "SidestepRoll", "HeadBox", "LegBox", "TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "StartingLimbs", "VisualHP") groups=["Rewindable"]]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CurrentCamera", "SlideRoll", "SidestepRoll", "Jump", "HeadBox", "LegBox", "TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "StartingLimbs", "VisualHP", "CurrentAction") groups=["Rewindable"]]
 process_mode = 3
 process_priority = -1
 collision_layer = 0
@@ -62,8 +63,7 @@ CurrentCamera = NodePath("Camera3D")
 TargetSpeed = 3.0
 SlideRoll = NodePath("SlideRoll")
 SidestepRoll = NodePath("SidestepRoll")
-JumpDistance = 1.0
-JumpLength = 0.2
+Jump = NodePath("Jump")
 HeadBox = NodePath("HeadBox")
 LegBox = NodePath("LegBox")
 TrackingPropertiesBase = NodePath("TrackingProperties")
@@ -76,9 +76,10 @@ StumbleStabilityThreshold = 0.0
 FallStabilityThreshold = 0.0
 StartingLimbs = [NodePath("HeadBox"), NodePath("LegBox")]
 VisualHP = NodePath("ColorRect")
+FallingGravity = -50.0
+RisingGravity = -50.0
 MaxWalkSpeed = 20.0
-Repel = 0.0
-resistance = Vector3(1, 0.5, 1)
+CurrentAction = NodePath("Greatsword")
 
 [node name="TargetPosition" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.682068, 0)
@@ -162,15 +163,6 @@ transform = Transform3D(1, 0, 0, 0, -3.50078e-06, -1, 0, 1, -3.50078e-06, 0, 0, 
 mesh = SubResource("BoxMesh_nuwvb")
 skeleton = NodePath("../..")
 
-[node name="Greatsword" parent="." instance=ExtResource("5_ttt55")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="piv" parent="Greatsword" index="1"]
-transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749614, 0, -0.749614, 0.661874, 0, 0.359612, 0.186193)
-
-[node name="ActionProperties" parent="Greatsword" index="2" node_paths=PackedStringArray("Root")]
-Root = NodePath("../..")
-
 [node name="EnvironmentHitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_6fvw3")
 
@@ -194,29 +186,42 @@ LinearRotationPerSecond = 6283.0
 script = ExtResource("8_7a1se")
 LocalOffset = Vector3(0, 0, -1)
 Distance = 1.5
+InvulnLength = 0.15
 ActionProperties = NodePath("ActionProperties")
 
-[node name="ActionProperties" type="Node" parent="SidestepRoll" node_paths=PackedStringArray("Root")]
+[node name="ActionProperties" type="Node" parent="SidestepRoll" node_paths=PackedStringArray("FollowUpOptions")]
 script = ExtResource("9_lub02")
 ActingMaximumTime = 0.2
 EndLagTime = 0.1
-Root = NodePath("../..")
+FollowUpOptions = []
 metadata/_custom_type_script = "uid://43pb0pff7oee"
 
 [node name="SlideRoll" type="Node3D" parent="." node_paths=PackedStringArray("ActionProperties")]
 script = ExtResource("8_7a1se")
 LocalOffset = Vector3(0, 0, -1)
 Distance = 4.0
+InvulnLength = 0.15
 ActionProperties = NodePath("ActionProperties")
 
-[node name="ActionProperties" type="Node" parent="SlideRoll" node_paths=PackedStringArray("Root")]
+[node name="ActionProperties" type="Node" parent="SlideRoll" node_paths=PackedStringArray("FollowUpOptions")]
 script = ExtResource("9_lub02")
 ActingMaximumTime = 0.3
 EndLagTime = 0.5
-Root = NodePath("../..")
+FollowUpOptions = []
 metadata/_custom_type_script = "uid://43pb0pff7oee"
+
+[node name="Jump" type="Node3D" parent="." node_paths=PackedStringArray("ActionProperties")]
+script = ExtResource("10_x1y6q")
+JumpDistance = 1.0
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="Jump" node_paths=PackedStringArray("FollowUpOptions")]
+script = ExtResource("9_lub02")
+FollowUpOptions = []
+metadata/_custom_type_script = "uid://43pb0pff7oee"
+
+[node name="Greatsword" parent="." instance=ExtResource("5_ttt55")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 
 [connection signal="area_entered" from="HeadBox" to="HeadBox" method="AreaEntered"]
 [connection signal="area_entered" from="LegBox" to="LegBox" method="AreaEntered"]
-
-[editable path="Greatsword"]

@@ -47,8 +47,6 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     [Export]
 	public float WalkLerpWeight = 10f;
     [Export]
-    public float AirborneLerpWeight = 20f;
-    [Export]
     public float FallingGravity = -15f;
     [Export]
     public float RisingGravity = -10f;
@@ -56,15 +54,11 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     public float MaxWalkSpeed = 10f;
     [Export]    
     public float Speed = -1f;
-    [Export]
-    public float Repel = 0.1f;
     private double AirTimeStart = 0f;
     [Export]
     public Action CurrentAction;
 
-    public bool test2 = true;
-    [Export]
-    public Vector3 resistance = Vector3.One;
+
     public bool IsChannelling{get{ return CurrentAction!=null && CurrentAction.IsChannelling; } set{}}
 	public bool IsActing{get{ return CurrentAction!=null && CurrentAction.IsActing; } set{}}
 	public bool IsLagging{get{ return CurrentAction!=null && CurrentAction.IsLagging; } set{} }
@@ -137,7 +131,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         }
         else
         {
-            Speed = vec.Length() * AirborneLerpWeight;
+            Speed = vec.Length() / (float) delta;
         }
         Velocity = dir * Speed;
         postVelocityCalculation();
@@ -236,19 +230,8 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     {
         setMassCenter();
         setStability();
-        if (!IsStunned)
-        {
-            if (Stability < FallStabilityThreshold)
-            {
-                TakeStunned(FallStunDuration);
-                Animation?.Play("Fall");
-            }
-            else if (Stability < StumbleStabilityThreshold)
-            {
-                TakeStunned(StumbleStunDuration);
-                Animation?.Play("Stumble");
-            }
-        }
+        processFall();
+
         float weight = 0;
         if (IsStunned)
             weight = SlowRecoveryWeight;
@@ -257,6 +240,21 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         CenterOfMass.GlobalPosition = CenterOfMass.GlobalPosition.Lerp(CenterOfMassBase.GlobalPosition, weight);
 
         //GD.Print(Stability + " " +IsStunned );
+    }
+    public void processFall()
+    {
+
+        if (Stability < FallStabilityThreshold)
+        {
+            TakeStunned(FallStunDuration);
+            Animation?.Play("Fall");
+        }
+        else if (Stability < StumbleStabilityThreshold)
+        {
+            TakeStunned(StumbleStunDuration);
+            Animation?.Play("Stumble");
+        }
+        
     }
     public virtual void setStability()
     {
@@ -315,7 +313,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         if (CurrentAction is ITrackingChange && (CurrentAction as ITrackingChange).TrackingProperties != null)
             currentTrackingProperties = (CurrentAction as ITrackingChange).TrackingProperties;
 
-        if (!IsActing && !IsStunned)    
+        if (!IsStunned)    
         {
             float anglePerSecond = 0f;
             Vector3 start = new Vector3(GlobalBasis[2][0], 0, GlobalBasis[2][2]).Normalized();

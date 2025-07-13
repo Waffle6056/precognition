@@ -32,6 +32,6 @@ interface IWeighted
     //{
     //    return WeightManager;
     //}
-    public double GetWeight();
+    public double GetWeight(Entity root);
 
 }

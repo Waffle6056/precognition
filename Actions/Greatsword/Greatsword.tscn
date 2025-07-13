@@ -1,12 +1,14 @@
-[gd_scene load_steps=15 format=3 uid="uid://o44110d7ha38"]
+[gd_scene load_steps=18 format=3 uid="uid://o44110d7ha38"]
 
 [ext_resource type="Script" uid="uid://bdpl1lo6sk2e5" path="res://Actions/Greatsword/GreatswordDownslash.cs" id="1_3044c"]
 [ext_resource type="Script" uid="uid://sh5hpgdf7x1e" path="res://Actions/CooldownManager.cs" id="2_04frq"]
 [ext_resource type="Script" uid="uid://bchnl4uspmyfe" path="res://Entities/Hurtbox.cs" id="2_cjg66"]
+[ext_resource type="Script" uid="uid://uw6larch5h11" path="res://Actions/WeightedActions/Neutral.cs" id="2_ibdvc"]
 [ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="3_i5yeq"]
 [ext_resource type="Script" uid="uid://cv7qx7ccmd6g1" path="res://Actions/Greatsword/GenericAnimatedAction.cs" id="4_lf8a5"]
 [ext_resource type="Script" uid="uid://b5h24cntogyul" path="res://Actions/Greatsword/GreatswordSideslash.cs" id="4_u5mt0"]
 [ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/VisualManager.cs" id="5_jyuq4"]
+[ext_resource type="Script" uid="uid://8688mfp17ueb" path="res://Actions/Greatsword/Charge.cs" id="9_naipr"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_y1ggq"]
 size = Vector3(0.09, 2, 0.25)
@@ -41,7 +43,7 @@ tracks/1/keys = {
 tracks/2/type = "method"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("GreatswordImpale")
+tracks/2/path = NodePath("Impale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -55,7 +57,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("GreatswordImpale/Hurtbox:monitoring")
+tracks/3/path = NodePath("Impale/Hurtbox:monitoring")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -94,7 +96,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("GreatswordImpale/Hurtbox:monitoring")
+tracks/2/path = NodePath("Impale/Hurtbox:monitoring")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -133,7 +135,7 @@ tracks/1/keys = {
 tracks/2/type = "method"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("GreatswordSideslash")
+tracks/2/path = NodePath("Sideslash")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -147,7 +149,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="Animation_n2fe3"]
 resource_name = "Swing"
-length = 2.0
+length = 0.7
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -167,19 +169,19 @@ tracks/1/path = NodePath("piv:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4, 0.633333, 0.7, 1.3, 1.4, 1.6, 2),
-"transitions": PackedFloat32Array(1, 2, 1, 1, 1, 1, 2, 2),
+"times": PackedFloat32Array(2.98023e-08, 0.1, 0.2, 0.4, 0.5, 0.6, 0.7),
+"transitions": PackedFloat32Array(2, 1, 1, 1, 1, 2, 2),
 "update": 0,
-"values": [Vector3(-0.84748, 0, 0), Vector3(0, 0, 0), Vector3(0.785398, 0, 0), Vector3(1.5708, 0, 0), Vector3(1.5708, 0, 0), Vector3(0.785398, 0, 0), Vector3(0, 0, 0), Vector3(-0.84748, 0, 0)]
+"values": [Vector3(0, 0, 0), Vector3(0.785398, 0, 0), Vector3(1.5708, 0, 0), Vector3(1.5708, 0, 0), Vector3(0.785398, 0, 0), Vector3(0, 0, 0), Vector3(-0.84748, 0, 0)]
 }
 tracks/2/type = "method"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("GreatswordDownslash")
+tracks/2/path = NodePath("Downslash")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": [],
@@ -187,22 +189,57 @@ tracks/2/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_naipr"]
+resource_name = "Stance"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("piv:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.359612, 0.186193)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("piv:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1),
+"transitions": PackedFloat32Array(1, 2),
+"update": 0,
+"values": [Vector3(-0.84748, 0, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_ecl6u"]
 _data = {
 &"Impale": SubResource("Animation_3cuj6"),
 &"RESET": SubResource("Animation_7xbki"),
 &"Sideslash": SubResource("Animation_uq5cn"),
+&"Stance": SubResource("Animation_naipr"),
 &"Swing": SubResource("Animation_n2fe3")
 }
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_12r05"]
 size = Vector3(1, 1, 3.646)
 
-[node name="Greatsword" type="Node3D"]
+[node name="Greatsword" type="Node3D" node_paths=PackedStringArray("ActionProperties")]
+script = ExtResource("2_ibdvc")
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="." node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
+script = ExtResource("3_i5yeq")
+FollowUpOptions = [NodePath("../Sideslash"), NodePath("../Charge")]
+DefaultFollowUp = NodePath("..")
 
 [node name="CooldownManager" type="Node3D" parent="." groups=["Rewindable"]]
 script = ExtResource("2_04frq")
-CDBase = 1.0
 
 [node name="piv" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.661874, 0.749614, 0, -0.749614, 0.661874, 0, 0.359612, 0.186193)
@@ -212,28 +249,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.923, 0)
 mesh = SubResource("BoxMesh_y1ggq")
 skeleton = NodePath("../..")
 
-[node name="ActionProperties" type="Node" parent="."]
-script = ExtResource("3_i5yeq")
-ChannelTime = 0.1
+[node name="AnimationManager" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator")]
+script = ExtResource("5_jyuq4")
+ActionAnimator = NodePath("AnimationPlayer")
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="AnimationManager"]
+root_node = NodePath("../..")
 libraries = {
 &"": SubResource("AnimationLibrary_ecl6u")
 }
 
-[node name="GreatswordImpale" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown", "ActionProperties") groups=["Rewindable"]]
+[node name="Impale" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown", "ActionProperties") groups=["Rewindable"]]
 script = ExtResource("4_lf8a5")
-Animation = NodePath("AnimationManager")
+Animation = NodePath("../AnimationManager")
 AttackName = "Impale"
-CallKeyBind = PackedStringArray("R")
 Cooldown = NodePath("../CooldownManager")
-ActionProperties = NodePath("../ActionProperties")
+ActionProperties = NodePath("ActionProperties")
 
-[node name="AnimationManager" type="Node3D" parent="GreatswordImpale" node_paths=PackedStringArray("ActionAnimator")]
-script = ExtResource("5_jyuq4")
-ActionAnimator = NodePath("../../AnimationPlayer")
-
-[node name="Hurtbox" type="Area3D" parent="GreatswordImpale"]
+[node name="Hurtbox" type="Area3D" parent="Impale"]
 transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, -2.98023e-08, 1.49012e-08)
 collision_layer = 0
 collision_mask = 4
@@ -244,28 +277,54 @@ ForceMagnitude = 0.175
 Damage = 5.0
 CounterDamageMultipler = 2.0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="GreatswordImpale/Hurtbox"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Impale/Hurtbox"]
 transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0, 0.597, -1.323)
 shape = SubResource("BoxShape3D_12r05")
 
-[node name="GreatswordDownslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown", "ActionProperties") groups=["Rewindable"]]
+[node name="ActionProperties" type="Node" parent="Impale" node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
+script = ExtResource("3_i5yeq")
+ChannelTime = 0.1
+FollowUpOptions = [NodePath("../../Sideslash"), NodePath("../../Charge")]
+DefaultFollowUp = NodePath("../..")
+
+[node name="Downslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown", "ActionProperties") groups=["Rewindable"]]
 script = ExtResource("1_3044c")
-Animation = NodePath("AnimationManager")
+Animation = NodePath("../AnimationManager")
 Cooldown = NodePath("../CooldownManager")
-ActionProperties = NodePath("../ActionProperties")
+ActionProperties = NodePath("ActionProperties")
 
-[node name="AnimationManager" type="Node3D" parent="GreatswordDownslash" node_paths=PackedStringArray("ActionAnimator")]
-script = ExtResource("5_jyuq4")
-ActionAnimator = NodePath("../../AnimationPlayer")
+[node name="ActionProperties" type="Node" parent="Downslash" node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
+script = ExtResource("3_i5yeq")
+EndLagTime = 0.4
+FollowUpOptions = []
+DefaultFollowUp = NodePath("../..")
 
-[node name="GreatswordSideslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown", "ActionProperties") groups=["Rewindable"]]
+[node name="Sideslash" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown", "ActionProperties") groups=["Rewindable"]]
 script = ExtResource("4_u5mt0")
-Animation = NodePath("AnimationManager")
+Animation = NodePath("../AnimationManager")
 Cooldown = NodePath("../CooldownManager")
-ActionProperties = NodePath("../ActionProperties")
+ActionProperties = NodePath("ActionProperties")
 
-[node name="AnimationManager" type="Node3D" parent="GreatswordSideslash" node_paths=PackedStringArray("ActionAnimator")]
-script = ExtResource("5_jyuq4")
-ActionAnimator = NodePath("../../AnimationPlayer")
+[node name="ActionProperties" type="Node" parent="Sideslash" node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
+script = ExtResource("3_i5yeq")
+ChannelTime = 0.1
+FollowUpOptions = [NodePath("../../Impale"), NodePath("../../Charge")]
+DefaultFollowUp = NodePath("../..")
 
-[connection signal="area_entered" from="GreatswordImpale/Hurtbox" to="GreatswordImpale/Hurtbox" method="Collide"]
+[node name="Charge" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "Cooldown", "ActionProperties")]
+script = ExtResource("9_naipr")
+ChargeInputs = PackedStringArray("AttackOption2")
+Animation = NodePath("../AnimationManager")
+AttackName = "Stance"
+Cooldown = NodePath("../CooldownManager")
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="Charge" node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
+script = ExtResource("3_i5yeq")
+ChannelTime = 0.1
+ActingMaximumTime = 3.0
+FollowUpOptions = []
+DefaultFollowUp = NodePath("../../Downslash")
+metadata/_custom_type_script = "uid://43pb0pff7oee"
+
+[connection signal="area_entered" from="Impale/Hurtbox" to="Impale/Hurtbox" method="Collide"]

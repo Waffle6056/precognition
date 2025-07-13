@@ -32,7 +32,7 @@ public partial class Enemy : Entity
             return;
         }
         List<Action> Options = new List<Action>();
-        foreach (Option a in (CurrentAction as IWeighted).GetWeightManager().WeightProperties.FollowUpOptions)
+        foreach (Option a in CurrentAction.ActionProperties.FollowUpOptions)
             Options.AddRange(a.GetActions());
         if (Options.Count == 0){
             //GD.Print(CurrentAction.GetType()+" = null ");
@@ -41,7 +41,7 @@ public partial class Enemy : Entity
         foreach (Action option in Options)
         {
             if (option is IWeighted){
-                double actionWeight = (option as IWeighted).GetWeight();
+                double actionWeight = (option as IWeighted).GetWeight(this);
                 if (!option.OnCD() && actionWeight > largestWeight)
                 {
                     largestWeight = actionWeight;
@@ -53,7 +53,7 @@ public partial class Enemy : Entity
 
         
         if (next != null)
-            (CurrentAction = next).CallAction();
+            (CurrentAction = next).CallAction(this);
     }
 
 
