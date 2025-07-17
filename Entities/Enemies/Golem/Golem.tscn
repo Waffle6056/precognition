@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://dgvaf6cplot6e"]
+[gd_scene load_steps=39 format=3 uid="uid://dgvaf6cplot6e"]
 
 [ext_resource type="Script" uid="uid://dku8cie5ivhqt" path="res://Entities/Enemies/Enemy.cs" id="1_j5j4p"]
 [ext_resource type="Script" uid="uid://uw6larch5h11" path="res://Actions/WeightedActions/Neutral.cs" id="2_53qhn"]
@@ -177,6 +177,166 @@ tracks/4/keys = {
 "transitions": PackedFloat32Array(2, 1, 1, 1),
 "update": 0,
 "values": [Vector3(-1, 1, 0), Vector3(-1, 0.680219, 0), Vector3(-0.835146, 0.0717349, -0.550029), Vector3(-1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_05r0g"]
+resource_name = "Fall0"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VisualManager/Limbs/RArm1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 0.332659, -0.667341), Vector3(1, 0.332659, -0.667341)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VisualManager/Limbs/LArm1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1, 0.178657, -0.838454), Vector3(-1, 0.178657, -0.838454)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VisualManager/Limbs/Chest:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.512328, -1.24913), Vector3(0, 0.512328, -1.24913)]
+}
+
+[sub_resource type="Animation" id="Animation_228kh"]
+resource_name = "Fall180"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VisualManager/Limbs/Chest:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.512328, 1.71985), Vector3(0, 0.512328, 1.71985)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VisualManager/Limbs/LArm1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1, 0.178657, 0.896107), Vector3(-1, 0.178657, 0.896107)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VisualManager/Limbs/RArm1:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 0.332659, 0.865376), Vector3(1, 0.332659, 0.865376)]
+}
+
+[sub_resource type="Animation" id="Animation_vxbte"]
+resource_name = "Fall270"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VisualManager/Limbs/LArm1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.218032, 0.181309, 0), Vector3(0.218032, 0.181309, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VisualManager/Limbs/RArm1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1.22609, -0.14221, 0), Vector3(1.22609, -0.14221, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VisualManager/Limbs/Chest:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.931868, 0.013262, 0), Vector3(0.931868, 0.013262, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hog7o"]
+resource_name = "Fall90"
+length = 2.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("VisualManager/Limbs/LArm1:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.218, 0.181, 0), Vector3(-0.218, 0.181, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("VisualManager/Limbs/RArm1:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1.226, -0.142, 0), Vector3(-1.226, -0.142, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("VisualManager/Limbs/Chest:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-0.932, 0.013, 0), Vector3(-0.932, 0.013, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_23uap"]
@@ -476,6 +636,10 @@ tracks/6/keys = {
 _data = {
 &"Ball": SubResource("Animation_ktdxy"),
 &"Fall": SubResource("Animation_j8y48"),
+&"Fall0": SubResource("Animation_05r0g"),
+&"Fall180": SubResource("Animation_228kh"),
+&"Fall270": SubResource("Animation_vxbte"),
+&"Fall90": SubResource("Animation_hog7o"),
 &"RESET": SubResource("Animation_23uap"),
 &"StepForward": SubResource("Animation_0er8i"),
 &"Stumble": SubResource("Animation_mqab3"),
@@ -520,6 +684,7 @@ QuickRecoveryWeight = 0.5
 StumbleStabilityThreshold = 0.2
 FallStabilityThreshold = 0.175
 StartingLimbs = [NodePath("VisualManager/Limbs/Chest"), NodePath("VisualManager/Limbs/LArm1"), NodePath("VisualManager/Limbs/LArm2"), NodePath("VisualManager/Limbs/RArm1"), NodePath("VisualManager/Limbs/RArm2"), NodePath("VisualManager/Limbs/LLeg"), NodePath("VisualManager/Limbs/RLeg")]
+FallDirections = PackedInt32Array(0, 90, 180, 270)
 VisualHP = NodePath("MiscVisuals/ColorRect")
 CurrentAction = NodePath("Actions/Neutral")
 
@@ -546,11 +711,13 @@ mesh = SubResource("PrismMesh_4y3ma")
 
 [node name="CenterOfMassVisual" type="MeshInstance3D" parent="MiscVisuals"]
 transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 1, 0)
+top_level = true
 mesh = SubResource("SphereMesh_t06hs")
 skeleton = NodePath("../..")
 
 [node name="CenterOfMassVisual2" type="MeshInstance3D" parent="MiscVisuals"]
 transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 1, 0)
+top_level = true
 mesh = SubResource("BoxMesh_hv1tq")
 skeleton = NodePath("../..")
 
@@ -559,6 +726,7 @@ script = ExtResource("8_36q5h")
 ActionAnimator = NodePath("AnimationPlayer")
 VisualRoot = NodePath("Limbs")
 GhostMaterial = SubResource("StandardMaterial3D_05r0g")
+GhostSpeedScale = 2.0
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="VisualManager"]
 root_node = NodePath("../..")
@@ -681,7 +849,7 @@ shape = SubResource("BoxShape3D_ccfhe")
 
 [node name="BaseTracking" type="Node" parent="."]
 script = ExtResource("10_ifyqx")
-SlerpWeight = 3.0
+SlerpWeight = 1.0
 
 [node name="Actions" type="Node3D" parent="."]
 

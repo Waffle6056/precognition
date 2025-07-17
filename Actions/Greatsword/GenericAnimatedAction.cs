@@ -22,5 +22,13 @@ public partial class GenericAnimatedAction : Action, IAnimated
             Animation.PlayFuture(ActionProperties.ChannelTime, AttackName);
         return true;
     }
+    protected override bool StartAction()
+    {
+        if (!base.StartAction())
+            return false;
+        if (playGhost)
+            Animation.EndFuture();
+        return true;
+    }
 }
 

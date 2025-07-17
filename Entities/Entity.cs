@@ -37,8 +37,12 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     [Export]
     public float FallStunDuration = 2f;
     [Export]
+    public float FallMaxDistance = 2f;
+    [Export]
     public Limb[] StartingLimbs;
     public List<Limb> Limbs = new List<Limb>();
+    [Export]
+    public int[] FallDirections;
     public float Stability = 1;
     [Export]
 	public ColorRect VisualHP;
@@ -97,7 +101,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         if (RewindController.Instance.IsRewinding)
 			return;
 
-        
+        //GD.Print(Animation.ActionAnimator.CurrentAnimation);
     }
 
     public override void _PhysicsProcess(double delta)
@@ -205,18 +209,18 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
             return 0;
         CurrentEnergy -= Damage;
         LastHitTime = EntityTime;
+        InvulnTimeRemaining = .1f;
         return Damage;
     }
 
-    public virtual float TakeStunned(float Duration)
+    public virtual float TakeStunned(float Duration, bool selfInflicted = false)
     {
-        if (IsStunned || IsInvuln || CurrentAction != null && !CurrentAction.Interrupt())
+        if (IsStunned || (IsInvuln && !selfInflicted) || CurrentAction != null && !CurrentAction.Interrupt())
             return 0;
         StunCallTime = EntityTime;
         StunDuration = Duration;
 
-        //GD.Print("FALL/STUMBLE ANIMATIONS NOT IMPLEMENTED");
-        Animation?.EndAnimation();   
+        Animation?.EndAnimation();
        
         
         
@@ -230,7 +234,6 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     {
         setMassCenter();
         setStability();
-        processFall();
 
         float weight = 0;
         if (IsStunned)
@@ -241,17 +244,50 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
 
         //GD.Print(Stability + " " +IsStunned );
     }
-    public void processFall()
+    public void processFall(float globalDeg)
     {
-
+        //if (Animation != null)
+        //    GD.Print(Animation.ActionAnimator.CurrentAnimation+" "+IsStunned);  
+        if (IsStunned)
+            return;
+        
         if (Stability < FallStabilityThreshold)
         {
-            TakeStunned(FallStunDuration);
-            Animation?.Play("Fall");
+            TakeStunned(FallStunDuration, selfInflicted:true);
+
+            // plays the fall animation with the closest angle to the actual direction
+            int fallAng = FallDirections[0];
+            double closestAngle = 180;
+            float localDeg = (float)(globalDeg - GlobalRotation.Y/Math.PI*180 + 360) % 360;
+            //GD.Print(dirt +" "+directionDegrees+" "+GlobalRotation.Y);
+            foreach (int dir in FallDirections)
+            {
+                double angle = Math.Min(Math.Abs(dir- localDeg), 360 - Math.Abs(dir - localDeg));
+                //GD.Print(dir + " " + angle);
+                if (angle < closestAngle)
+                {
+                    closestAngle = angle;
+                    fallAng = dir;
+                }
+            }
+            Animation?.Play("Fall" + fallAng);
+
+            // rotates so the falling animation matches actual direction
+            if (localDeg > fallAng)
+                RotateY((float)(closestAngle / 180 * Math.PI));
+            else
+                RotateY(-(float)(closestAngle / 180 * Math.PI));
+
+            // knocks back in proportion to how far the center of mass was moved
+            Vector3 fallDir = (Vector3.Forward.Rotated(Vector3.Up, (float)(globalDeg/180*Math.PI))).Normalized();
+            //GD.Print(globalDeg);
+
+            TargetPos.MoveAndCollide(fallDir * (1-Stability) * FallMaxDistance);
+
         }
         else if (Stability < StumbleStabilityThreshold)
         {
-            TakeStunned(StumbleStunDuration);
+            TakeStunned(StumbleStunDuration, selfInflicted: true);
             Animation?.Play("Stumble");
         }
         
@@ -270,6 +306,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
 
         float pi = (float)Math.PI;
         float maxClosestAngle = 0;
+        float dir = 0;
         for (int ang = 0; ang < 360; ang++) 
         {
             Vector3 vec = Vector3.Forward.Rotated(Vector3.Up, ang * pi / 180f);
@@ -281,10 +318,14 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
                closestAngle = Math.Min(closestAngle, vec.AngleTo(limb));
             }
 
+            if (closestAngle > maxClosestAngle)
+                dir = ang;
             maxClosestAngle = Math.Max(maxClosestAngle, closestAngle);
         }
         //GD.Print(legs.Count);
         Stability = (pi - maxClosestAngle) / pi;
+        //GD.Print(dir);
+        processFall(dir);
     }
 
     public virtual void setMassCenter()

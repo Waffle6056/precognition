@@ -11,15 +11,26 @@ public partial class VisualManager : Node3D, RewindableObject
     public Node3D VisualRoot { get; set; }
     [Export]
     public Material GhostMaterial { get; set; }
-    public void Play(String name)
+	[Export]
+	public float GhostSpeedScale = 3f;
+	public void Play(String name)
 	{
+		if (ActionAnimator.IsPlaying())
+		{
+			EndAnimation();
+			//GD.Print("a");
+		}
+		
 		ActionAnimator.Play(name);
 	}
-    public void Play(String name, float offset)
+    public void Play(String name, float offset, float speed)
     {
-		//GD.Print(name);
+        if (ActionAnimator.IsPlaying())
+            EndAnimation();
+        //GD.Print(name);
         ActionAnimator.Play(name);
 		ActionAnimator.Advance(offset);
+        ActionAnimator.SpeedScale = speed;
     }
 
 
@@ -27,7 +38,8 @@ public partial class VisualManager : Node3D, RewindableObject
 	{
 		ActionAnimator.Advance(ActionAnimator.CurrentAnimationLength - ActionAnimator.CurrentAnimationPosition);
 	}
-	static void applyMaterial(Node root, Material m)
+    
+    static void applyMaterial(Node root, Material m)
 	{
 		if (root is GeometryInstance3D)
 			(root as GeometryInstance3D).MaterialOverride = m;
@@ -40,21 +52,27 @@ public partial class VisualManager : Node3D, RewindableObject
 		return PlayFuture(offset, ActionAnimator.CurrentAnimation);
 	}
 
+	private VisualManager dupe;
     public VisualManager PlayFuture(float offset, String animName)
 	{
-		VisualManager dupe = this.Duplicate() as VisualManager;
+        dupe = this.Duplicate() as VisualManager;
 
         dupe.VisualRoot.ProcessMode = ProcessModeEnum.Disabled;
         applyMaterial(dupe.VisualRoot, GhostMaterial);
 
-        dupe.Play(animName, offset);
+        dupe.Play(animName, offset, GhostSpeedScale);
 		dupe.ActionAnimator.AnimationFinished += dupe.DeleteSignal;
 
 
         AddChild(dupe);
         return dupe;
 	}
-	public void DeleteSignal(StringName n)
+    public void EndFuture()
+    {
+        dupe?.EndAnimation();
+    }
+
+    public void DeleteSignal(StringName n)
 	{
 		QueueFree();
 	}

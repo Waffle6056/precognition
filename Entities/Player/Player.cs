@@ -103,7 +103,7 @@ public partial class Player : Entity
             if (Input.IsActionJustPressed("AttackOption" + i))
                 next = Options[i - 1];
 
-        GD.Print(next.Name+" "+Options.Count+" "+CurrentAction.Name+" "+Active);
+        //GD.Print(next+" "+Options.Count+" "+CurrentAction.Name+" "+Active);
         if (!Active && next != null)
         {
             //GD.Print("Swap action to "+next.Name);
