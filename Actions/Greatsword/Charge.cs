@@ -5,9 +5,9 @@ public partial class Charge : GenericAnimatedAction
 {
 	[Export]
 	public String[] ChargeInputs { get; set; }
-	protected override bool Act(double delta)
+	protected override bool Channel(double delta)
 	{
-		if (!base.Act(delta))
+		if (!base.Channel(delta))
 			return false;
 
 		bool act = false;
@@ -16,7 +16,7 @@ public partial class Charge : GenericAnimatedAction
 				act = true;
         }
 		if (!act)
-			return EndAction();
+			return EndChannel();
 
 		return true;
 	}

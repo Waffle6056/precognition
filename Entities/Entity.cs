@@ -16,6 +16,8 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     public bool InvulnToggle = false;
     public bool IsInvuln { get { return InvulnToggle || InvulnTimeRemaining > 0; } }
     [Export]
+    public float HitstunMul = .005f;
+    [Export]
     public virtual VisualManager Animation { get; set; }
     [Export]
     public CharacterBody3D TargetPos = null;
@@ -209,7 +211,8 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
             return 0;
         CurrentEnergy -= Damage;
         LastHitTime = EntityTime;
-        InvulnTimeRemaining = .1f;
+        //InvulnTimeRemaining = .1f;
+
         return Damage;
     }
 

@@ -802,7 +802,7 @@ shape = SubResource("SphereShape3D_caduy")
 [node name="MeshInstance3D" type="MeshInstance3D" parent="VisualManager/Limbs/RArm2"]
 mesh = SubResource("SphereMesh_bqttr")
 
-[node name="Hurtbox" type="Area3D" parent="VisualManager/Limbs/RArm2"]
+[node name="Hurtbox" type="Area3D" parent="VisualManager/Limbs/RArm2" node_paths=PackedStringArray("v")]
 transform = Transform3D(0.972377, 0.0730971, 0.221675, 0, 0.9497, -0.313162, -0.233416, 0.304512, 0.923466, 0, 0, 0)
 collision_layer = 0
 collision_mask = 2
@@ -810,6 +810,7 @@ monitoring = false
 script = ExtResource("4_05r0g")
 ForceMagnitude = 2.0
 Damage = 5.0
+v = NodePath("../../..")
 metadata/_custom_type_script = "uid://bchnl4uspmyfe"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/Limbs/RArm2/Hurtbox"]

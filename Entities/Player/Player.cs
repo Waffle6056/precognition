@@ -8,16 +8,20 @@ public partial class Player : Entity
 {
     [Export]
     public TargetFollowCamera CurrentCamera = null;
-
-    [Export]
-    public float TargetSpeed = 15f;
     [Export]
     public Roll SlideRoll;
     [Export]
     public Roll SidestepRoll;
     [Export]
     public Jump Jump;
+    [Export]
+    public float ActionBufferTime = 1f;
+    private double currentActionBufferTime = 0;
+    [Export]
+    public float DashBufferTime = .2f;
+    private double currentDashBufferTime = 0;
     public bool IsDashing { get { return SlideRoll.Active || SidestepRoll.Active; } }
+    public bool IsRunning = false;
 
     public static Player Instance {get; private set;}
     [Export]
@@ -32,7 +36,15 @@ public partial class Player : Entity
         Airborne
     }
     State PlayerState = State.Standing;
-    
+    [Export]
+    public float CrouchingSpeedRatio = 2/3f;
+    [Export]
+    public float WalkingSpeed = 3f;
+    [Export]
+    public float RunningSpeed = 4f;
+
+    public float TargetSpeed = 3f;
+
     public override void _Ready()
     {
         //GD.Print(" SET INSTANCE _-_--------------------");
@@ -64,7 +76,11 @@ public partial class Player : Entity
         else
             CurrentCamera.Focused = false;
 
-        InputAction();
+        IsRunning = Input.IsActionPressed("Dash");
+
+        
+
+        InputAction(delta);
 
         //GD.Print(DashCharges);
         base._Process(delta);
@@ -72,14 +88,17 @@ public partial class Player : Entity
     }
     public override void _PhysicsProcess(double delta)
     {
-
+        if (currentDashBufferTime > 0)
+            currentDashBufferTime -= delta;
+        if (Input.IsActionJustPressed("Dash"))
+            currentDashBufferTime = DashBufferTime;
         processDash();
         MoveTarget(delta);
         base._PhysicsProcess(delta);
 
         if (!TargetPos.IsOnFloor())
             PlayerState = State.Airborne;
-        else if ((Input.IsActionPressed("Crouch") && !Active) || SlideRoll.Active)
+        else if (Input.IsActionPressed("Crouch") || SlideRoll.Active)
             PlayerState = State.Crouching;
         else
             PlayerState = State.Standing;
@@ -93,27 +112,35 @@ public partial class Player : Entity
     }
     Action next = null;
     List<Action> Options = new List<Action>();
-    public void InputAction()
+    public void InputAction(double delta)
     {
         if (CurrentAction == null)
             return;
-        
+
+        if (currentActionBufferTime > 0)
+            currentActionBufferTime -= delta;
+        if (CurrentAction.EndedActing)
+            currentActionBufferTime = ActionBufferTime;
+
+
 
         for (int i = 1; i <= 5 && i-1 < Options.Count; i++)
             if (Input.IsActionJustPressed("AttackOption" + i))
                 next = Options[i - 1];
 
         //GD.Print(next+" "+Options.Count+" "+CurrentAction.Name+" "+Active);
-        if (!Active && next != null)
+        if (!Active && ( currentActionBufferTime <= 0 || next != null )) // next action called when something is selected or the timer for selecting runs out
         {
+            if (next == null)
+                next = CurrentAction.ActionProperties.DefaultFollowUp;
             //GD.Print("Swap action to "+next.Name);
             (CurrentAction = next).CallAction(this);
+            next = null;
             //GD.Print(CurrentAction.Name);
 
             Options.Clear();
             foreach (Option a in CurrentAction.ActionProperties.FollowUpOptions)
                 Options.AddRange(a.GetActions());
-            next = CurrentAction.ActionProperties.DefaultFollowUp;
         }
     }
     private void MoveTarget(double delta)
@@ -125,7 +152,11 @@ public partial class Player : Entity
 		}
 
         Vector3 globalMovement = inputDirection();
-        
+
+        TargetSpeed = IsRunning ? RunningSpeed : WalkingSpeed;
+        if (PlayerState == State.Crouching)
+            TargetSpeed *= CrouchingSpeedRatio;
+
         TargetPos.Velocity += globalMovement * TargetSpeed;
 
         //GD.Print(Velocity.Length() + " " + Velocity.Y);
@@ -142,16 +173,19 @@ public partial class Player : Entity
     protected override void postVelocityCalculation()
     {
         base.postVelocityCalculation();
+        if (IsStunned)
+            Velocity = Vector3.Zero;
     }
     private void processDash()
     {
+        
         //GD.Print(IsDashing + " " + Input.IsActionJustPressed("Dash") + " " + PlayerState);
-        if (!IsDashing && Input.IsActionJustPressed("Dash") && PlayerState != State.Airborne)
+        if (!IsDashing && currentDashBufferTime > 0 && Input.IsActionJustReleased("Dash") && PlayerState != State.Airborne && !IsLagging)
         {
             SidestepRoll.CallAction(this);
         }
         //GD.Print(SidestepRoll.Active +" "+PlayerState);
-        if (SidestepRoll.Active && PlayerState == State.Crouching)
+        if ((SidestepRoll.Active || IsRunning) && PlayerState == State.Crouching)
         {
             SidestepRoll.Interrupt();
             SlideRoll.CallAction(this);
@@ -220,6 +254,22 @@ public partial class Player : Entity
 			return;
 		base.SetData(data);
 	}
+    public override float TakeHit(float Damage)
+    {
+        //if (IsInvuln)
+        //    return 0;
+        //CurrentEnergy -= Damage;
+        //Animation?.HitStop(Damage * HitstunMul);
+        //LastHitTime = EntityTime;
+        //InvulnTimeRemaining = .1f;
+        //return Damage;
+        Damage = base.TakeHit(Damage);
+        TakeStunned(Damage * HitstunMul); 
+        InvulnTimeRemaining = .1f + Damage * HitstunMul;
+        Animation?.HitStop(Damage * HitstunMul);
+        return Damage;
+    }
+
 
     public override Vector3 TakeKnockback(Vector3 Force)
     {

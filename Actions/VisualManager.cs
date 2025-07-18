@@ -13,7 +13,9 @@ public partial class VisualManager : Node3D, RewindableObject
     public Material GhostMaterial { get; set; }
 	[Export]
 	public float GhostSpeedScale = 3f;
-	public void Play(String name)
+    public double Hitstop = 0;
+    //public double HitstopCache = 0;
+    public void Play(String name)
 	{
 		if (ActionAnimator.IsPlaying())
 		{
@@ -76,6 +78,26 @@ public partial class VisualManager : Node3D, RewindableObject
 	{
 		QueueFree();
 	}
+    public void HitStop(double amt)
+    {
+		Hitstop += amt;
+        //HitstopCache += amt;
+    }
+    public override void _Process(double delta)
+    {
+        base._Process(delta);
+		if (Hitstop > 0) {
+			ActionAnimator.Pause();
+			Hitstop -= delta;
+			if (Hitstop < 0)
+                ActionAnimator.Play();
+        }
+		//else
+		//{
+		//	//ActionAnimator.Advance(HitstopCache);
+		//	//HitstopCache = 0;
+		//}
+    }
 
 
     public int DataLength{get{return 2;}}

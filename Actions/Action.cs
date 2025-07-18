@@ -15,16 +15,24 @@ public partial class Action : Option, RewindableObject, ActionState
 	protected double EndLagCallTime = 0;
 	protected double ActionCallTime = 0;
 	protected double ActionTime = 0.0;
-	public bool IsChannelling{get; set;}
-	public bool IsActing{get; set;}
-	public bool IsLagging{get; set;}
-	public bool Active {get{ return IsChannelling || IsActing || IsLagging;} }
+
+    public bool	StartedChannelling {get; set;}
+    public bool IsChannelling{get; set; }
+    public bool EndedChannelling { get; set; }
+    public bool StartedActing { get; set; }
+    public bool IsActing{get; set; }
+    public bool EndedActing { get; set; }
+    public bool StartedLagging { get; set; }
+    public bool IsLagging{get; set; }
+    public bool EndedLagging { get; set; }
+    public bool Active {get{ return IsChannelling || IsActing || IsLagging;} }
 	public bool OnCD() { return Cooldown == null ? false : Cooldown.OnCD(); }
 
 	protected virtual bool StartChannel()
 	{
 		ChannelCallTime = ActionTime;
 		IsChannelling = true;
+		StartedChannelling = true;
 		return true;
 		
 		//GD.Print("Channel Started");	
@@ -39,10 +47,11 @@ public partial class Action : Option, RewindableObject, ActionState
 	protected virtual bool EndChannel()
 	{
 		IsChannelling = false;
+        EndedChannelling = true;
 
-		//GD.Print("Channel Finished");
+        //GD.Print("Channel Finished");
 
-		StartAction();
+        StartAction();
 		return true;
 	}
 
@@ -50,9 +59,10 @@ public partial class Action : Option, RewindableObject, ActionState
 	{
 		ActionCallTime = ActionTime;
 		IsActing = true;
+        StartedActing = true;
 
-		//GD.Print("BaseAttack Called");
-		return true;
+        //GD.Print("BaseAttack Called");
+        return true;
 	}
 	protected virtual bool Act(double delta)
 	{
@@ -64,16 +74,18 @@ public partial class Action : Option, RewindableObject, ActionState
 	{
 		//GD.Print("ACTION ENDED");
 		IsActing = false;
-		StartEndLag();
+        EndedActing = true;
+        StartEndLag();
 		return true;
 	}
 	protected virtual bool StartEndLag()
 	{
 		EndLagCallTime = ActionTime;
 		IsLagging = true;
+        StartedLagging = true;
 
-		//GD.Print("BaseAttack Called");
-		return true;
+        //GD.Print("BaseAttack Called");
+        return true;
 		
 	}
 	protected virtual bool Lag(double delta)
@@ -85,7 +97,8 @@ public partial class Action : Option, RewindableObject, ActionState
 	protected virtual bool EndEndLag()
 	{
 		IsLagging = false;
-		Cooldown?.Start();
+        EndedLagging = true;
+        Cooldown?.Start();
 		return true;
 	}
 	public virtual bool Interrupt()
@@ -121,7 +134,15 @@ public partial class Action : Option, RewindableObject, ActionState
 		if (RewindController.Instance.IsPaused)
 			return false;
 
-		ActionTime += delta;
+		StartedChannelling	= false;
+		EndedChannelling = false;
+        StartedActing = false;
+        EndedActing = false;
+        StartedLagging = false;
+        EndedLagging = false;
+
+
+        ActionTime += delta;
 
 		//if (CallKeyBind != null && CallKeyBind.Length > 0)
 		//{

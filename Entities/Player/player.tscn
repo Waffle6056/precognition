@@ -60,10 +60,10 @@ collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_83h1a")
 CurrentCamera = NodePath("Camera3D")
-TargetSpeed = 3.0
 SlideRoll = NodePath("SlideRoll")
 SidestepRoll = NodePath("SidestepRoll")
 Jump = NodePath("Jump")
+DashBufferTime = 0.4
 HeadBox = NodePath("HeadBox")
 LegBox = NodePath("LegBox")
 TrackingPropertiesBase = NodePath("TrackingProperties")
@@ -185,14 +185,14 @@ LinearRotationPerSecond = 6283.0
 [node name="SidestepRoll" type="Node3D" parent="." node_paths=PackedStringArray("ActionProperties")]
 script = ExtResource("8_7a1se")
 LocalOffset = Vector3(0, 0, -1)
-Distance = 1.5
-InvulnLength = 0.15
+Distance = 1.0
+InvulnLength = 0.1
 ActionProperties = NodePath("ActionProperties")
 
 [node name="ActionProperties" type="Node" parent="SidestepRoll" node_paths=PackedStringArray("FollowUpOptions")]
 script = ExtResource("9_lub02")
-ActingMaximumTime = 0.2
-EndLagTime = 0.1
+ActingMaximumTime = 0.1
+EndLagTime = 0.2
 FollowUpOptions = []
 metadata/_custom_type_script = "uid://43pb0pff7oee"
 

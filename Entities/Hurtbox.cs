@@ -8,9 +8,13 @@ public partial class Hurtbox : Area3D
     [Export]
     float ForceMagnitude = 0;
     [Export]
+    float HitstunMul = .02f;
+    [Export]
     float Damage = 0;
     [Export]
     float CounterDamageMultipler = 1;
+    [Export]
+    public VisualManager v;
     public void Collide(Area3D area)
     {
         GD.Print("Collide called ");
@@ -24,7 +28,7 @@ public partial class Hurtbox : Area3D
     {
         GD.Print("Attack called "+(  -GlobalBasis[2] * ForceMagnitude));
         area.Parent.TakeKnockback(-GlobalBasis[2] * ForceMagnitude);
-        area.Parent.TakeHit(DamageCalc(area.Parent));
+        v.HitStop(area.Parent.TakeHit(DamageCalc(area.Parent)) * HitstunMul);
     }
     public float DamageCalc(Entity entity)
     {
