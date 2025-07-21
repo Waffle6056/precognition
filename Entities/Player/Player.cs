@@ -157,7 +157,8 @@ public partial class Player : Entity
         if (PlayerState == State.Crouching)
             TargetSpeed *= CrouchingSpeedRatio;
 
-        TargetPos.Velocity += globalMovement * TargetSpeed;
+        if (!IsActing && !IsLagging)
+            TargetPos.Velocity += globalMovement * TargetSpeed;
 
         //GD.Print(Velocity.Length() + " " + Velocity.Y);
         if (!globalMovement.Length().Equals(Math.Abs(globalMovement.Y)))

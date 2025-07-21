@@ -47,7 +47,8 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
     {
         CharacterBody3D TargetPos = ActionProperties.Root.TargetPos;
         Vector3 GlobalDirection = (TargetPos.GlobalBasis * LocalOffset.Normalized()).Normalized();
-
+        //GD.Print((GlobalDirection * Distance / ActionProperties.ActingMaximumTime));
+    
         TargetPos.Velocity += (GlobalDirection * Distance / ActionProperties.ActingMaximumTime);
     }
     public override void _PhysicsProcess(double delta)

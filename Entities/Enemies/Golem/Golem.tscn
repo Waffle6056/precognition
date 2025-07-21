@@ -564,10 +564,10 @@ tracks/1/path = NodePath("VisualManager/Limbs/RArm1:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.2001, 0.566667, 0.566767, 1),
-"transitions": PackedFloat32Array(2, 1, 2, -2, -2, 1),
+"times": PackedFloat32Array(0, 0.2, 0.2001, 0.566667, 0.566767, 0.733433, 1),
+"transitions": PackedFloat32Array(2, 1, 2, -2, -2, -2, 1),
 "update": 0,
-"values": [Vector3(1, 1, 0), Vector3(1.1, 1.7, 0.963636), Vector3(1.1, 1.7, 0.963636), Vector3(0.499698, 0.8, -1.54774), Vector3(0.3, 1, -1.54737), Vector3(1, 1, 0)]
+"values": [Vector3(1, 1, 0), Vector3(1.1, 1.7, 0.963636), Vector3(1.1, 1.7, 0.963636), Vector3(0.499698, 0.8, -1.54774), Vector3(0.3, 1, -1.54737), Vector3(0.3, 1, -1.54737), Vector3(1, 1, 0)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -576,10 +576,10 @@ tracks/2/path = NodePath("VisualManager/Limbs/RArm2:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.2001, 0.566667, 1),
-"transitions": PackedFloat32Array(2, 1, 2, -2, 1),
+"times": PackedFloat32Array(0, 0.2, 0.2001, 0.566667, 0.733333, 1),
+"transitions": PackedFloat32Array(2, 1, 2, -2, -2, 1),
 "update": 0,
-"values": [Vector3(1.6, 0, 0), Vector3(2.23636, 1.1, 0.818182), Vector3(2.23636, 1.1, 0.818182), Vector3(0.394737, 0.2, -2.73158), Vector3(1.6, 0, 0)]
+"values": [Vector3(1.6, 0, 0), Vector3(2.23636, 1.1, 0.818182), Vector3(2.23636, 1.1, 0.818182), Vector3(0.394737, 0.2, -2.73158), Vector3(0.394737, 0.2, -2.73158), Vector3(1.6, 0, 0)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -588,10 +588,10 @@ tracks/3/path = NodePath("VisualManager/Limbs/LArm2:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.566667, 0.566767, 1),
-"transitions": PackedFloat32Array(2, 2, -2, -2, 1),
+"times": PackedFloat32Array(0, 0.2, 0.566667, 0.566767, 0.733333, 0.733433, 1),
+"transitions": PackedFloat32Array(2, 2, -2, -2, -2, -2, 1),
 "update": 0,
-"values": [Vector3(-1.6, 0, 0), Vector3(-1.4, 0.1, -1.1), Vector3(-2, 0.7, 0.4), Vector3(-2, 0.7, 0.4), Vector3(-1.6, 0, 0)]
+"values": [Vector3(-1.6, 0, 0), Vector3(-1.4, 0.1, -1.1), Vector3(-2, 0.7, 0.4), Vector3(-2, 0.7, 0.4), Vector3(-2, 0.7, 0.4), Vector3(-2, 0.7, 0.4), Vector3(-1.6, 0, 0)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -600,10 +600,10 @@ tracks/4/path = NodePath("VisualManager/Limbs/LArm1:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.566667, 0.566767, 0.566867, 0.566967, 1),
-"transitions": PackedFloat32Array(2, 2, -2, -2, -2, -2, 1),
+"times": PackedFloat32Array(0, 0.2, 0.566667, 0.566767, 0.566867, 0.566967, 0.733333, 0.733433, 0.733533, 0.733633, 1),
+"transitions": PackedFloat32Array(2, 2, -2, -2, -2, -2, -2, -2, -2, -2, 1),
 "update": 0,
-"values": [Vector3(-1, 1, 0), Vector3(-1.2, 0.4, -0.4), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1, 0)]
+"values": [Vector3(-1, 1, 0), Vector3(-1.2, 0.4, -0.4), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1.1, 0.9), Vector3(-1, 1, 0)]
 }
 tracks/5/type = "method"
 tracks/5/imported = false
@@ -626,10 +626,10 @@ tracks/6/path = NodePath("VisualManager/Limbs/RArm2/Hurtbox:monitoring")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
-"times": PackedFloat32Array(0, 0.2, 0.566667),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.2, 0.566667, 0.733333),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [false, true, false]
+"values": [false, true, false, false]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nwfa0"]

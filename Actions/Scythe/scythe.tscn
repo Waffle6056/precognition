@@ -1,0 +1,394 @@
+[gd_scene load_steps=14 format=3 uid="uid://xtsediom848f"]
+
+[ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/VisualManager.cs" id="2_h8mn7"]
+[ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="2_ukptf"]
+[ext_resource type="PackedScene" uid="uid://c4ab6vntagt2y" path="res://Actions/Scythe/scythe.glb" id="3_ukptf"]
+[ext_resource type="Script" uid="uid://cv7qx7ccmd6g1" path="res://Actions/Greatsword/GenericAnimatedAction.cs" id="5_gwmqb"]
+[ext_resource type="Script" uid="uid://bchnl4uspmyfe" path="res://Entities/Hurtbox.cs" id="5_ukptf"]
+[ext_resource type="Script" uid="uid://dmnfw8ms2fb0b" path="res://Actions/WeightedActions/Mobility/Roll.cs" id="6_gwmqb"]
+
+[sub_resource type="Animation" id="Animation_mkadv"]
+resource_name = "Idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(-1.75722e-09, -0.382314, -1.15991), Vector3(-1.75722e-09, -0.382314, -1.15991), Vector3(-1.75722e-09, -0.382314, -1.15991)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/Pivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.05, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_16yfu"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.75722e-09, -0.382314, -1.15991)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/Pivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hurtbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Hurtbox:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_gwmqb"]
+resource_name = "SwingRight_1"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4, 0.5, 1),
+"transitions": PackedFloat32Array(2, 1, 1, -2, -2, 1),
+"update": 0,
+"values": [Vector3(-1.75722e-09, -0.382314, -1.15991), Vector3(0, 4.95324, -0.614356), Vector3(0, 6.99703, -1.5708), Vector3(0, 9.04255, -1.5708), Vector3(0, 9.04255, -1.5708), Vector3(0, 5.90096, -1.16064)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/Pivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.4, 1),
+"transitions": PackedFloat32Array(-2, 2, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.5, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../SwingRight_1")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"EndAction"
+}]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Hurtbox:monitoring")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.266667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../Hurtbox:rotation")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_qlc2t"]
+resource_name = "SwingRight_2"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5, 1),
+"transitions": PackedFloat32Array(2, 0.5, -2, 1),
+"update": 0,
+"values": [Vector3(0, 2.75937, -1.5708), Vector3(0, 9.04255, -1.5708), Vector3(0, 9.04255, -1.5708), Vector3(0, 12.1841, -1.16064)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/Pivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hurtbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Hurtbox:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 1.5708, 0)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../SwingRight_2")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"EndAction"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_h8mn7"]
+resource_name = "SwingRight_3"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Root/Pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.133333, 0.2, 0.4, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 2, -2, -2, 1),
+"update": 0,
+"values": [Vector3(0, 2.75937, -1.5708), Vector3(0.977384, 5.22552, -0.523599), Vector3(0.977384, 6.45772, 0), Vector3(-1.5708, 6.28319, 0), Vector3(-1.5708, 6.28319, 0), Vector3(0, 5.90096, -1.16064)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Root/Pivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("../Hurtbox:monitoring")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.366667, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Hurtbox:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("../SwingRight_3")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.4),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"EndAction"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xl2xh"]
+_data = {
+&"Idle": SubResource("Animation_mkadv"),
+&"RESET": SubResource("Animation_16yfu"),
+&"SwingRight_1": SubResource("Animation_gwmqb"),
+&"SwingRight_2": SubResource("Animation_qlc2t"),
+&"SwingRight_3": SubResource("Animation_h8mn7")
+}
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ukptf"]
+size = Vector3(2, 1, 2)
+
+[node name="Scythe" type="Node3D" node_paths=PackedStringArray("Animation", "ActionProperties")]
+script = ExtResource("5_gwmqb")
+Animation = NodePath("VisualManager")
+AttackName = "Idle"
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="." node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
+script = ExtResource("2_ukptf")
+ActingMaximumTime = 0.0
+FollowUpOptions = [NodePath("../SwingRight_1")]
+DefaultFollowUp = NodePath("..")
+metadata/_custom_type_script = "uid://43pb0pff7oee"
+
+[node name="VisualManager" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "VisualRoot")]
+script = ExtResource("2_h8mn7")
+ActionAnimator = NodePath("AnimationPlayer")
+VisualRoot = NodePath("Root")
+metadata/_custom_type_script = "uid://csie8kqfdcnud"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="VisualManager"]
+libraries = {
+&"": SubResource("AnimationLibrary_xl2xh")
+}
+
+[node name="Root" type="Node3D" parent="VisualManager"]
+
+[node name="Pivot" type="Node3D" parent="VisualManager/Root"]
+transform = Transform3D(0.370585, 0.85058, -0.373069, -0.916767, 0.399422, 1.75722e-09, 0.149012, 0.342017, 0.927804, 0, 0, 0)
+
+[node name="scythe" parent="VisualManager/Root/Pivot" instance=ExtResource("3_ukptf")]
+transform = Transform3D(0.7, -7.45058e-09, 8.9407e-08, -4.47035e-08, 0.7, -1.49012e-08, -5.96046e-08, 2.98023e-08, 0.7, 0.028687, 0.253844, -0.497384)
+
+[node name="Hurtbox" type="Area3D" parent="." node_paths=PackedStringArray("v")]
+transform = Transform3D(-3.61999e-06, 0, 1, 0, 1, 0, -1, 0, -3.61999e-06, 0, 0, -1)
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+script = ExtResource("5_ukptf")
+ForceMagnitude = 0.2
+Damage = 5.0
+v = NodePath("../VisualManager")
+metadata/_custom_type_script = "uid://bchnl4uspmyfe"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
+shape = SubResource("BoxShape3D_ukptf")
+
+[node name="SwingRight_1" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "ActionProperties")]
+script = ExtResource("6_gwmqb")
+LocalOffset = Vector3(0, 0, -1)
+Animation = NodePath("../VisualManager")
+AttackName = "SwingRight_1"
+Distance = 1.0
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="SwingRight_1" node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
+script = ExtResource("2_ukptf")
+ChannelTime = 0.2
+ActingMaximumTime = 0.2
+EndLagTime = 0.2
+FollowUpOptions = [NodePath("../../SwingRight_2")]
+DefaultFollowUp = NodePath("../..")
+metadata/_custom_type_script = "uid://43pb0pff7oee"
+
+[node name="SwingRight_2" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "ActionProperties")]
+script = ExtResource("6_gwmqb")
+LocalOffset = Vector3(0, 0, -1)
+Animation = NodePath("../VisualManager")
+AttackName = "SwingRight_2"
+Distance = 1.0
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="SwingRight_2" node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
+script = ExtResource("2_ukptf")
+ChannelTime = 0.2
+ActingMaximumTime = 0.2
+EndLagTime = 0.2
+FollowUpOptions = [NodePath("../../SwingRight_3")]
+DefaultFollowUp = NodePath("../..")
+metadata/_custom_type_script = "uid://43pb0pff7oee"
+
+[node name="SwingRight_3" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "ActionProperties")]
+script = ExtResource("6_gwmqb")
+LocalOffset = Vector3(0, 0, -1)
+Animation = NodePath("../VisualManager")
+AttackName = "SwingRight_3"
+Distance = 1.0
+ActionProperties = NodePath("ActionProperties")
+
+[node name="ActionProperties" type="Node" parent="SwingRight_3" node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
+script = ExtResource("2_ukptf")
+ChannelTime = 0.2
+ActingMaximumTime = 0.2
+EndLagTime = 0.2
+FollowUpOptions = []
+DefaultFollowUp = NodePath("../..")
+metadata/_custom_type_script = "uid://43pb0pff7oee"
+
+[connection signal="area_entered" from="Hurtbox" to="Hurtbox" method="Collide"]

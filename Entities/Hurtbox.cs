@@ -8,7 +8,7 @@ public partial class Hurtbox : Area3D
     [Export]
     float ForceMagnitude = 0;
     [Export]
-    float HitstunMul = .02f;
+    float HitstunMul = .005f;
     [Export]
     float Damage = 0;
     [Export]

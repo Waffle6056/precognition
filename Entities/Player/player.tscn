@@ -5,11 +5,11 @@
 [ext_resource type="Script" uid="uid://cao6rc61mbn4e" path="res://Entities/Limb.cs" id="2_lvkyw"]
 [ext_resource type="PackedScene" uid="uid://bxmyobowlg05o" path="res://Rewind/VFX/PredictVFX.tscn" id="2_vpue6"]
 [ext_resource type="PackedScene" uid="uid://kg61a3u54odt" path="res://Rewind/VFX/RewindVFX.tscn" id="3_l0e06"]
-[ext_resource type="PackedScene" uid="uid://o44110d7ha38" path="res://Actions/Greatsword/Greatsword.tscn" id="5_ttt55"]
 [ext_resource type="Script" uid="uid://dba7tcyn2xv52" path="res://Actions/WeightedActions/TrackingProperties.cs" id="7_1vjjv"]
 [ext_resource type="Script" uid="uid://dmnfw8ms2fb0b" path="res://Actions/WeightedActions/Mobility/Roll.cs" id="8_7a1se"]
 [ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="9_lub02"]
 [ext_resource type="Script" uid="uid://bwhimobdwhcis" path="res://Actions/WeightedActions/Mobility/Jump.cs" id="10_x1y6q"]
+[ext_resource type="PackedScene" uid="uid://xtsediom848f" path="res://Actions/Scythe/scythe.tscn" id="11_ap3xn"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dupfr"]
 radius = 0.512653
@@ -79,7 +79,7 @@ VisualHP = NodePath("ColorRect")
 FallingGravity = -50.0
 RisingGravity = -50.0
 MaxWalkSpeed = 20.0
-CurrentAction = NodePath("Greatsword")
+CurrentAction = NodePath("Scythe")
 
 [node name="TargetPosition" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.682068, 0)
@@ -220,8 +220,8 @@ script = ExtResource("9_lub02")
 FollowUpOptions = []
 metadata/_custom_type_script = "uid://43pb0pff7oee"
 
-[node name="Greatsword" parent="." instance=ExtResource("5_ttt55")]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+[node name="Scythe" parent="." instance=ExtResource("11_ap3xn")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.719485, 0)
 
 [connection signal="area_entered" from="HeadBox" to="HeadBox" method="AreaEntered"]
 [connection signal="area_entered" from="LegBox" to="LegBox" method="AreaEntered"]

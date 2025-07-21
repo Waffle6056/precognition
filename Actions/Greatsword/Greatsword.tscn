@@ -275,7 +275,6 @@ monitoring = false
 monitorable = false
 script = ExtResource("2_cjg66")
 ForceMagnitude = 0.175
-HitstunMul = 0.005
 Damage = 5.0
 CounterDamageMultipler = 2.0
 v = NodePath("../../AnimationManager")
