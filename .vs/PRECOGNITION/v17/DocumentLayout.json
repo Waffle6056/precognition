@@ -3,40 +3,44 @@
   "WorkspaceRootPath": "D:\\godot\\precognition\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\player\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\player\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\weightedactions\\mobility\\roll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\weightedactions\\mobility\\roll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\greatsword\\genericanimatedaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\greatsword\\genericanimatedaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\hurtbox.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\hurtbox.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\greatsword\\charge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\greatsword\\charge.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\action.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\action.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\visualmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\visualmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\enemies\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\enemies\\enemy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\visualmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\visualmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\weightedactions\\mobility\\roll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\weightedactions\\mobility\\roll.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\futuresight\\bullettime.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:futuresight\\bullettime.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\action.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\action.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\entity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\player\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\player\\player.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\cooldownmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\cooldownmanager.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\actions\\greatsword\\genericanimatedaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:actions\\greatsword\\genericanimatedaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|d:\\godot\\precognition\\entities\\player\\targetfollowcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{07A86C18-FA3E-4041-826D-BDE49EA09AF5}|precognition.csproj|solutionrelative:entities\\player\\targetfollowcamera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -46,74 +50,48 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 9,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "VisualManager.cs",
-              "DocumentMoniker": "D:\\godot\\precognition\\Actions\\VisualManager.cs",
-              "RelativeDocumentMoniker": "Actions\\VisualManager.cs",
-              "ToolTip": "D:\\godot\\precognition\\Actions\\VisualManager.cs",
-              "RelativeToolTip": "Actions\\VisualManager.cs",
-              "ViewState": "AgIAAD0AAAAAAAAAAAAYwGIAAAAFAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-13T21:49:11.164Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "GenericAnimatedAction.cs",
-              "DocumentMoniker": "D:\\godot\\precognition\\Actions\\Greatsword\\GenericAnimatedAction.cs",
-              "RelativeDocumentMoniker": "Actions\\Greatsword\\GenericAnimatedAction.cs",
-              "ToolTip": "D:\\godot\\precognition\\Actions\\Greatsword\\GenericAnimatedAction.cs",
-              "RelativeToolTip": "Actions\\Greatsword\\GenericAnimatedAction.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Title": "Roll.cs",
+              "DocumentMoniker": "D:\\godot\\precognition\\Actions\\WeightedActions\\Mobility\\Roll.cs",
+              "RelativeDocumentMoniker": "Actions\\WeightedActions\\Mobility\\Roll.cs",
+              "ToolTip": "D:\\godot\\precognition\\Actions\\WeightedActions\\Mobility\\Roll.cs",
+              "RelativeToolTip": "Actions\\WeightedActions\\Mobility\\Roll.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAA8wDUAAABfAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-13T20:35:26.122Z",
+              "WhenOpened": "2025-07-27T20:57:34.948Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "Entity.cs",
-              "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Entity.cs",
-              "RelativeDocumentMoniker": "Entities\\Entity.cs",
-              "ToolTip": "D:\\godot\\precognition\\Entities\\Entity.cs",
-              "RelativeToolTip": "Entities\\Entity.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAgwBIAAAAbAAAAAAAAAA==",
+              "Title": "BulletTime.cs",
+              "DocumentMoniker": "D:\\godot\\precognition\\FutureSight\\BulletTime.cs",
+              "RelativeDocumentMoniker": "FutureSight\\BulletTime.cs",
+              "ToolTip": "D:\\godot\\precognition\\FutureSight\\BulletTime.cs",
+              "RelativeToolTip": "FutureSight\\BulletTime.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAB4AAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-13T02:53:54.185Z",
-              "IsPinned": true
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Player.cs",
-              "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Player\\Player.cs",
-              "RelativeDocumentMoniker": "Entities\\Player\\Player.cs",
-              "ToolTip": "D:\\godot\\precognition\\Entities\\Player\\Player.cs",
-              "RelativeToolTip": "Entities\\Player\\Player.cs",
-              "ViewState": "AgIAAKEAAAAAAAAAAAAAwJ8AAAAjAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-13T02:50:41.712Z",
+              "WhenOpened": "2025-07-27T20:42:59.252Z",
               "IsPinned": true,
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Hurtbox.cs",
-              "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Hurtbox.cs",
-              "RelativeDocumentMoniker": "Entities\\Hurtbox.cs",
-              "ToolTip": "D:\\godot\\precognition\\Entities\\Hurtbox.cs",
-              "RelativeToolTip": "Entities\\Hurtbox.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAbAAAAAAAAAA==",
+              "DocumentIndex": 5,
+              "Title": "Entity.cs",
+              "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Entity.cs",
+              "RelativeDocumentMoniker": "Entities\\Entity.cs",
+              "ToolTip": "D:\\godot\\precognition\\Entities\\Entity.cs",
+              "RelativeToolTip": "Entities\\Entity.cs",
+              "ViewState": "AgIAAMsAAAAAAAAAAAAYwOcAAABqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-18T10:30:21.27Z",
-              "IsPinned": true
+              "WhenOpened": "2025-07-27T21:02:28.696Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Bookmark",
@@ -122,50 +100,92 @@
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "Enemy.cs",
-              "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Enemies\\Enemy.cs",
-              "RelativeDocumentMoniker": "Entities\\Enemies\\Enemy.cs",
-              "ToolTip": "D:\\godot\\precognition\\Entities\\Enemies\\Enemy.cs",
-              "RelativeToolTip": "Entities\\Enemies\\Enemy.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
+              "Title": "CooldownManager.cs",
+              "DocumentMoniker": "D:\\godot\\precognition\\Actions\\CooldownManager.cs",
+              "RelativeDocumentMoniker": "Actions\\CooldownManager.cs",
+              "ToolTip": "D:\\godot\\precognition\\Actions\\CooldownManager.cs",
+              "RelativeToolTip": "Actions\\CooldownManager.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-16T00:00:44.18Z"
+              "WhenOpened": "2025-07-27T20:58:18.429Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 8,
+              "Title": "GenericAnimatedAction.cs",
+              "DocumentMoniker": "D:\\godot\\precognition\\Actions\\Greatsword\\GenericAnimatedAction.cs",
+              "RelativeDocumentMoniker": "Actions\\Greatsword\\GenericAnimatedAction.cs",
+              "ToolTip": "D:\\godot\\precognition\\Actions\\Greatsword\\GenericAnimatedAction.cs",
+              "RelativeToolTip": "Actions\\Greatsword\\GenericAnimatedAction.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-27T20:58:01.237Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "Action.cs",
               "DocumentMoniker": "D:\\godot\\precognition\\Actions\\Action.cs",
               "RelativeDocumentMoniker": "Actions\\Action.cs",
               "ToolTip": "D:\\godot\\precognition\\Actions\\Action.cs",
               "RelativeToolTip": "Actions\\Action.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAABMAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-13T02:57:37.036Z"
+              "WhenOpened": "2025-07-27T20:56:44.597Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Charge.cs",
-              "DocumentMoniker": "D:\\godot\\precognition\\Actions\\Greatsword\\Charge.cs",
-              "RelativeDocumentMoniker": "Actions\\Greatsword\\Charge.cs",
-              "ToolTip": "D:\\godot\\precognition\\Actions\\Greatsword\\Charge.cs",
-              "RelativeToolTip": "Actions\\Greatsword\\Charge.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABcAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 9,
+              "Title": "TargetFollowCamera.cs",
+              "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Player\\TargetFollowCamera.cs",
+              "RelativeDocumentMoniker": "Entities\\Player\\TargetFollowCamera.cs",
+              "ToolTip": "D:\\godot\\precognition\\Entities\\Player\\TargetFollowCamera.cs",
+              "RelativeToolTip": "Entities\\Player\\TargetFollowCamera.cs",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-13T02:35:08.248Z"
+              "WhenOpened": "2025-07-27T20:55:54.52Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Player.cs",
+              "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Player\\Player.cs",
+              "RelativeDocumentMoniker": "Entities\\Player\\Player.cs",
+              "ToolTip": "D:\\godot\\precognition\\Entities\\Player\\Player.cs",
+              "RelativeToolTip": "Entities\\Player\\Player.cs",
+              "ViewState": "AgIAAN4AAAAAAAAAAAAkwDYAAAAvAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-27T20:53:40.774Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "VisualManager.cs",
+              "DocumentMoniker": "D:\\godot\\precognition\\Actions\\VisualManager.cs",
+              "RelativeDocumentMoniker": "Actions\\VisualManager.cs",
+              "ToolTip": "D:\\godot\\precognition\\Actions\\VisualManager.cs",
+              "RelativeToolTip": "Actions\\VisualManager.cs",
+              "ViewState": "AgIAAC8AAAAAAAAAAAAuwFAAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-07-27T16:08:23.728Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "Roll.cs",
-              "DocumentMoniker": "D:\\godot\\precognition\\Actions\\WeightedActions\\Mobility\\Roll.cs",
-              "RelativeDocumentMoniker": "Actions\\WeightedActions\\Mobility\\Roll.cs",
-              "ToolTip": "D:\\godot\\precognition\\Actions\\WeightedActions\\Mobility\\Roll.cs",
-              "RelativeToolTip": "Actions\\WeightedActions\\Mobility\\Roll.cs",
-              "ViewState": "AgIAABQAAAAAAAAAAAAIwDMAAAAIAAAAAAAAAA==",
+              "Title": "Enemy.cs",
+              "DocumentMoniker": "D:\\godot\\precognition\\Entities\\Enemies\\Enemy.cs",
+              "RelativeDocumentMoniker": "Entities\\Enemies\\Enemy.cs",
+              "ToolTip": "D:\\godot\\precognition\\Entities\\Enemies\\Enemy.cs",
+              "RelativeToolTip": "Entities\\Enemies\\Enemy.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-07-13T02:57:31.866Z",
+              "WhenOpened": "2025-07-27T16:06:22.148Z",
               "EditorCaption": ""
             },
             {

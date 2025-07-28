@@ -1,6 +1,8 @@
-[gd_scene load_steps=9 format=3 uid="uid://brwh4xwo6lkki"]
+[gd_scene load_steps=12 format=3 uid="uid://brwh4xwo6lkki"]
 
 [ext_resource type="PackedScene" uid="uid://debea5my12hmc" path="res://Entities/Player/player.tscn" id="3_2nrxg"]
+[ext_resource type="Script" uid="uid://c3atbkwn7cmh4" path="res://FutureSight/BulletTime.cs" id="4_1bvp3"]
+[ext_resource type="Shader" uid="uid://bxkkk7cf7qlhg" path="res://FutureSight/BulletTimeEffect.gdshader" id="5_lquwl"]
 [ext_resource type="Texture2D" uid="uid://ctfbbt1g3qphb" path="res://icon.svg" id="5_unxtb"]
 [ext_resource type="PackedScene" uid="uid://dgvaf6cplot6e" path="res://Entities/Enemies/Golem/Golem.tscn" id="6_x4jhb"]
 
@@ -19,6 +21,12 @@ reflected_light_source = 2
 [sub_resource type="BoxShape3D" id="BoxShape3D_kai55"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_vcxov"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7mycd"]
+shader = ExtResource("5_lquwl")
+shader_parameter/blurring_scale = 8.0
+shader_parameter/blurring_percent = 0.0
+shader_parameter/zoom_offset_percentage = 0.1
 
 [node name="Main" type="Node3D"]
 
@@ -148,3 +156,19 @@ mesh = SubResource("BoxMesh_vcxov")
 
 [node name="Golem2" parent="." instance=ExtResource("6_x4jhb")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545465, -0.38138, -1.33715)
+
+[node name="BulletTime" type="Node" parent="." node_paths=PackedStringArray("BlurNode")]
+script = ExtResource("4_1bvp3")
+BlurringPercentVelocity = 5.0
+BlurNode = NodePath("CanvasLayer/ColorRect")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="BulletTime"]
+layer = 2
+
+[node name="ColorRect" type="ColorRect" parent="BulletTime/CanvasLayer"]
+material = SubResource("ShaderMaterial_7mycd")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

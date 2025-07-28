@@ -1,15 +1,16 @@
-[gd_scene load_steps=24 format=3 uid="uid://debea5my12hmc"]
+[gd_scene load_steps=33 format=3 uid="uid://debea5my12hmc"]
 
 [ext_resource type="Script" uid="uid://beq0x31h1kshl" path="res://Entities/Player/Player.cs" id="1_83h1a"]
 [ext_resource type="Script" uid="uid://cocpcvof8gsku" path="res://Entities/Player/TargetFollowCamera.cs" id="2_dtv0t"]
 [ext_resource type="Script" uid="uid://cao6rc61mbn4e" path="res://Entities/Limb.cs" id="2_lvkyw"]
-[ext_resource type="PackedScene" uid="uid://bxmyobowlg05o" path="res://Rewind/VFX/PredictVFX.tscn" id="2_vpue6"]
-[ext_resource type="PackedScene" uid="uid://kg61a3u54odt" path="res://Rewind/VFX/RewindVFX.tscn" id="3_l0e06"]
+[ext_resource type="Shader" uid="uid://dcv521ir081nm" path="res://FutureSight/ColorOverride.gdshader" id="4_ap3xn"]
+[ext_resource type="Shader" uid="uid://dqg4477tua3gs" path="res://FutureSight/TransparencyOverride.gdshader" id="4_x1y6q"]
 [ext_resource type="Script" uid="uid://dba7tcyn2xv52" path="res://Actions/WeightedActions/TrackingProperties.cs" id="7_1vjjv"]
 [ext_resource type="Script" uid="uid://dmnfw8ms2fb0b" path="res://Actions/WeightedActions/Mobility/Roll.cs" id="8_7a1se"]
 [ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="9_lub02"]
 [ext_resource type="Script" uid="uid://bwhimobdwhcis" path="res://Actions/WeightedActions/Mobility/Jump.cs" id="10_x1y6q"]
 [ext_resource type="PackedScene" uid="uid://xtsediom848f" path="res://Actions/Scythe/scythe.tscn" id="11_ap3xn"]
+[ext_resource type="Shader" uid="uid://b8x0so28bcquj" path="res://FutureSight/Ghost.gdshader" id="11_iplt1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dupfr"]
 radius = 0.512653
@@ -37,6 +38,22 @@ height = 31.71
 [sub_resource type="SphereShape3D" id="SphereShape3D_01a4e"]
 radius = 50.0
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ap3xn"]
+shader = ExtResource("4_x1y6q")
+shader_parameter/transparency = 0.3
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_lub02"]
+viewport_path = NodePath("Camera3D/TransparencyFilter/SubViewport")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x1y6q"]
+render_priority = -1
+shader = ExtResource("4_ap3xn")
+
+[sub_resource type="QuadMesh" id="QuadMesh_ap3xn"]
+material = SubResource("ShaderMaterial_x1y6q")
+flip_faces = true
+size = Vector2(2, 2)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_5tayy"]
 size = Vector3(0.7, 0.7, 0.7)
 
@@ -52,6 +69,22 @@ radius = 0.35
 height = 1.4
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6fvw3"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iplt1"]
+render_priority = 0
+shader = ExtResource("11_iplt1")
+shader_parameter/color = Color(0.258824, 0.596078, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xr8lj"]
+material = SubResource("ShaderMaterial_iplt1")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_owvpp"]
+render_priority = 0
+shader = ExtResource("11_iplt1")
+shader_parameter/color = Color(1, 1, 0.392157, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_r8fok"]
+material = SubResource("ShaderMaterial_owvpp")
 
 [node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("CurrentCamera", "SlideRoll", "SidestepRoll", "Jump", "HeadBox", "LegBox", "TrackingPropertiesBase", "TargetPos", "CenterOfMass", "CenterOfMassBase", "StartingLimbs", "VisualHP", "CurrentAction") groups=["Rewindable"]]
 process_mode = 3
@@ -75,10 +108,11 @@ CenterOfMassBase = NodePath("CenterOfMassVisual2")
 StumbleStabilityThreshold = 0.0
 FallStabilityThreshold = 0.0
 StartingLimbs = [NodePath("HeadBox"), NodePath("LegBox")]
-VisualHP = NodePath("ColorRect")
+VisualHP = NodePath("TempHPBar")
 FallingGravity = -50.0
 RisingGravity = -50.0
 MaxWalkSpeed = 20.0
+CoyoteTime = 0.1
 CurrentAction = NodePath("Scythe")
 
 [node name="TargetPosition" type="CharacterBody3D" parent="."]
@@ -108,27 +142,56 @@ process_mode = 3
 process_priority = -2
 transform = Transform3D(1, 0, 0, 0, 1, -3.45707e-06, 0, 3.45707e-06, 1, 0, -3.50078e-05, 10)
 top_level = true
+cull_mask = 1048573
 script = ExtResource("2_dtv0t")
 Target = NodePath("..")
-SelectionBox = NodePath("SelectionBox")
+SelectionBox = NodePath("TargetSelectionBox")
 YPivot = [NodePath("../TargetPosition")]
 IdleOffset = Vector3(0, 1, 3)
 FocusOffset = Vector3(0, 1, 3)
 RotationWeight = 0.4
 DPI = 0.002
-PivotIndicator = NodePath("MeshInstance3D2")
+PivotIndicator = NodePath("TargetIndicator")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="Camera3D"]
+[node name="TargetIndicator" type="MeshInstance3D" parent="Camera3D"]
 top_level = true
 mesh = SubResource("CapsuleMesh_yxuyj")
 skeleton = NodePath("../..")
 
-[node name="SelectionBox" type="Area3D" parent="Camera3D"]
+[node name="TargetSelectionBox" type="Area3D" parent="Camera3D"]
 collision_layer = 0
 collision_mask = 8
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/SelectionBox"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/TargetSelectionBox"]
 shape = SubResource("SphereShape3D_01a4e")
+
+[node name="TranparencyFilterCameraTransform" type="RemoteTransform3D" parent="Camera3D"]
+remote_path = NodePath("../TransparencyFilter/SubViewport/Camera3D")
+
+[node name="TransparencyFilter" type="TextureRect" parent="Camera3D"]
+visibility_layer = 2
+material = SubResource("ShaderMaterial_ap3xn")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_lub02")
+
+[node name="SubViewport" type="SubViewport" parent="Camera3D/TransparencyFilter"]
+transparent_bg = true
+handle_input_locally = false
+canvas_cull_mask = 4293918723
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Camera3D" type="Camera3D" parent="Camera3D/TransparencyFilter/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, -3.45707e-06, 0, 3.45707e-06, 1, 0, -3.50078e-05, 10)
+cull_mask = 3
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D/TransparencyFilter/SubViewport/Camera3D"]
+layers = 2
+mesh = SubResource("QuadMesh_ap3xn")
 
 [node name="HeadBox" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.700409, 0)
@@ -166,14 +229,10 @@ skeleton = NodePath("../..")
 [node name="EnvironmentHitbox" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_6fvw3")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="TempHPBar" type="ColorRect" parent="."]
 offset_right = 650.0
 offset_bottom = 40.0
 color = Color(0.835294, 0, 0, 1)
-
-[node name="RewindVFX" parent="." instance=ExtResource("3_l0e06")]
-
-[node name="PredictVFX" parent="." instance=ExtResource("2_vpue6")]
 
 [node name="TrackingProperties" type="Node" parent="."]
 script = ExtResource("7_1vjjv")
@@ -222,6 +281,31 @@ metadata/_custom_type_script = "uid://43pb0pff7oee"
 
 [node name="Scythe" parent="." instance=ExtResource("11_ap3xn")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.719485, 0)
+AnimName = "Idle"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.819016, 0, 0.574373)
+visible = false
+layers = 2
+mesh = SubResource("BoxMesh_xr8lj")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.50668, 0, 0.574373)
+visible = false
+layers = 2
+mesh = SubResource("BoxMesh_xr8lj")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.55946, 0, 1.3334)
+visible = false
+layers = 2
+mesh = SubResource("BoxMesh_r8fok")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.55723, -3.63798e-12, -0.590786)
+visible = false
+layers = 2
+mesh = SubResource("BoxMesh_r8fok")
 
 [connection signal="area_entered" from="HeadBox" to="HeadBox" method="AreaEntered"]
 [connection signal="area_entered" from="LegBox" to="LegBox" method="AreaEntered"]

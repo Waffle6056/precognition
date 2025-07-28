@@ -15,6 +15,7 @@ public partial class Action : Option, RewindableObject, ActionState
 	protected double EndLagCallTime = 0;
 	protected double ActionCallTime = 0;
 	protected double ActionTime = 0.0;
+    public double CurrentActionBufferTime = 0;
 
     public bool	StartedChannelling {get; set;}
     public bool IsChannelling{get; set; }
@@ -171,7 +172,12 @@ public partial class Action : Option, RewindableObject, ActionState
 		if (IsLagging)
 			Lag(delta);
 
-		return true;
+        if (CurrentActionBufferTime > 0)
+            CurrentActionBufferTime -= delta;
+        if (EndedActing)
+            CurrentActionBufferTime = ActionProperties.ActionBufferTime;
+
+        return true;
 	}
 	public virtual bool SetTime(double Time){
 		return Update(Time-ActionTime);
@@ -180,7 +186,7 @@ public partial class Action : Option, RewindableObject, ActionState
 	public override void _Process(double delta)
 	{	
 		base._Process(delta);
-		Update(delta);
+		Update(delta * BulletTime.SpeedScale);
 
 	}
 

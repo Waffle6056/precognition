@@ -26,7 +26,8 @@ public partial class CooldownManager : Node, RewindableObject
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		CD -= delta;
+
+		CD -= delta * BulletTime.SpeedScale;
 	}
 
 

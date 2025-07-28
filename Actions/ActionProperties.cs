@@ -15,5 +15,7 @@ public partial class ActionProperties : Node
     [Export]
     public Action DefaultFollowUp;
 	public Entity Root;
-	
+    [Export]
+    public float ActionBufferTime = 1f;
+
 }

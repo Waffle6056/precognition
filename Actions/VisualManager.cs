@@ -11,9 +11,10 @@ public partial class VisualManager : Node3D, RewindableObject
     public Node3D VisualRoot { get; set; }
     [Export]
     public Material GhostMaterial { get; set; }
-	[Export]
-	public float GhostSpeedScale = 3f;
     public double Hitstop = 0;
+	public double ManagerTime = 0;
+    [Export]
+    public bool BulletTimeAffected = true;
     //public double HitstopCache = 0;
     public void Play(String name)
 	{
@@ -25,14 +26,13 @@ public partial class VisualManager : Node3D, RewindableObject
 		
 		ActionAnimator.Play(name);
 	}
-    public void Play(String name, float offset, float speed)
+    public void Play(String name, float offset)
     {
         if (ActionAnimator.IsPlaying())
             EndAnimation();
         //GD.Print(name);
         ActionAnimator.Play(name);
 		ActionAnimator.Advance(offset);
-        ActionAnimator.SpeedScale = speed;
     }
 
 
@@ -44,39 +44,54 @@ public partial class VisualManager : Node3D, RewindableObject
     static void applyMaterial(Node root, Material m)
 	{
 		if (root is GeometryInstance3D)
+		{
 			(root as GeometryInstance3D).MaterialOverride = m;
+            (root as GeometryInstance3D).SetLayerMaskValue(layerNumber:2, true);
+            (root as GeometryInstance3D).SetLayerMaskValue(layerNumber:1, false);
+        }
 		foreach (Node child in root.GetChildren())
 			applyMaterial(child, m);
 	}
-	public VisualManager PlayFuture(float offset)
-	{
-		//GD.Print(ActionAnimator.CurrentAnimation);
-		return PlayFuture(offset, ActionAnimator.CurrentAnimation);
-	}
+	//public VisualManager PlayFuture(float offset)
+	//{
+	//	//GD.Print(ActionAnimator.CurrentAnimation);
+	//	return PlayFuture(offset, ActionAnimator.CurrentAnimation, Vector3.Zero);
+	//}
 
-	private VisualManager dupe;
-    public VisualManager PlayFuture(float offset, String animName)
+    //private VisualManager dupe;
+    //Random rnd = new Random();
+    public VisualManager PlayFuture(float offset, String animName, Vector3 localOffset, float transparency, int renderPriority)
 	{
-        dupe = this.Duplicate() as VisualManager;
-
+        VisualManager dupe = Duplicate() as VisualManager;
         dupe.VisualRoot.ProcessMode = ProcessModeEnum.Disabled;
-        applyMaterial(dupe.VisualRoot, GhostMaterial);
+		dupe.BulletTimeAffected = false;
+        ShaderMaterial mat = GhostMaterial.Duplicate() as ShaderMaterial;
+		mat.SetShaderParameter("color", new Vector4(transparency, (float)Math.Sin(ManagerTime),.5f,1));
+		mat.RenderPriority = renderPriority;
+        applyMaterial(dupe.VisualRoot, mat);
+		//dupe.Name
+		dupe.ActionAnimator.AnimationFinished += dupe.DeleteFutureSignal;
+		//GD.Print(dupe.ActionAnimator.CurrentAnimation);
+		BulletTime.outsideActivations++;
+        
+        dupe.Play(animName, offset);
+        AddSibling(dupe);
+		Tween t = dupe.CreateTween();
+		t.TweenProperty(dupe, "position", localOffset, dupe.ActionAnimator.CurrentAnimationLength/2).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Sine);
+        t.TweenProperty(dupe, "position", Vector3.Zero, dupe.ActionAnimator.CurrentAnimationLength/2).SetEase(Tween.EaseType.In).SetTrans(Tween.TransitionType.Sine);
+        //dupe.Position += localOffset;
 
-        dupe.Play(animName, offset, GhostSpeedScale);
-		dupe.ActionAnimator.AnimationFinished += dupe.DeleteSignal;
-
-
-        AddChild(dupe);
         return dupe;
 	}
     public void EndFuture()
     {
-        dupe?.EndAnimation();
+        //dupe?.EndAnimation();
     }
 
-    public void DeleteSignal(StringName n)
+    public void DeleteFutureSignal(StringName n)
 	{
-		QueueFree();
+        BulletTime.outsideActivations--;
+        QueueFree();
 	}
     public void HitStop(double amt)
     {
@@ -86,7 +101,14 @@ public partial class VisualManager : Node3D, RewindableObject
     public override void _Process(double delta)
     {
         base._Process(delta);
-		if (Hitstop > 0) {
+		if (BulletTimeAffected)
+		{
+			ActionAnimator.SpeedScale = BulletTime.SpeedScale;
+			delta *= BulletTime.SpeedScale;
+		}
+
+        ManagerTime += delta;
+        if (Hitstop > 0) {
 			ActionAnimator.Pause();
 			Hitstop -= delta;
 			if (Hitstop < 0)
@@ -98,7 +120,11 @@ public partial class VisualManager : Node3D, RewindableObject
 		//	//HitstopCache = 0;
 		//}
     }
-
+  //  public override void _Ready()
+  //  {
+  //      base._Ready();
+		//GD.Print("AGAIN!");
+  //  }
 
     public int DataLength{get{return 2;}}
 	public List<Object> GetData()
@@ -123,4 +149,8 @@ interface IAnimated
 {
 	[Export]
 	public VisualManager Animation{get; set;}
+	[Export]
+	public String AnimName { get; set; }
+	[Export]
+	public Vector3 ForesightOffset { get; set; }
 }

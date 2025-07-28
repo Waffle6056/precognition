@@ -296,7 +296,6 @@ size = Vector3(2, 1, 2)
 [node name="Scythe" type="Node3D" node_paths=PackedStringArray("Animation", "ActionProperties")]
 script = ExtResource("5_gwmqb")
 Animation = NodePath("VisualManager")
-AttackName = "Idle"
 ActionProperties = NodePath("ActionProperties")
 
 [node name="ActionProperties" type="Node" parent="." node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
@@ -344,7 +343,7 @@ shape = SubResource("BoxShape3D_ukptf")
 script = ExtResource("6_gwmqb")
 LocalOffset = Vector3(0, 0, -1)
 Animation = NodePath("../VisualManager")
-AttackName = "SwingRight_1"
+AnimName = "SwingRight_1"
 Distance = 1.0
 ActionProperties = NodePath("ActionProperties")
 
@@ -361,7 +360,7 @@ metadata/_custom_type_script = "uid://43pb0pff7oee"
 script = ExtResource("6_gwmqb")
 LocalOffset = Vector3(0, 0, -1)
 Animation = NodePath("../VisualManager")
-AttackName = "SwingRight_2"
+AnimName = "SwingRight_2"
 Distance = 1.0
 ActionProperties = NodePath("ActionProperties")
 
@@ -378,7 +377,7 @@ metadata/_custom_type_script = "uid://43pb0pff7oee"
 script = ExtResource("6_gwmqb")
 LocalOffset = Vector3(0, 0, -1)
 Animation = NodePath("../VisualManager")
-AttackName = "SwingRight_3"
+AnimName = "SwingRight_3"
 Distance = 1.0
 ActionProperties = NodePath("ActionProperties")
 

@@ -20,6 +20,10 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     [Export]
     public virtual VisualManager Animation { get; set; }
     [Export]
+    public String AnimName { get; set; } = "Idle";
+    [Export]
+    public Vector3 ForesightOffset { get; set; }
+    [Export]
     public CharacterBody3D TargetPos = null;
 
     [Export]
@@ -60,10 +64,12 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     public float MaxWalkSpeed = 10f;
     [Export]    
     public float Speed = -1f;
-    private double AirTimeStart = 0f;
+    [Export]
+    public float CoyoteTime = .2f;
+    protected double AirTimeStart = 0f;
+    public bool IsGrounded { get { return TargetPos.IsOnFloor() || EntityTime - AirTimeStart < CoyoteTime; } set { } }
     [Export]
     public Action CurrentAction;
-
 
     public bool IsChannelling{get{ return CurrentAction!=null && CurrentAction.IsChannelling; } set{}}
 	public bool IsActing{get{ return CurrentAction!=null && CurrentAction.IsActing; } set{}}
@@ -89,6 +95,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     public override void _Process(double delta) 
     {
         base._Process(delta);
+        delta *= BulletTime.SpeedScale;
         // GD.Print("IsChannelling : "+IsChannelling+"\n"+
         //          "IsActing      : "+IsActing+"\n"+
         //          "IsLagging     : "+IsLagging+"\n"+
@@ -108,6 +115,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
 
     public override void _PhysicsProcess(double delta)
     {
+        delta *= BulletTime.SpeedScale;
         SetCenters();
 
         EntityTime += delta;
@@ -127,6 +135,7 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     protected void processMovement(double delta)
     {
         processGravity(delta);
+        TargetPos.Velocity *= BulletTime.SpeedScale;
         TargetPos.MoveAndSlide();
         Vector3 vec = (TargetPos.GlobalPosition - GlobalPosition);
         Vector3 dir = vec.Normalized();
@@ -140,7 +149,9 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
             Speed = vec.Length() / (float) delta;
         }
         Velocity = dir * Speed;
+        Velocity *= BulletTime.SpeedScale;
         postVelocityCalculation();
+        //GD.Print(Velocity);
         //GD.Print(AirTime);
         //GD.Print(Velocity + " "+TargetPos+" "+Speed+" "+Position+" "+ (TargetPos - GlobalPosition).Normalized());
         bool res = MoveAndSlide();

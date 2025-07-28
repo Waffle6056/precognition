@@ -15,9 +15,6 @@ public partial class Player : Entity
     [Export]
     public Jump Jump;
     [Export]
-    public float ActionBufferTime = 1f;
-    private double currentActionBufferTime = 0;
-    [Export]
     public float DashBufferTime = .2f;
     private double currentDashBufferTime = 0;
     public bool IsDashing { get { return SlideRoll.Active || SidestepRoll.Active; } }
@@ -80,7 +77,7 @@ public partial class Player : Entity
 
         
 
-        InputAction(delta);
+        InputAction();
 
         //GD.Print(DashCharges);
         base._Process(delta);
@@ -88,12 +85,13 @@ public partial class Player : Entity
     }
     public override void _PhysicsProcess(double delta)
     {
+
         if (currentDashBufferTime > 0)
             currentDashBufferTime -= delta;
         if (Input.IsActionJustPressed("Dash"))
             currentDashBufferTime = DashBufferTime;
         processDash();
-        MoveTarget(delta);
+        MoveTarget();
         base._PhysicsProcess(delta);
 
         if (!TargetPos.IsOnFloor())
@@ -110,26 +108,21 @@ public partial class Player : Entity
      
 
     }
+
+
     Action next = null;
     List<Action> Options = new List<Action>();
-    public void InputAction(double delta)
+    public void InputAction()
     {
         if (CurrentAction == null)
             return;
-
-        if (currentActionBufferTime > 0)
-            currentActionBufferTime -= delta;
-        if (CurrentAction.EndedActing)
-            currentActionBufferTime = ActionBufferTime;
-
-
 
         for (int i = 1; i <= 5 && i-1 < Options.Count; i++)
             if (Input.IsActionJustPressed("AttackOption" + i))
                 next = Options[i - 1];
 
         //GD.Print(next+" "+Options.Count+" "+CurrentAction.Name+" "+Active);
-        if (!Active && ( currentActionBufferTime <= 0 || next != null )) // next action called when something is selected or the timer for selecting runs out
+        if (!Active && ( CurrentAction.CurrentActionBufferTime <= 0 || next != null )) // next action called when something is selected or the timer for selecting runs out
         {
             if (next == null)
                 next = CurrentAction.ActionProperties.DefaultFollowUp;
@@ -143,7 +136,8 @@ public partial class Player : Entity
                 Options.AddRange(a.GetActions());
         }
     }
-    private void MoveTarget(double delta)
+
+    private void MoveTarget()
 	{
 		if (CurrentCamera == null)
 		{
@@ -177,31 +171,47 @@ public partial class Player : Entity
         if (IsStunned)
             Velocity = Vector3.Zero;
     }
+
+
     private void processDash()
     {
-        
+        bool dashInputted = currentDashBufferTime > 0 && Input.IsActionJustReleased("Dash");
+        bool dashValid = !IsDashing && !IsLagging && IsGrounded;
         //GD.Print(IsDashing + " " + Input.IsActionJustPressed("Dash") + " " + PlayerState);
-        if (!IsDashing && currentDashBufferTime > 0 && Input.IsActionJustReleased("Dash") && PlayerState != State.Airborne && !IsLagging)
+        if (dashInputted && dashValid)
         {
+            GD.Print("Dash Inputted");
             SidestepRoll.CallAction(this);
+            if (Jump.Active)
+            {
+                GD.Print("Jump override");
+                SidestepRoll.Interrupt();
+                SidestepRoll.AddVelocity();
+                Jump.SetDistance(TargetPos.Velocity, RisingGravity);
+            }
         }
+
+        bool fastMovement = SidestepRoll.Active || IsRunning;
         //GD.Print(SidestepRoll.Active +" "+PlayerState);
-        if ((SidestepRoll.Active || IsRunning) && PlayerState == State.Crouching)
+        if (fastMovement && PlayerState == State.Crouching)
         {
             SidestepRoll.Interrupt();
             SlideRoll.CallAction(this);
         }
         //GD.Print(TargetPos.Velocity);
         
-        if (Input.IsActionJustPressed("Jump") && PlayerState != State.Airborne)
+        if (Input.IsActionJustReleased("Jump") && IsGrounded)
         {
+            GD.Print("Jumpped");
             SidestepRoll.Interrupt();
             SlideRoll.Interrupt();
             Jump.SetDistance(TargetPos.Velocity, RisingGravity);
+            AirTimeStart = EntityTime;
             Jump.CallAction(this);
 
 
         }
+        
         
         //if (movement.Length() == 0)
         //    DashDirection = new Vector3(0, 0, 1);

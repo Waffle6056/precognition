@@ -21,7 +21,9 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
     [Export]
     public TrackingProperties TrackingProperties { get; set; }
     [Export]
-    public String AttackName = "Ball";
+    public String AnimName { get; set; } = "Ball";
+    [Export]
+    public Vector3 ForesightOffset { get; set; }
     [Export]
     public float Distance = 2f;
     [Export]
@@ -31,7 +33,7 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
     {
         if (!base.StartChannel())
             return false;
-        Animation?.Play(AttackName);
+        Animation?.Play(AnimName);
         return true;
     }
     protected override bool StartAction()

@@ -9,25 +9,21 @@ public partial class GenericAnimatedAction : Action, IAnimated
     [Export]
     public VisualManager Animation { get; set; }
     [Export]
-    public bool playGhost = false;
+    public String AnimName { get; set; } = "Swing";
     [Export]
-    public String AttackName = "Swing";
+    public Vector3 ForesightOffset { get; set; }
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     protected override bool StartChannel()
     {
         if (!base.StartChannel())
             return false;
-        Animation.Play(AttackName);
-        if (playGhost)
-            Animation.PlayFuture(ActionProperties.ChannelTime, AttackName);
+        Animation.Play(AnimName);
         return true;
     }
     protected override bool StartAction()
     {
         if (!base.StartAction())
             return false;
-        if (playGhost)
-            Animation.EndFuture();
         return true;
     }
 }
