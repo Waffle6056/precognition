@@ -10,11 +10,18 @@ public partial class VisualManager : Node3D, RewindableObject
     [Export]
     public Node3D VisualRoot { get; set; }
     [Export]
-    public Material GhostMaterial { get; set; }
+    public ShaderMaterial GhostMaterial { get; set; }
     public double Hitstop = 0;
 	public double ManagerTime = 0;
     [Export]
     public bool BulletTimeAffected = true;
+    [Export]
+    public bool CreateTrail = false;
+    [Export]
+    public float CreateTrailIntervals = .3f;
+    public double createTrailTimer = 0;
+    [Export]
+    public float ColorChangeMul = 3f;
     //public double HitstopCache = 0;
     public void Play(String name)
 	{
@@ -65,21 +72,32 @@ public partial class VisualManager : Node3D, RewindableObject
         VisualManager dupe = Duplicate() as VisualManager;
         dupe.VisualRoot.ProcessMode = ProcessModeEnum.Disabled;
 		dupe.BulletTimeAffected = false;
+		dupe.CreateTrail = true;
+		dupe.ManagerTime = ManagerTime;
+		dupe.VisualRoot.Visible = false;
+
         ShaderMaterial mat = GhostMaterial.Duplicate() as ShaderMaterial;
-		mat.SetShaderParameter("color", new Vector4(transparency, (float)Math.Sin(ManagerTime),.5f,1));
+		mat.SetShaderParameter("color", new Vector4(transparency, (float)Math.Sin(ManagerTime* ColorChangeMul)/2+.5f,.5f,1));
 		mat.RenderPriority = renderPriority;
+		dupe.GhostMaterial = mat;
+        //GD.Print((Vector4)(dupe.GhostMaterial as ShaderMaterial).GetShaderParameter("color") + "orig");
         applyMaterial(dupe.VisualRoot, mat);
 		//dupe.Name
-		dupe.ActionAnimator.AnimationFinished += dupe.DeleteFutureSignal;
 		//GD.Print(dupe.ActionAnimator.CurrentAnimation);
-		BulletTime.outsideActivations++;
-        
+
+		dupe.ActionAnimator.SpeedScale = 1.5f;
         dupe.Play(animName, offset);
-        AddSibling(dupe);
-		Tween t = dupe.CreateTween();
+
+
+        BulletTime.outsideActivations++;
+        dupe.ActionAnimator.AnimationFinished += dupe.DeleteFutureSignal;
+        Tween t = dupe.CreateTween();
 		t.TweenProperty(dupe, "position", localOffset, dupe.ActionAnimator.CurrentAnimationLength/2).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Sine);
         t.TweenProperty(dupe, "position", Vector3.Zero, dupe.ActionAnimator.CurrentAnimationLength/2).SetEase(Tween.EaseType.In).SetTrans(Tween.TransitionType.Sine);
         //dupe.Position += localOffset;
+
+
+        AddSibling(dupe);
 
         return dupe;
 	}
@@ -98,21 +116,57 @@ public partial class VisualManager : Node3D, RewindableObject
 		Hitstop += amt;
         //HitstopCache += amt;
     }
-    public override void _Process(double delta)
-    {
-        base._Process(delta);
+	public override void _Process(double delta)
+	{
+		base._Process(delta);
 		if (BulletTimeAffected)
 		{
 			ActionAnimator.SpeedScale = BulletTime.SpeedScale;
 			delta *= BulletTime.SpeedScale;
 		}
 
-        ManagerTime += delta;
-        if (Hitstop > 0) {
+		ManagerTime += delta;
+		if (Hitstop > 0) {
 			ActionAnimator.Pause();
 			Hitstop -= delta;
-			if (Hitstop < 0)
-                ActionAnimator.Play();
+			if (Hitstop <= 0)
+				ActionAnimator.Play();
+		}
+		if (CreateTrail)
+		{
+			if (createTrailTimer > 0)
+			{
+				createTrailTimer -= delta;
+				
+			}
+			if (createTrailTimer <= 0)
+			{
+				createTrailTimer = CreateTrailIntervals;
+
+                Node3D dupe = VisualRoot.Duplicate() as Node3D;
+                dupe.ProcessMode = ProcessModeEnum.Disabled;
+				dupe.TopLevel = true;
+				dupe.Visible = true;
+				//GD.Print((Vector4)(GhostMaterial as ShaderMaterial).GetShaderParameter("color") + "new");
+				Vector4 col = (Vector4)GhostMaterial.GetShaderParameter("color");
+				//GD.Print(col);
+                ShaderMaterial mat = GhostMaterial.Duplicate() as ShaderMaterial;
+                //GD.Print(col);
+                //GD.Print((Vector4)(GhostMaterial as ShaderMaterial).GetShaderParameter("color")+"new");
+                mat.SetShaderParameter("color", new Vector4(col.X, (float)Math.Sin(ManagerTime * ColorChangeMul) / 2 + .5f, .5f, 1));
+				mat.RenderPriority = GhostMaterial.RenderPriority + 1;
+				//GD.Print(mat.RenderPriority+" "+GhostMaterial.RenderPriority);
+                GhostMaterial = mat;
+				//GD.Print(mat.GetShaderParameter("color")+" "+ (Vector4)GhostMaterial.GetShaderParameter("color"));
+                applyMaterial(VisualRoot, mat);
+
+                //GD.Print(dupe.GlobalPosition+" "+GlobalPosition);
+                AddChild(dupe);
+				dupe.GlobalTransform = VisualRoot.GlobalTransform;
+				//GD.Print(dupe.GlobalPosition+" "+GlobalPosition);
+                
+            }
+
         }
 		//else
 		//{

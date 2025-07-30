@@ -1,5 +1,5 @@
 shader_type spatial;
-//render_mode unshaded;
+render_mode unshaded;
 uniform vec4 color : source_color;
 void vertex() {
 	// Called for every vertex the material is visible on.
