@@ -216,6 +216,11 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         
         return Force;
     }
+    public virtual float DealDamage(Area3D other, float damage)
+    {
+        GD.Print("CALLED DEAL DAMAGER" + other.Name + " " + damage);
+        return damage;
+    }
     public virtual float TakeHit(float Damage)
     {
         if (IsInvuln)
