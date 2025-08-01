@@ -1,7 +1,7 @@
 using Godot;
 using System;
-using static Godot.TextServer;
 
+[GlobalClass]
 public partial class OffsetLinearFalloff : WeightManager
 {
     public double CalculateWeight(Vector3 Offset)

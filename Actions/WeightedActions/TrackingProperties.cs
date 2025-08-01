@@ -14,8 +14,3 @@ public partial class TrackingProperties : Node
     public float LinearRotationPerSecond = (float)(Math.PI * 0.5f);
 
 }
-interface ITrackingChange
-{
-    [Export]
-    TrackingProperties TrackingProperties { get; set; }
-}

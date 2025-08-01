@@ -85,7 +85,7 @@ public partial class VisualManager : Node3D, RewindableObject
 		//dupe.Name
 		//GD.Print(dupe.ActionAnimator.CurrentAnimation);
 
-		dupe.ActionAnimator.SpeedScale = 1.5f;
+		dupe.ActionAnimator.SpeedScale = 1f;
         dupe.Play(animName, offset);
 
 
@@ -93,7 +93,7 @@ public partial class VisualManager : Node3D, RewindableObject
         dupe.ActionAnimator.AnimationFinished += dupe.DeleteFutureSignal;
         Tween t = dupe.CreateTween();
 		t.TweenProperty(dupe, "position", localOffset, dupe.ActionAnimator.CurrentAnimationLength/2).SetEase(Tween.EaseType.Out).SetTrans(Tween.TransitionType.Sine);
-        t.TweenProperty(dupe, "position", Vector3.Zero, dupe.ActionAnimator.CurrentAnimationLength/2).SetEase(Tween.EaseType.In).SetTrans(Tween.TransitionType.Sine);
+        //t.TweenProperty(dupe, "position", Vector3.Zero, dupe.ActionAnimator.CurrentAnimationLength/2).SetEase(Tween.EaseType.In).SetTrans(Tween.TransitionType.Sine);
         //dupe.Position += localOffset;
 
 

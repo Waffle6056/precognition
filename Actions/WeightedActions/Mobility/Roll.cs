@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
+public partial class Roll : Action, IOffsetFalloff, IAnimated
 {
     [Export]
     public virtual Vector3 LocalOffset { get; set; }
@@ -18,8 +18,6 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
 
     [Export]
     public VisualManager Animation { get; set; }
-    [Export]
-    public TrackingProperties TrackingProperties { get; set; }
     [Export]
     public String AnimName { get; set; } = "Ball";
     [Export]
@@ -47,11 +45,11 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated, ITrackingChange
 
     public void AddVelocity()
     {
-        CharacterBody3D TargetPos = ActionProperties.Root.TargetPos;
-        Vector3 GlobalDirection = (TargetPos.GlobalBasis * LocalOffset.Normalized()).Normalized();
+        //CharacterBody3D Chara = ActionProperties.Root;
+        Vector3 GlobalDirection = (ActionProperties.Root.GlobalBasis * LocalOffset.Normalized()).Normalized();
         //GD.Print((GlobalDirection * Distance / ActionProperties.ActingMaximumTime));
-    
-        TargetPos.Velocity += (GlobalDirection * Distance / ActionProperties.ActingMaximumTime);
+
+        ActionProperties.Root.TargetPos.Velocity += (GlobalDirection * Distance / ActionProperties.ActingMaximumTime);
     }
     public override void _PhysicsProcess(double delta)
     {

@@ -1,4 +1,5 @@
 using Godot;
+using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -22,8 +23,14 @@ public partial class Enemy : Entity
             Action next = PickOption();
             if (next != null)
             {
-                ShowOptions();
+                //ShowOptions();
+
                 //currentDisplayTimer = DisplayTimer;
+                if (next is IAnimated)
+                {
+                    IAnimated i = (next as IAnimated);
+                    i.Animation.PlayFuture(0, i.AnimName, i.ForesightOffset, transparency: (float)(next as IWeighted).GetWeight(this) / 100 * .5f, renderPriority: 1);
+                }
                 if (!IsLagging && !IsStunned)
                     (CurrentAction = next).CallAction(this);
             }
@@ -106,7 +113,10 @@ public partial class Enemy : Entity
             }
         }
         else
+        {
             next = CurrentAction.ActionProperties.DefaultFollowUp;
+            next.Cooldown?.End(); // ends cooldown for default actions inorder to ensure its actually callable
+        }
         if (next != null)
             GD.Print("next=" + next.Name);
         else

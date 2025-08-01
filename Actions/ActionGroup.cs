@@ -14,13 +14,5 @@ public partial class ActionGroup : Option
         options = list.ToArray();
     }
 }
-public abstract partial class Option : Node3D
-{
-    public Action[] options;
-    public virtual Action[] GetActions(){
-        if (options == null)
-            LoadActions();
-        return options;
-    }
-    public abstract void LoadActions();
-}
+
+

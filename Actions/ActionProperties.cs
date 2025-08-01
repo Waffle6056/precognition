@@ -17,5 +17,7 @@ public partial class ActionProperties : Node
 	public Entity Root;
     [Export]
     public float ActionBufferTime = 1f;
+    [Export]
+    public TrackingProperties TrackingChange { get; set; }
 
 }

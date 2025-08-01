@@ -6,13 +6,13 @@ using System.Numerics;
 public partial class Hurtbox : Area3D
 {
     [Export]
-    float ForceMagnitude = 0;
+    public float ForceMagnitude = 0;
     [Export]
-    float HitstunMul = .005f;
+    public float HitstunMul = .005f;
     [Export]
-    float Damage = 0;
+    public float Damage = 0;
     [Export]
-    float CounterDamageMultipler = 1;
+    public float CounterDamageMultipler = 1;
     [Export]
     public VisualManager v;
     public void Collide(Area3D area)
@@ -24,7 +24,7 @@ public partial class Hurtbox : Area3D
             Collide(area as Limb);
         }
     }
-    public void Collide(Limb area)
+    public virtual void Collide(Limb area)
     {
         GD.Print("Attack called "+(  -GlobalBasis[2] * ForceMagnitude));
         area.Parent.TakeKnockback(-GlobalBasis[2] * ForceMagnitude);

@@ -370,11 +370,12 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     {
         //GD.Print("going");
         TrackingProperties currentTrackingProperties = TrackingPropertiesBase;
-        if (CurrentAction is ITrackingChange && (CurrentAction as ITrackingChange).TrackingProperties != null)
-            currentTrackingProperties = (CurrentAction as ITrackingChange).TrackingProperties;
+        if (CurrentAction.ActionProperties.TrackingChange != null)
+            currentTrackingProperties = CurrentAction.ActionProperties.TrackingChange;
 
-        if (!IsStunned)    
+        if (!IsStunned && !IsActing)    
         {
+            //GD.Print(Name + " Rotationgnasdf");
             float anglePerSecond = 0f;
             Vector3 start = new Vector3(GlobalBasis[2][0], 0, GlobalBasis[2][2]).Normalized();
             Vector3 end = new Vector3(TargetPos.GlobalBasis[2][0], 0, TargetPos.GlobalBasis[2][2]).Normalized();

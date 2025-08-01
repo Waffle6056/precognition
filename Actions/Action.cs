@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Dynamic;
 
+[GlobalClass]
 public partial class Action : Option, RewindableObject, ActionState
 {
 	//[Export]

@@ -1,0 +1,52 @@
+[gd_scene load_steps=9 format=3 uid="uid://cgvg2bmxtg2jr"]
+
+[ext_resource type="Script" uid="uid://bga4hfbefvj2m" path="res://Entities/RadialHurtbox.cs" id="1_24tar"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_brxjc"]
+height = 1.0
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_24tar"]
+emission_shape = 6
+emission_ring_axis = Vector3(0, 1, 0)
+emission_ring_height = 1.0
+emission_ring_radius = 0.5
+emission_ring_inner_radius = 0.0
+emission_ring_cone_angle = 90.0
+direction = Vector3(0, 1, 0)
+spread = 0.0
+initial_velocity_min = 2.0
+initial_velocity_max = 3.0
+
+[sub_resource type="Gradient" id="Gradient_24tar"]
+colors = PackedColorArray(0, 0, 0, 0, 0.760228, 0.359646, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_brxjc"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mq10q"]
+color_ramp = SubResource("Gradient_24tar")
+noise = SubResource("FastNoiseLite_brxjc")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2xe08"]
+transparency = 4
+albedo_texture = SubResource("NoiseTexture2D_mq10q")
+billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_brxjc"]
+material = SubResource("StandardMaterial3D_2xe08")
+
+[node name="ShockwaveHurtbox" type="Area3D"]
+script = ExtResource("1_24tar")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.502621, 0)
+shape = SubResource("CylinderShape3D_brxjc")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+emitting = false
+one_shot = true
+process_material = SubResource("ParticleProcessMaterial_24tar")
+draw_pass_1 = SubResource("QuadMesh_brxjc")
