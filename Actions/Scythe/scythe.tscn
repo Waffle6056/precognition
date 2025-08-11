@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://xtsediom848f"]
+[gd_scene load_steps=22 format=3 uid="uid://xtsediom848f"]
 
 [ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/VisualManager.cs" id="2_h8mn7"]
 [ext_resource type="Script" uid="uid://43pb0pff7oee" path="res://Actions/ActionProperties.cs" id="2_ukptf"]
 [ext_resource type="PackedScene" uid="uid://c4ab6vntagt2y" path="res://Actions/Scythe/scythe.glb" id="3_ukptf"]
+[ext_resource type="Script" uid="uid://drvbu2ya78bk7" path="res://Actions/Scythe/DamageParticles.cs" id="4_mkadv"]
 [ext_resource type="Script" uid="uid://cv7qx7ccmd6g1" path="res://Actions/Greatsword/GenericAnimatedAction.cs" id="5_gwmqb"]
 [ext_resource type="Script" uid="uid://bchnl4uspmyfe" path="res://Entities/Hurtbox.cs" id="5_ukptf"]
 [ext_resource type="Script" uid="uid://dmnfw8ms2fb0b" path="res://Actions/WeightedActions/Mobility/Roll.cs" id="6_gwmqb"]
@@ -112,39 +113,25 @@ tracks/1/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0), Vector3(0, 0.5, 0), Vector3(0, 0, 0), Vector3(0, 0, 0)]
 }
-tracks/2/type = "method"
+tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../SwingRight_1")
+tracks/2/path = NodePath("../Hurtbox:monitoring")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0.4),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"EndAction"
-}]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("../Hurtbox:monitoring")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.266667, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
 }
-tracks/4/type = "value"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../Hurtbox:rotation")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("../Hurtbox:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -201,20 +188,6 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector3(0, 1.5708, 0)]
 }
-tracks/4/type = "method"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../SwingRight_2")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.4),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"EndAction"
-}]
-}
 
 [sub_resource type="Animation" id="Animation_h8mn7"]
 resource_name = "SwingRight_3"
@@ -266,20 +239,6 @@ tracks/3/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0)]
 }
-tracks/4/type = "method"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("../SwingRight_3")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
-"times": PackedFloat32Array(0.4),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": [],
-"method": &"EndAction"
-}]
-}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xl2xh"]
 _data = {
@@ -290,12 +249,48 @@ _data = {
 &"SwingRight_3": SubResource("Animation_h8mn7")
 }
 
+[sub_resource type="Gradient" id="Gradient_mkadv"]
+colors = PackedColorArray(0.392157, 0, 0.215686, 1, 1, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_16yfu"]
+gradient = SubResource("Gradient_mkadv")
+
+[sub_resource type="Curve" id="Curve_xl2xh"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.248968), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_mb0br"]
+curve = SubResource("Curve_xl2xh")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_mkadv"]
+particle_flag_align_y = true
+direction = Vector3(0, 1, 0)
+spread = 15.0
+initial_velocity_min = 4.0
+initial_velocity_max = 5.0
+scale_min = 0.2
+scale_max = 0.5
+scale_curve = SubResource("CurveTexture_mb0br")
+color_ramp = SubResource("GradientTexture1D_16yfu")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mkadv"]
+transparency = 4
+vertex_color_use_as_albedo = true
+billboard_mode = 3
+billboard_keep_scale = true
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="QuadMesh" id="QuadMesh_16yfu"]
+material = SubResource("StandardMaterial3D_mkadv")
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_ukptf"]
 size = Vector3(2, 1, 2)
 
-[node name="Scythe" type="Node3D" node_paths=PackedStringArray("Animation", "ActionProperties")]
+[node name="Scythe" type="Node3D" node_paths=PackedStringArray("ActionProperties")]
 script = ExtResource("5_gwmqb")
-Animation = NodePath("VisualManager")
+AnimName = "Idle"
 ActionProperties = NodePath("ActionProperties")
 
 [node name="ActionProperties" type="Node" parent="." node_paths=PackedStringArray("FollowUpOptions", "DefaultFollowUp")]
@@ -321,10 +316,21 @@ libraries = {
 [node name="Pivot" type="Node3D" parent="VisualManager/Root"]
 transform = Transform3D(0.370585, 0.85058, -0.373069, -0.916767, 0.399422, 1.75722e-09, 0.149012, 0.342017, 0.927804, 0, 0, 0)
 
+[node name="GPUParticles3D" type="GPUParticles3D" parent="VisualManager/Root/Pivot"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 1.475, -0.74)
+emitting = false
+lifetime = 0.6
+one_shot = true
+explosiveness = 0.8
+transform_align = 3
+process_material = SubResource("ParticleProcessMaterial_mkadv")
+draw_pass_1 = SubResource("QuadMesh_16yfu")
+script = ExtResource("4_mkadv")
+
 [node name="scythe" parent="VisualManager/Root/Pivot" instance=ExtResource("3_ukptf")]
 transform = Transform3D(0.7, -7.45058e-09, 8.9407e-08, -4.47035e-08, 0.7, -1.49012e-08, -5.96046e-08, 2.98023e-08, 0.7, 0.028687, 0.253844, -0.497384)
 
-[node name="Hurtbox" type="Area3D" parent="." node_paths=PackedStringArray("v")]
+[node name="Hurtbox" type="Area3D" parent="."]
 transform = Transform3D(-3.61999e-06, 0, 1, 0, 1, 0, -1, 0, -3.61999e-06, 0, 0, -1)
 collision_layer = 0
 collision_mask = 4
@@ -333,16 +339,14 @@ monitorable = false
 script = ExtResource("5_ukptf")
 ForceMagnitude = 0.2
 Damage = 5.0
-v = NodePath("../VisualManager")
 metadata/_custom_type_script = "uid://bchnl4uspmyfe"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Hurtbox"]
 shape = SubResource("BoxShape3D_ukptf")
 
-[node name="SwingRight_1" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "ActionProperties")]
+[node name="SwingRight_1" type="Node3D" parent="." node_paths=PackedStringArray("ActionProperties")]
 script = ExtResource("6_gwmqb")
 LocalOffset = Vector3(0, 0, -1)
-Animation = NodePath("../VisualManager")
 AnimName = "SwingRight_1"
 Distance = 1.0
 ActionProperties = NodePath("ActionProperties")
@@ -356,10 +360,9 @@ FollowUpOptions = [NodePath("../../SwingRight_2")]
 DefaultFollowUp = NodePath("../..")
 metadata/_custom_type_script = "uid://43pb0pff7oee"
 
-[node name="SwingRight_2" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "ActionProperties")]
+[node name="SwingRight_2" type="Node3D" parent="." node_paths=PackedStringArray("ActionProperties")]
 script = ExtResource("6_gwmqb")
 LocalOffset = Vector3(0, 0, -1)
-Animation = NodePath("../VisualManager")
 AnimName = "SwingRight_2"
 Distance = 1.0
 ActionProperties = NodePath("ActionProperties")
@@ -373,10 +376,9 @@ FollowUpOptions = [NodePath("../../SwingRight_3")]
 DefaultFollowUp = NodePath("../..")
 metadata/_custom_type_script = "uid://43pb0pff7oee"
 
-[node name="SwingRight_3" type="Node3D" parent="." node_paths=PackedStringArray("Animation", "ActionProperties")]
+[node name="SwingRight_3" type="Node3D" parent="." node_paths=PackedStringArray("ActionProperties")]
 script = ExtResource("6_gwmqb")
 LocalOffset = Vector3(0, 0, -1)
-Animation = NodePath("../VisualManager")
 AnimName = "SwingRight_3"
 Distance = 1.0
 ActionProperties = NodePath("ActionProperties")
@@ -391,3 +393,4 @@ DefaultFollowUp = NodePath("../..")
 metadata/_custom_type_script = "uid://43pb0pff7oee"
 
 [connection signal="area_entered" from="Hurtbox" to="Hurtbox" method="Collide"]
+[connection signal="area_entered" from="Hurtbox" to="VisualManager/Root/Pivot/GPUParticles3D" method="Collide"]

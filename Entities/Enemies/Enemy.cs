@@ -32,7 +32,7 @@ public partial class Enemy : Entity
                     i.Animation.PlayFuture(0, i.AnimName, i.ForesightOffset, transparency: (float)(next as IWeighted).GetWeight(this) / 100 * .5f, renderPriority: 1);
                 }
                 if (!IsLagging && !IsStunned)
-                    (CurrentAction = next).CallAction(this);
+                    (CurrentAction = next).CallAction();
             }
             
         }
@@ -119,8 +119,8 @@ public partial class Enemy : Entity
         }
         if (next != null)
             GD.Print("next=" + next.Name);
-        else
-            GD.Print("next=null");
+        //else
+        //    GD.Print("next=null");
         return next;
     }
 

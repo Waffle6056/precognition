@@ -44,14 +44,14 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     public float FallStunDuration = 2f;
     [Export]
     public float FallMaxDistance = 2f;
-    [Export]
-    public Limb[] StartingLimbs;
     public List<Limb> Limbs = new List<Limb>();
     [Export]
     public int[] FallDirections;
     public float Stability = 1;
     [Export]
 	public ColorRect VisualHP;
+    [Export]
+    public DamageIndicator DamageIndicator;
     [Export]
 	public bool LerpOn = true;
     [Export]
@@ -82,18 +82,15 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
     public override void _Ready()
 	{
 		base._Ready();
-        foreach (Limb l in StartingLimbs)
-        {
-            Limbs.Add(l);
-            l.Parent = this;
-        }
         //GD.Print(Limbs.Count+" "+StartingLimbs.Length);
         TargetPos.GlobalPosition = GlobalPosition;
         //GD.Print(Limbs.Count);
+        findLimbs();
         SetCenters();
-	}
+    }
     public override void _Process(double delta) 
     {
+        //GD.Print(GlobalPosition+" "+TargetPos.GlobalPosition);
         base._Process(delta);
         delta *= BulletTime.SpeedScale;
         // GD.Print("IsChannelling : "+IsChannelling+"\n"+
@@ -216,17 +213,26 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         
         return Force;
     }
-    public virtual float DealDamage(Area3D other, float damage)
+    public virtual float DealDamage(Entity other, float damage)
     {
         GD.Print("CALLED DEAL DAMAGER" + other.Name + " " + damage);
-        return damage;
+        float resDamage = other.TakeHit(damage);
+
+        Animation.HitStop(resDamage * HitstunMul);
+        return resDamage;
+    }
+    public virtual Vector3 DealKnockback(Entity other, Vector3 force)
+    {
+        return other.TakeKnockback(force);
     }
     public virtual float TakeHit(float Damage)
     {
         if (IsInvuln)
             return 0;
+        DamageIndicator?.EmitDamage(Damage);
         CurrentEnergy -= Damage;
         LastHitTime = EntityTime;
+        Animation?.HitStop(Damage * HitstunMul);
         //InvulnTimeRemaining = .1f;
 
         return Damage;
@@ -310,6 +316,20 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
             Animation?.Play("Stumble");
         }
         
+    }
+    public void findLimbs()
+    {
+        Limbs = new List<Limb>();
+        findLimbs(this);
+    }
+    void findLimbs(Node root)
+    {
+        if (root == null)
+            return;
+        if (root is Limb)
+            Limbs.Add(root as Limb);
+        foreach ( Node c in root.GetChildren())
+            findLimbs(c);
     }
     public virtual void setStability()
     {

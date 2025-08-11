@@ -118,9 +118,8 @@ public partial class Action : Option, RewindableObject, ActionState
 		return true;
 	}
 	
-	public bool CallAction(Entity Root)
+	public bool CallAction()
 	{
-		ActionProperties.Root = Root;
 		//GD.Print("Attack Called "+Name+" "+( Active));
 		if (OnCD() || Active)
 			return false;

@@ -49,7 +49,12 @@ public partial class TargetFollowCamera : Camera3D
         {
             GD.Print("Lock on pressed");
             lockOn = !lockOn;
-            pivot = selectPivot();
+            if (lockOn)
+            {
+                pivot = selectPivot();
+                if (pivot == null)
+                    lockOn = false;
+            }
         }
 
 

@@ -10,6 +10,10 @@ public partial class Limb : Area3D
     [Export]
     public bool IsFooting = false;
 
-   
-    
+    public override void _Ready()
+    {
+        base._Ready();
+        Parent = Misc.findParent(this);
+    }
+
 }

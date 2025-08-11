@@ -14,10 +14,14 @@ public partial class ActionProperties : Node
     public Option[] FollowUpOptions { get; set; }
     [Export]
     public Action DefaultFollowUp;
-	public Entity Root;
+    public Entity Parent;
     [Export]
     public float ActionBufferTime = 1f;
     [Export]
     public TrackingProperties TrackingChange { get; set; }
-
+    public override void _Ready()
+    {
+        base._Ready();
+        Parent = Misc.findParent(this);
+    }
 }

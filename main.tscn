@@ -170,7 +170,7 @@ shape = SubResource("BoxShape3D_kai55")
 mesh = SubResource("BoxMesh_vcxov")
 
 [node name="Golem2" parent="." instance=ExtResource("6_x4jhb")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545465, -0.38138, -1.33715)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.545465, 3.70572, 9.93557)
 
 [node name="BulletTime" type="Node" parent="." node_paths=PackedStringArray("BlurNode")]
 script = ExtResource("4_1bvp3")

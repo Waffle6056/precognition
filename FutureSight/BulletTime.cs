@@ -20,7 +20,7 @@ public partial class BulletTime : Node
         base._Process(delta);
         if (Input.IsActionPressed("TestBind") || outsideActivations > 0)
         {
-            GD.Print("called");
+            //GD.Print("called");
             SpeedScale = SlowedSpeedScale;
             BlurringPercent = (float)Math.Min(BlurringPercent + BlurringPercentVelocity * delta, 1);
         }

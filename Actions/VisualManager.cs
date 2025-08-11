@@ -201,8 +201,12 @@ public partial class VisualManager : Node3D, RewindableObject
 }
 interface IAnimated
 {
-	[Export]
-	public VisualManager Animation{get; set;}
+    public VisualManager Animation { get; }
+    //public VisualManager Animation{ get { return IAnimated.findAnimation(this); } }
+    public static VisualManager findAnimation(Node n)
+	{
+		return Misc.findParent(n).Animation;
+	}
 	[Export]
 	public String AnimName { get; set; }
 	[Export]

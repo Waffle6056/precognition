@@ -6,8 +6,7 @@ public partial class GenericAnimatedAction : Action, IAnimated
 {
 
 
-    [Export]
-    public VisualManager Animation { get; set; }
+    public VisualManager Animation { get { return IAnimated.findAnimation(this); } }
     [Export]
     public String AnimName { get; set; } = "Swing";
     [Export]

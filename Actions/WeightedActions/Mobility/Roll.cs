@@ -16,8 +16,7 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated
         return WeightManager.CalculateWeight(root.GlobalTransform * LocalOffset);
     }
 
-    [Export]
-    public VisualManager Animation { get; set; }
+    public VisualManager Animation { get { return IAnimated.findAnimation(this); } }
     [Export]
     public String AnimName { get; set; } = "Ball";
     [Export]
@@ -31,7 +30,9 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated
     {
         if (!base.StartChannel())
             return false;
-        Animation?.Play(AnimName);
+        if (AnimName.Length > 0)
+            Animation?.Play(AnimName);
+        ActionProperties.Parent.InvulnTimeRemaining = InvulnLength;
         return true;
     }
     protected override bool StartAction()
@@ -39,17 +40,16 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated
         if (!base.StartAction())
             return false;
         AddVelocity();
-        ActionProperties.Root.InvulnTimeRemaining = InvulnLength;
         return true;
     }
 
     public void AddVelocity()
     {
         //CharacterBody3D Chara = ActionProperties.Root;
-        Vector3 GlobalDirection = (ActionProperties.Root.GlobalBasis * LocalOffset.Normalized()).Normalized();
+        Vector3 GlobalDirection = (ActionProperties.Parent.GlobalBasis * LocalOffset.Normalized()).Normalized();
         //GD.Print((GlobalDirection * Distance / ActionProperties.ActingMaximumTime));
-
-        ActionProperties.Root.TargetPos.Velocity += (GlobalDirection * Distance / ActionProperties.ActingMaximumTime);
+        //GD.Print(Distance / ActionProperties.ActingMaximumTime+" "+Distance+" " + ActionProperties.ActingMaximumTime);
+        ActionProperties.Parent.TargetPos.Velocity += (GlobalDirection * Distance / ActionProperties.ActingMaximumTime);
     }
     public override void _PhysicsProcess(double delta)
     {
@@ -65,7 +65,7 @@ public partial class Roll : Action, IOffsetFalloff, IAnimated
     {
         if (base.Interrupt())
         {
-            ActionProperties.Root.InvulnTimeRemaining = 0;
+            ActionProperties.Parent.InvulnTimeRemaining = 0;
             return true;
         }
         return false;
