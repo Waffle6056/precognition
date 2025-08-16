@@ -10,7 +10,7 @@ public partial class RadialHurtbox : Hurtbox
         Vector3 dir = (area.GlobalPosition - GlobalPosition).Normalized();
         GD.Print("Attack called " + (dir * ForceMagnitude));
 
-        Parent.DealDamage(area.Parent, DamageCalc(area.Parent, dir));
+        Parent.DealDamage(area.Parent, DamageCalc(area.Parent, dir), id);
         Parent.DealKnockback(area.Parent, dir * ForceMagnitude);
     }
 }

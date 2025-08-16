@@ -1,9 +1,8 @@
-[gd_scene load_steps=37 format=3 uid="uid://debea5my12hmc"]
+[gd_scene load_steps=34 format=3 uid="uid://debea5my12hmc"]
 
 [ext_resource type="Script" uid="uid://beq0x31h1kshl" path="res://Entities/Player/Player.cs" id="1_83h1a"]
 [ext_resource type="Script" uid="uid://cocpcvof8gsku" path="res://Entities/Player/TargetFollowCamera.cs" id="2_dtv0t"]
 [ext_resource type="Script" uid="uid://cao6rc61mbn4e" path="res://Entities/Limb.cs" id="2_lvkyw"]
-[ext_resource type="Script" uid="uid://boib3xlneei6e" path="res://Entities/DamageIndicator.cs" id="3_iplt1"]
 [ext_resource type="Shader" uid="uid://dcv521ir081nm" path="res://FutureSight/ColorOverride.gdshader" id="4_ap3xn"]
 [ext_resource type="Shader" uid="uid://dqg4477tua3gs" path="res://FutureSight/TransparencyOverride.gdshader" id="4_x1y6q"]
 [ext_resource type="Script" uid="uid://dba7tcyn2xv52" path="res://Actions/WeightedActions/TrackingProperties.cs" id="7_1vjjv"]
@@ -12,6 +11,7 @@
 [ext_resource type="Script" uid="uid://bwhimobdwhcis" path="res://Actions/WeightedActions/Mobility/Jump.cs" id="10_x1y6q"]
 [ext_resource type="PackedScene" uid="uid://xtsediom848f" path="res://Actions/Scythe/scythe.tscn" id="11_ap3xn"]
 [ext_resource type="Shader" uid="uid://b8x0so28bcquj" path="res://FutureSight/Ghost.gdshader" id="11_iplt1"]
+[ext_resource type="PackedScene" uid="uid://dsnf8wv3hyvh1" path="res://Entities/DamageIndicator.tscn" id="12_iplt1"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_iplt1"]
 render_priority = 0
@@ -41,27 +41,6 @@ albedo_color = Color(1, 1, 1, 0.309804)
 
 [sub_resource type="BoxMesh" id="BoxMesh_80kcv"]
 material = SubResource("StandardMaterial3D_pte46")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_owvpp"]
-direction = Vector3(0, 1, 0)
-radial_velocity_min = 0.999978
-radial_velocity_max = 0.999978
-gravity = Vector3(0, 1, 0)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_udano"]
-no_depth_test = true
-albedo_color = Color(1, 0, 0, 1)
-billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-fixed_size = true
-
-[sub_resource type="TextMesh" id="TextMesh_xr8lj"]
-material = SubResource("StandardMaterial3D_udano")
-text = "-1
-"
-depth = 0.0
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_dupfr"]
 radius = 0.512653
@@ -132,7 +111,7 @@ CenterOfMassBase = NodePath("misc/CenterOfMassVisual2")
 StumbleStabilityThreshold = 0.0
 FallStabilityThreshold = 0.0
 VisualHP = NodePath("misc/TempHPBar")
-DamageIndicator = NodePath("misc/dmgindicator")
+DamageIndicator = NodePath("misc/DamageIndicator")
 FallingGravity = -50.0
 RisingGravity = -50.0
 MaxWalkSpeed = 20.0
@@ -179,15 +158,6 @@ transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, 0, 1, 0)
 mesh = SubResource("BoxMesh_80kcv")
 skeleton = NodePath("../../..")
 
-[node name="dmgindicator" type="GPUParticles3D" parent="misc"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.153728, 0)
-emitting = false
-amount = 1
-one_shot = true
-process_material = SubResource("ParticleProcessMaterial_owvpp")
-draw_pass_1 = SubResource("TextMesh_xr8lj")
-script = ExtResource("3_iplt1")
-
 [node name="TempHPBar" type="ColorRect" parent="misc"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -199,6 +169,9 @@ offset_bottom = -144.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.835294, 0, 0, 1)
+
+[node name="DamageIndicator" parent="misc" instance=ExtResource("12_iplt1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.295, 0)
 
 [node name="TargetPosition" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.682068, 0)
@@ -311,6 +284,13 @@ SlerpWeight = 6.0
 MaximumRotationPerSecond = 62.83
 LinearRotationPerSecond = 6283.0
 
+[node name="SlowTracking" type="Node" parent="."]
+script = ExtResource("7_1vjjv")
+SlerpTracking = false
+SlerpWeight = 6.0
+MaximumRotationPerSecond = 62.83
+LinearRotationPerSecond = 0.0
+
 [node name="SidestepRoll" type="Node3D" parent="." node_paths=PackedStringArray("ActionProperties")]
 script = ExtResource("8_7a1se")
 LocalOffset = Vector3(0, 0, -1)
@@ -330,14 +310,15 @@ script = ExtResource("8_7a1se")
 LocalOffset = Vector3(0, 0, -1)
 AnimName = ""
 Distance = 4.0
-InvulnLength = 0.2
+InvulnLength = 0.1
 ActionProperties = NodePath("ActionProperties")
 
-[node name="ActionProperties" type="Node" parent="SlideRoll" node_paths=PackedStringArray("FollowUpOptions")]
+[node name="ActionProperties" type="Node" parent="SlideRoll" node_paths=PackedStringArray("FollowUpOptions", "TrackingChange")]
 script = ExtResource("9_lub02")
 ActingMaximumTime = 0.3
 EndLagTime = 0.5
 FollowUpOptions = []
+TrackingChange = NodePath("../../SlowTracking")
 metadata/_custom_type_script = "uid://43pb0pff7oee"
 
 [node name="Jump" type="Node3D" parent="." node_paths=PackedStringArray("ActionProperties")]
@@ -355,7 +336,7 @@ metadata/_custom_type_script = "uid://43pb0pff7oee"
 script = ExtResource("10_x1y6q")
 JumpDistance = 1.0
 AnimName = ""
-InvulnLength = 0.5
+InvulnLength = 0.2
 ActionProperties = NodePath("ActionProperties")
 
 [node name="ActionProperties" type="Node" parent="Knockback" node_paths=PackedStringArray("FollowUpOptions")]
@@ -369,7 +350,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.719485, 0)
 [node name="Pivot" parent="Scythe/VisualManager/Root" index="0"]
 transform = Transform3D(0.370585, 0.85058, -0.373069, -0.916767, 0.399422, 1.75722e-09, 0.149012, 0.342017, 0.927804, 0, 0, 0)
 
-[connection signal="finished" from="misc/dmgindicator" to="misc/dmgindicator" method="resetCount"]
+[node name="Hurtbox" parent="Scythe" index="2"]
+transform = Transform3D(-3.61999e-06, 0, 1, 0, 1, 0, -1, 0, -3.61999e-06, 0, 0, -1)
+
 [connection signal="area_entered" from="HeadBox" to="HeadBox" method="AreaEntered"]
 [connection signal="area_entered" from="LegBox" to="LegBox" method="AreaEntered"]
 

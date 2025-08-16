@@ -11,7 +11,20 @@ public partial class Hurtbox : Area3D
 	public float Damage = 0;
 	[Export]
 	public float CounterDamageMultipler = 1;
-	public Entity Parent;
+    [Export]
+    public Hurtbox parentId; // to prevent attacks with multiple hurtboxes from multi hitting
+	public ulong id { get { // traverses parent id to get an id or returns its own id
+                            // sets parentid to null if it detects a loop
+            if (parentId == null)
+                return GetInstanceId();
+            Hurtbox p = parentId;
+			parentId = null;
+			ulong val = p.id;
+			if (val != GetInstanceId())
+				parentId = p;
+			return val;
+		} }
+    public Entity Parent;
 	public override void _Ready()
 	{
 		base._Ready();
@@ -33,7 +46,7 @@ public partial class Hurtbox : Area3D
 	{
 		
 		GD.Print("Attack called "+(  -GlobalBasis[2] * ForceMagnitude));
-		Parent.DealDamage(area.Parent, DamageCalc(area.Parent, -GlobalBasis[2]));
+		Parent.DealDamage(area.Parent, DamageCalc(area.Parent, -GlobalBasis[2]), id);
         Parent.DealKnockback(area.Parent, -GlobalBasis[2] * ForceMagnitude);
     }
 	

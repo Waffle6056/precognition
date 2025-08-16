@@ -77,11 +77,14 @@ public partial class Player : Entity
 		else
 			CurrentCamera.Focused = false;
 
-		IsRunning = Input.IsActionPressed("Dash");
+		if (Input.IsActionJustPressed("Dash"))
+			IsRunning = true;
+        if (Input.IsActionJustReleased("Dash"))
+            IsRunning = false;
 
-		
 
-		InputAction();
+
+        InputAction();
 
 		//GD.Print(DashCharges);
 		base._Process(delta);
@@ -109,7 +112,7 @@ public partial class Player : Entity
 		{
 			if (Jump.IsActing)
 				Jump.Interrupt();
-			if (Knockback.IsActing)
+			if (Knockback.IsActing && InvulnTimeRemaining <= 0)
 			{
 				Knockback.Interrupt();
 				InvulnTimeRemaining = .1f;
@@ -207,6 +210,7 @@ public partial class Player : Entity
 		{
 			SidestepRoll.Interrupt();
 			SlideRoll.CallAction();
+			IsRunning = false;
 		}
 		//GD.Print(TargetPos.Velocity);
 		
@@ -255,21 +259,29 @@ public partial class Player : Entity
 		//if (IsDashing)
 		//    TargetPos.Velocity += (CurrentCamera.GlobalBasis * DashDirection * new Vector3(1,0,1)).Normalized() * DashDistance / DashLength;
 	}
-	
-	//private void RewindBlink()
-	//{
-	//	Vector3 blinkPos = (Vector3) RewindController.Instance.Past.First.Value.StateData[this].Data[3];
-	//	GlobalPosition = blinkPos;
-	//	TargetPos.GlobalPosition = blinkPos;
-	//}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	
+    //private void RewindBlink()
+    //{
+    //	Vector3 blinkPos = (Vector3) RewindController.Instance.Past.First.Value.StateData[this].Data[3];
+    //	GlobalPosition = blinkPos;
+    //	TargetPos.GlobalPosition = blinkPos;
+    //}
 
+    // Called every frame. 'delta' is the elapsed time since the previous frame.
 
 
+    public override void rotateTowardTarget(double delta)
+    {
+        TrackingProperties currentTrackingProperties = TrackingPropertiesBase;
+		if (CurrentAction.ActionProperties.TrackingChange != null)
+			currentTrackingProperties = CurrentAction.ActionProperties.TrackingChange;
+		else if (SlideRoll.IsActing)
+			currentTrackingProperties = SlideRoll.ActionProperties.TrackingChange;
+		rotateTowardTarget(delta, currentTrackingProperties);
+    }
 
-	public override void SetData(List<object> data)
+
+    public override void SetData(List<object> data)
 	{
 		if (RewindController.Instance.IsFateing && !RewindController.Instance.IsRewinding)
 			return;

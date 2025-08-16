@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IAnimated
 {
     [Export]
-    TrackingProperties TrackingPropertiesBase;
+    public TrackingProperties TrackingPropertiesBase;
     [Export]
 	public float MaxEnergy{get; set;} = 100;
 	[Export]
@@ -213,8 +213,18 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         
         return Force;
     }
-    public virtual float DealDamage(Entity other, float damage)
+    Dictionary<ulong, Dictionary<Entity, double>> HitCDs = new Dictionary<ulong, Dictionary<Entity, double>>();
+    public virtual float DealDamage(Entity other, float damage, ulong id)
     {
+        if (HitCDs.ContainsKey(id) && HitCDs[id].ContainsKey(other) && HitCDs[id][other] + .2 > EntityTime)
+        {
+            //GD.Print("multihit stopped");
+            return 0;
+        }
+        if (!HitCDs.ContainsKey(id))
+            HitCDs.Add(id, new Dictionary<Entity, double>());
+        HitCDs[id][other] = EntityTime;
+
         GD.Print("CALLED DEAL DAMAGER" + other.Name + " " + damage);
         float resDamage = other.TakeHit(damage);
 
@@ -385,13 +395,16 @@ public partial class Entity : CharacterBody3D, RewindableObject, ActionState, IA
         CenterOfMassBase.GlobalPosition += delta;
         CenterOfMass.GlobalPosition += delta;   
     }
-
     public virtual void rotateTowardTarget(double delta)
     {
-        //GD.Print("going");
         TrackingProperties currentTrackingProperties = TrackingPropertiesBase;
         if (CurrentAction.ActionProperties.TrackingChange != null)
             currentTrackingProperties = CurrentAction.ActionProperties.TrackingChange;
+        rotateTowardTarget(delta, currentTrackingProperties);
+    }
+    public virtual void rotateTowardTarget(double delta, TrackingProperties currentTrackingProperties)
+    {
+        //GD.Print("going");
 
         if (!IsStunned && !IsActing)    
         {

@@ -120,7 +120,7 @@ tracks/2/path = NodePath("../Hurtbox:monitoring")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
-"times": PackedFloat32Array(0, 0.266667, 0.4),
+"times": PackedFloat32Array(0, 0.266667, 0.366667),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
@@ -392,5 +392,5 @@ FollowUpOptions = []
 DefaultFollowUp = NodePath("../..")
 metadata/_custom_type_script = "uid://43pb0pff7oee"
 
-[connection signal="area_entered" from="Hurtbox" to="Hurtbox" method="Collide"]
 [connection signal="area_entered" from="Hurtbox" to="VisualManager/Root/Pivot/GPUParticles3D" method="Collide"]
+[connection signal="area_entered" from="Hurtbox" to="Hurtbox" method="Collide"]

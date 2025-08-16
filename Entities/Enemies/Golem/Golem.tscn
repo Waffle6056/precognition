@@ -1,8 +1,8 @@
-[gd_scene load_steps=74 format=3 uid="uid://dgvaf6cplot6e"]
+[gd_scene load_steps=73 format=3 uid="uid://dgvaf6cplot6e"]
 
 [ext_resource type="Script" uid="uid://dku8cie5ivhqt" path="res://Entities/Enemies/Enemy.cs" id="1_j5j4p"]
 [ext_resource type="Script" uid="uid://uw6larch5h11" path="res://Actions/WeightedActions/Neutral.cs" id="2_53qhn"]
-[ext_resource type="Script" uid="uid://boib3xlneei6e" path="res://Entities/DamageIndicator.cs" id="2_gya7l"]
+[ext_resource type="PackedScene" uid="uid://dsnf8wv3hyvh1" path="res://Entities/DamageIndicator.tscn" id="2_gya7l"]
 [ext_resource type="Script" uid="uid://bga4hfbefvj2m" path="res://Entities/RadialHurtbox.cs" id="2_hog7o"]
 [ext_resource type="Script" uid="uid://cao6rc61mbn4e" path="res://Entities/Limb.cs" id="2_q3mo3"]
 [ext_resource type="Texture2D" uid="uid://dfjqg4xry1vvp" path="res://betterwaffle&background.PNG" id="3_2rmgh"]
@@ -11,10 +11,13 @@
 [ext_resource type="Script" uid="uid://bchnl4uspmyfe" path="res://Entities/Hurtbox.cs" id="4_05r0g"]
 [ext_resource type="Script" uid="uid://csie8kqfdcnud" path="res://Actions/VisualManager.cs" id="8_36q5h"]
 [ext_resource type="Script" uid="uid://dhusv5cw7bo7w" path="res://Actions/WeightedActions/Attacks/GenericAnimatedWeighted.cs" id="8_psr6a"]
+[ext_resource type="Material" uid="uid://di44py3rvjrjr" path="res://Entities/Enemies/Golem/dirt.tres" id="9_udano"]
 [ext_resource type="Script" uid="uid://c0kpj3vdo5qnc" path="res://Actions/WeightedActions/WeightingOptions/ConstantWeightManager.cs" id="9_vgj7f"]
 [ext_resource type="Script" uid="uid://b3bpjrk0rjehp" path="res://Actions/WeightedActions/WeightingOptions/WeightProperties.cs" id="10_5vhlu"]
 [ext_resource type="Script" uid="uid://cweth5wqgngb3" path="res://Actions/WeightedActions/WeightingOptions/OffsetLinearFalloff.cs" id="10_e4j22"]
 [ext_resource type="Script" uid="uid://dba7tcyn2xv52" path="res://Actions/WeightedActions/TrackingProperties.cs" id="10_ifyqx"]
+[ext_resource type="QuadMesh" uid="uid://t3k5282fbok5" path="res://Entities/Enemies/Golem/dirtparticle.tres" id="10_udano"]
+[ext_resource type="Material" uid="uid://ceet0ya0csdcr" path="res://Entities/Enemies/Golem/dirtkickup.tres" id="11_crj2v"]
 [ext_resource type="Script" uid="uid://dmnfw8ms2fb0b" path="res://Actions/WeightedActions/Mobility/Roll.cs" id="12_dxs2k"]
 [ext_resource type="Script" uid="uid://sh5hpgdf7x1e" path="res://Actions/CooldownManager.cs" id="13_6rac8"]
 [ext_resource type="PackedScene" uid="uid://p12b4qssq7bx" path="res://Entities/Enemies/troll.glb" id="16_vxbte"]
@@ -41,26 +44,6 @@ material = SubResource("StandardMaterial3D_7gt7o")
 [sub_resource type="TorusMesh" id="TorusMesh_hog7o"]
 inner_radius = 2.0
 outer_radius = 2.1
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_30x1i"]
-direction = Vector3(0, 1, 0)
-radial_velocity_min = 0.999978
-radial_velocity_max = 0.999978
-gravity = Vector3(0, 1, 0)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gya7l"]
-no_depth_test = true
-albedo_color = Color(1, 0, 0, 1)
-billboard_mode = 3
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-fixed_size = true
-
-[sub_resource type="TextMesh" id="TextMesh_crj2v"]
-material = SubResource("StandardMaterial3D_gya7l")
-text = "5"
-depth = 0.0
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vxbte"]
 render_priority = 0
@@ -934,7 +917,7 @@ tracks/8/path = NodePath("../Actions/Lunge/Hurtbox:monitoring")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
-"times": PackedFloat32Array(0, 0.766667, 0.8),
+"times": PackedFloat32Array(0, 0.7, 0.8),
 "transitions": PackedFloat32Array(1, 1, 1),
 "update": 1,
 "values": [false, true, false]
@@ -2151,26 +2134,8 @@ spread = 0.0
 initial_velocity_min = 2.0
 initial_velocity_max = 3.0
 
-[sub_resource type="Gradient" id="Gradient_24tar"]
-colors = PackedColorArray(0, 0, 0, 0, 0.760228, 0.359646, 0, 1)
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_brxjc"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_mq10q"]
-color_ramp = SubResource("Gradient_24tar")
-noise = SubResource("FastNoiseLite_brxjc")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2xe08"]
-transparency = 4
-albedo_texture = SubResource("NoiseTexture2D_mq10q")
-billboard_mode = 3
-billboard_keep_scale = true
-particles_anim_h_frames = 1
-particles_anim_v_frames = 1
-particles_anim_loop = false
-
 [sub_resource type="QuadMesh" id="QuadMesh_brxjc"]
-material = SubResource("StandardMaterial3D_2xe08")
+material = ExtResource("9_udano")
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_gya7l"]
 height = 0.5
@@ -2191,32 +2156,36 @@ scale_min = 0.5
 scale_max = 0.7
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_hog7o"]
-size = Vector3(8, 0.257263, 0.5)
+size = Vector3(8, 0.532333, 0.312988)
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_24tar"]
+[sub_resource type="Curve" id="Curve_30x1i"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.490371), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_udano"]
+curve = SubResource("Curve_30x1i")
+
+[sub_resource type="Curve" id="Curve_crj2v"]
+_data = [Vector2(0, 0.535076), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_1dq2s"]
+curve = SubResource("Curve_crj2v")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1dq2s"]
+emission_shape_scale = Vector3(4, 0.1, 0.25)
 emission_shape = 3
-emission_box_extents = Vector3(4, 0.5, 0.25)
+emission_box_extents = Vector3(1, 1, 1)
 direction = Vector3(0, 1, 0)
-spread = 0.0
 initial_velocity_min = 2.0
-initial_velocity_max = 3.0
+initial_velocity_max = 4.0
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_1dq2s")
+alpha_curve = SubResource("CurveTexture_udano")
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_hog7o"]
 radius = 1.75
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_gya7l"]
-emission_shape = 6
-emission_ring_axis = Vector3(0, 1, 0)
-emission_ring_height = 0.25
-emission_ring_radius = 1.75
-emission_ring_inner_radius = 1.0
-emission_ring_cone_angle = 90.0
-direction = Vector3(0, 1, 0)
-spread = 0.0
-initial_velocity_min = 2.0
-initial_velocity_max = 3.0
-scale_min = 0.5
-scale_max = 0.5
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ccfhe"]
 size = Vector3(1.4, 2.5, 1.5)
@@ -2251,7 +2220,7 @@ StumbleStabilityThreshold = 0.2
 FallStabilityThreshold = 0.175
 FallDirections = PackedInt32Array(0, 90, 180, 270)
 VisualHP = NodePath("MiscVisuals/ColorRect")
-DamageIndicator = NodePath("MiscVisuals/dmgindicator")
+DamageIndicator = NodePath("MiscVisuals/DamageIndicator")
 CurrentAction = NodePath("Actions/Neutral")
 
 [node name="MiscVisuals" type="Node3D" parent="."]
@@ -2290,14 +2259,8 @@ skeleton = NodePath("../..")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.529863, 0)
 mesh = SubResource("TorusMesh_hog7o")
 
-[node name="dmgindicator" type="GPUParticles3D" parent="MiscVisuals"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.53592, 0)
-emitting = false
-amount = 1
-one_shot = true
-process_material = SubResource("ParticleProcessMaterial_30x1i")
-draw_pass_1 = SubResource("TextMesh_crj2v")
-script = ExtResource("2_gya7l")
+[node name="DamageIndicator" parent="MiscVisuals" instance=ExtResource("2_gya7l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.68054, 0)
 
 [node name="VisualManager" type="Node3D" parent="." node_paths=PackedStringArray("ActionAnimator", "VisualRoot")]
 script = ExtResource("8_36q5h")
@@ -2511,7 +2474,7 @@ process_material = SubResource("ParticleProcessMaterial_hog7o")
 draw_pass_1 = SubResource("QuadMesh_brxjc")
 
 [node name="FlipShockwaveHurtbox2" type="Area3D" parent="VisualManager/VisualRoot"]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, -0.349, -2)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.349, -2)
 collision_layer = 0
 collision_mask = 2
 monitoring = false
@@ -2521,20 +2484,20 @@ Damage = 6.0
 CounterDamageMultipler = 0.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/VisualRoot/FlipShockwaveHurtbox2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.621368, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.114585, 0.0935059)
 shape = SubResource("BoxShape3D_hog7o")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="VisualManager/VisualRoot/FlipShockwaveHurtbox2"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0315826, -0.325633)
 emitting = false
-amount = 30
+amount = 400
 lifetime = 0.3
-preprocess = 1.0
 explosiveness = 0.33
-process_material = SubResource("ParticleProcessMaterial_24tar")
-draw_pass_1 = SubResource("QuadMesh_brxjc")
+process_material = SubResource("ParticleProcessMaterial_1dq2s")
+draw_pass_1 = ExtResource("10_udano")
 
 [node name="RollHitbox" type="Area3D" parent="VisualManager/VisualRoot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.789635, 0.813932)
 collision_layer = 0
 collision_mask = 2
 monitoring = false
@@ -2545,17 +2508,19 @@ CounterDamageMultipler = 2.0
 metadata/_custom_type_script = "uid://bga4hfbefvj2m"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="VisualManager/VisualRoot/RollHitbox"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.789635, -0.813932)
 shape = SubResource("SphereShape3D_hog7o")
 
 [node name="GPUParticles3D" type="GPUParticles3D" parent="VisualManager/VisualRoot/RollHitbox"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.338482, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.451153, -0.813932)
+layers = 4
 emitting = false
-amount = 30
-lifetime = 0.3
+amount = 100
+lifetime = 0.6
 preprocess = 1.0
 explosiveness = 0.33
-process_material = SubResource("ParticleProcessMaterial_gya7l")
-draw_pass_1 = SubResource("QuadMesh_brxjc")
+process_material = ExtResource("11_crj2v")
+draw_pass_1 = ExtResource("10_udano")
 
 [node name="EnvironmentHitbox" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.96046e-08, 0.75, -0.05)
@@ -2861,7 +2826,7 @@ collision_layer = 0
 collision_mask = 2
 monitoring = false
 script = ExtResource("4_05r0g")
-ForceMagnitude = 4.0
+ForceMagnitude = 10.0
 Damage = 10.0
 CounterDamageMultipler = 2.0
 metadata/_custom_type_script = "uid://bchnl4uspmyfe"
@@ -2918,7 +2883,6 @@ shape = SubResource("SphereShape3D_mfp7y")
 transform = Transform3D(0.41, 0, 0, 0, 0.41, 0, 0, 0, 0.41, -0.0787039, 1.9697, -1.83267)
 visible = false
 
-[connection signal="finished" from="MiscVisuals/dmgindicator" to="MiscVisuals/dmgindicator" method="resetCount"]
 [connection signal="area_entered" from="VisualManager/VisualRoot/Chest" to="VisualManager/VisualRoot/Chest" method="AreaEntered"]
 [connection signal="area_entered" from="VisualManager/VisualRoot/LArm1" to="VisualManager/VisualRoot/LArm1" method="AreaEntered"]
 [connection signal="area_entered" from="VisualManager/VisualRoot/LArm2" to="VisualManager/VisualRoot/LArm2" method="AreaEntered"]
